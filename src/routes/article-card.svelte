@@ -1,15 +1,18 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 
-  const props = $props();
+	interface Props {
+		id: string;
+		created_at: string;
+		title: string;
+		summary: string;
+		author: string;
+	}
 
-	export let title = 'Card Title';
-	export let summary = 'Card Summary';
-	export let author = 'Card Author';
-	export let date = 'Card Date';
+	let { id, created_at, title, summary, author }: Props = $props();
 </script>
 
-<a href="">
+<a href="/articles/{id}">
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>{title}</Card.Title>
@@ -18,7 +21,7 @@
 			<p>{summary}</p>
 		</Card.Content>
 		<Card.Footer>
-			<p>Author: {author} - {date}</p>
+			<p>Author: {author} - {created_at}</p>
 		</Card.Footer>
 	</Card.Root>
 </a>

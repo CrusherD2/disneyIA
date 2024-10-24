@@ -4,8 +4,8 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 
-	export let data;
-	$: ({ session, supabase } = data);
+	let { data, children } = $props();
+	let { session, supabase } = $derived(data);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -18,21 +18,4 @@
 	});
 </script>
 
-<header>
-	<nav class="flex items-center justify-center py-3">
-		<ul class="flex flex-row gap-12">
-			<li class="hover:underline">
-				<a href="/">Home</a>
-			</li>
-			<li class="hover:underline">
-				<a href="/about">About</a>
-			</li>
-			<li class="hover:underline">
-				<a href="/contact">Contact</a>
-			</li>
-		</ul>
-	</nav>
-</header>
-<main>
-	<slot />
-</main>
+{@render children?.()}

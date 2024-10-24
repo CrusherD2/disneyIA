@@ -1,7 +1,12 @@
 <script lang="ts">
-    // import type { LayoutData } from './$types';
-    
-    // export let data: LayoutData;
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
+	// import type { LayoutData } from './$types';
+
+	// export let data: LayoutData;
 </script>
 
 <header>
@@ -9,4 +14,4 @@
 		<a href="/">Home</a>
 	</nav>
 </header>
-<slot />
+{@render children?.()}
