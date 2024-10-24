@@ -19,7 +19,7 @@
 	onMount(async () => {
 		const { default: Quill } = await import('quill');
 
-		let quill = new Quill(editor, {
+		new Quill(editor, {
 			modules: {
 				toolbar: toolbarOptions
 			},
@@ -31,21 +31,33 @@
 	let title = $state('title');
 	let summary = $state('summary');
 	let author = $state('author');
-	let content = $state('content');
 </script>
 
-<form>
-	<Label for="title">Title</Label>
-	<Input type="text" id="title" bind:value={title} />
+<form class="flex flex-col gap-3">
+	<div>
+		<Label for="title">Title</Label>
+		<Input type="text" id="title" bind:value={title} />
+	</div>
+	<div>
+		<Label for="summary">Summary</Label>
+		<Input type="text" id="summary" bind:value={summary} />
+	</div>
 
-	<Label for="summary">Summary</Label>
-	<Input type="text" id="summary" bind:value={summary} />
+	<div>
+		<Label for="author">Author</Label>
+		<Input type="text" id="author" bind:value={author} />
+	</div>
 
-	<Label for="author">Author</Label>
-	<Input type="text" id="author" bind:value={author} />
-
-	<Label for="content">Content</Label>
-	<Textarea id="content" bind:value={content} />
+	<div>
+		<Label for="content">Content</Label>
+		<div class="editor-wrapper">
+			<div bind:this={editor}></div>
+		</div>
+	</div>
 
 	<button type="submit">Submit</button>
 </form>
+
+<style>
+	@import 'https://cdn.quilljs.com/1.3.6/quill.snow.css';
+</style>
