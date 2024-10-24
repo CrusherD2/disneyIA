@@ -7,13 +7,20 @@
 </script>
 
 <header>
-	<nav class="flex flex-row items-center justify-start gap-3 px-6 py-3">
-		<a href="/admin">
-			<Button>Dashboard</Button>
-		</a>
-		<a href="/admin/articles">
-			<Button>Articles</Button>
+	<nav class="flex flex-row items-center justify-between gap-3 px-6 py-3">
+		<div class="flex flex-row items-center gap-3">
+			<a href="/admin">
+				<Button>Dashboard</Button>
+			</a>
+			<a href="/admin/articles">
+				<Button>Articles</Button>
+			</a>
+		</div>
+		<a href="/">
+			<Button>Home</Button>
 		</a>
 	</nav>
 </header>
-{@render children()}
+<main>
+	{@render children()}
+</main>
