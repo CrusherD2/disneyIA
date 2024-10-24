@@ -1,8 +1,20 @@
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
-  const articles = await locals.supabase.from('articles').select('*');
+  async function fetchArticles() {
+    const { data: articles, error } = await locals.supabase
+      .from('articles')
+      .select('*')
+
+    if (error) {
+      console.error('Error fetching articles:', error.message);
+      return [];
+    }
+
+    return articles ?? [];
+  }
+
   return {
-    articles
+    articles: await fetchArticles()
   };
 }) satisfies PageServerLoad;

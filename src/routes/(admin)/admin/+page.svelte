@@ -1,14 +1,13 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	const { articles }: PageData = $props();
+	import ArticleForm from './article-form.svelte';
 
-  console.log(articles);
+	let { articles }: PageData = $props();
 </script>
 
 <section class="container">
 	<h1>Admin Page</h1>
 	<p>This is an admin page.</p>
-	<!-- {#each articles as article}
-    <pre>{JSON.stringify(article, null, 2)}</pre>
-  {/each} -->
+
+	<ArticleForm />
 </section>
