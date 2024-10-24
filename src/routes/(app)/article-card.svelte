@@ -2,7 +2,7 @@
 	import * as Card from '$lib/components/ui/card';
 
 	interface Props {
-		id: string;
+		id: number;
 		created_at: string;
 		title: string;
 		summary: string;
@@ -21,7 +21,7 @@
 			<p>{summary}</p>
 		</Card.Content>
 		<Card.Footer>
-			<p>Author: {author} - {created_at}</p>
+			<p>Author: {author} - {new Date(created_at).toLocaleDateString()}</p>
 		</Card.Footer>
 	</Card.Root>
 </a>

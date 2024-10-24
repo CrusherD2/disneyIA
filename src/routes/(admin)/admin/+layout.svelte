@@ -3,24 +3,36 @@
 
 	import Button from '$lib/components/ui/button/button.svelte';
 
+	import * as Menubar from '$lib/components/ui/menubar';
 	const { children } = $props();
 </script>
 
-<header>
-	<nav class="flex flex-row items-center justify-between gap-3 px-6 py-3">
-		<div class="flex flex-row items-center gap-3">
-			<a href="/admin">
-				<Button>Dashboard</Button>
-			</a>
-			<a href="/admin/articles">
-				<Button>Articles</Button>
-			</a>
-		</div>
-		<a href="/">
-			<Button>Home</Button>
-		</a>
-	</nav>
-</header>
+<Menubar.Root>
+	<Menubar.Menu>
+		<Menubar.Trigger>Articles</Menubar.Trigger>
+		<Menubar.Content>
+			<Menubar.Item>
+				<a href="/admin/articles/new">New Article</a>
+			</Menubar.Item>
+		</Menubar.Content>
+	</Menubar.Menu>
+	<Menubar.Menu>
+		<Menubar.Trigger>Routes</Menubar.Trigger>
+		<Menubar.Content>
+			<Menubar.Item>
+				<a href="/">Home Page</a>
+			</Menubar.Item>
+		</Menubar.Content>
+	</Menubar.Menu>
+	<Menubar.Menu>
+		<Menubar.Trigger>Session</Menubar.Trigger>
+		<Menubar.Content>
+			<Menubar.Item>
+				<a href="/auth/logout">Logout</a>
+			</Menubar.Item>
+		</Menubar.Content>
+	</Menubar.Menu>
+</Menubar.Root>
 <main>
 	{@render children()}
 </main>

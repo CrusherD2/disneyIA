@@ -1,13 +1,17 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import ArticleForm from './article-form.svelte';
+	import ArticleTable from './article-table.svelte';
+	let {
+		data
+	}: {
+		data: PageData;
+	} = $props();
 
-	let { articles }: PageData = $props();
+	const articles = data.articles;
 </script>
 
 <section class="container">
 	<h1>Admin Page</h1>
 	<p>This is an admin page.</p>
-
-	<ArticleForm />
+	<ArticleTable articles={articles} />
 </section>

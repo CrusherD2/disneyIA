@@ -7,6 +7,5 @@
 		Password
 		<input name="password" type="password" />
 	</label>
-	<button>Login</button>
-	<button formaction="?/signup">Sign up</button>
+	<button formaction="?/login">Login</button>
 </form>
