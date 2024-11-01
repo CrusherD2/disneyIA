@@ -39,6 +39,38 @@ export type Database = {
         }
         Relationships: []
       }
+      comments: {
+        Row: {
+          article_id: number | null
+          content: string | null
+          created_at: string
+          id: number
+          name: string | null
+        }
+        Insert: {
+          article_id?: number | null
+          content?: string | null
+          created_at?: string
+          id?: number
+          name?: string | null
+        }
+        Update: {
+          article_id?: number | null
+          content?: string | null
+          created_at?: string
+          id?: number
+          name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
