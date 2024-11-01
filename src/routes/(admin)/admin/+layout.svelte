@@ -12,6 +12,9 @@
 		<Menubar.Trigger>Articles</Menubar.Trigger>
 		<Menubar.Content>
 			<Menubar.Item>
+				<a href="/admin">View Articles</a>
+			</Menubar.Item>
+			<Menubar.Item>
 				<a href="/admin/articles/new">New Article</a>
 			</Menubar.Item>
 		</Menubar.Content>
