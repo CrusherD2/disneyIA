@@ -13,27 +13,31 @@
 	}
 
 	let { data }: Props = $props();
-	const { article, comments, supabase } = data;
+	const { article, comments, supabase, user } = data;
 
 	async function handleDeleteComment(id: number) {
 		const { error } = await supabase.from('comments').delete().eq('id', id);
 		if (error) {
 			console.error('Error deleting comment:', error.message);
 			toast.error('Error deleting comment');
-			return
+			return;
 		}
 		toast.success('Comment deleted');
 		window.location.reload();
 	}
 </script>
 
-<section class="container max-w-[767px]">
+<section class="container max-w-[767px] text-black dark:text-white">
 	{#if article}
-		<div class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3">
+		<div
+			class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3 dark:border-b-white"
+		>
 			<h1 class="text-3xl">{article.title}</h1>
-			<p class="text-gray-600">{article.summary}</p>
-			<p class="text-gray-500">{new Date(article.created_at).toLocaleDateString()}</p>
-			<p class="text-gray-700">By {article.author}</p>
+			<p class="text-gray-600 dark:text-gray-400">{article.summary}</p>
+			<p class="text-gray-500 dark:text-gray-400">
+				{new Date(article.created_at).toLocaleDateString()}
+			</p>
+			<p class="text-gray-700 dark:text-gray-300">By {article.author}</p>
 		</div>
 		<div>
 			{@html article.content}
@@ -54,22 +58,26 @@
 			{#if comments}
 				{#each comments as comment}
 					<div>
-						<div class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3">
+						<div
+							class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3 dark:border-b-white"
+						>
 							<div
 								class="group relative flex flex-col gap-3 rounded border border-gray-300 p-2 dark:border-gray-700"
 							>
 								<div>
 									<span class="text-gray-700 dark:text-gray-300">{comment.name}</span>
-									<span class="text-gray-500"
+									<span class="text-gray-500 dark:text-gray-400"
 										>at {new Date(comment.created_at).toLocaleString()}</span
 									>
 								</div>
 								<hr />
 								<p class="text-gray-600 dark:text-gray-300">{comment.content}</p>
-								<div class="absolute right-2 top-2 hidden gap-2 group-hover:flex">
-									<button class="text-blue-500 hover:underline">Edit</button>
-									<DeleteCommentDialog {comment} deleteComment={handleDeleteComment} />
-								</div>
+								{#if user}
+									<div class="absolute right-2 top-2 hidden gap-2 group-hover:flex">
+										<button class="text-blue-500 hover:underline">Edit</button>
+										<DeleteCommentDialog {comment} deleteComment={handleDeleteComment} />
+									</div>
+								{/if}
 							</div>
 						</div>
 					</div>
