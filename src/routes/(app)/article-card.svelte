@@ -21,7 +21,7 @@
 			<p>{summary}</p>
 		</Card.Content>
 		<Card.Footer>
-			<p>Author: {author} - {new Date(created_at).toLocaleDateString()}</p>
+			<p>Author: {author} - {new Date(created_at).toLocaleString()}</p>
 		</Card.Footer>
 	</Card.Root>
 </a>
