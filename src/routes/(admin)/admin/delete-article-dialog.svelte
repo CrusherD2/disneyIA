@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { buttonVariants } from '$lib/components/ui/button';
+	import Trash2 from 'lucide-svelte/icons/trash-2';
 
 	let {
 		id
@@ -18,7 +19,9 @@
 </script>
 
 <AlertDialog.Root>
-	<AlertDialog.Trigger class={buttonVariants({ variant: 'destructive' })}>Delete</AlertDialog.Trigger>
+	<AlertDialog.Trigger class={buttonVariants({ variant: 'destructive', size: 'icon' })}>
+		<Trash2 />
+	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
 			<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>

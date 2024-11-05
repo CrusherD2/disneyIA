@@ -18,10 +18,15 @@
 			<Card.Title>{title}</Card.Title>
 		</Card.Header>
 		<Card.Content>
-			<p>{summary}</p>
+			<p>
+				{summary.length > 150
+					? summary.slice(0, summary.slice(0, 150).lastIndexOf(' ')) + '...'
+					: summary}
+			</p>
 		</Card.Content>
-		<Card.Footer>
-			<p>Author: {author} - {new Date(created_at).toLocaleString()}</p>
+		<Card.Footer class="flex flex-col items-start">
+			<p class="text-sm text-gray-500">Author: {author}</p>
+			<p class="text-sm text-gray-500">{new Date(created_at).toLocaleString()}</p>
 		</Card.Footer>
 	</Card.Root>
 </a>
