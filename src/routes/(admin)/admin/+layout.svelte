@@ -28,7 +28,7 @@
 		</Menubar.Content>
 	</Menubar.Menu>
 	<Menubar.Menu>
-		<Menubar.Trigger>Session</Menubar.Trigger>
+		<Menubar.Trigger>Profile</Menubar.Trigger>
 		<Menubar.Content>
 			<Menubar.Item>
 				<a href="/auth/logout">Logout</a>

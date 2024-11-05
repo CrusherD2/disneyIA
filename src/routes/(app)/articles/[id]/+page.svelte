@@ -15,7 +15,7 @@
 	const comments = data.comments;
 </script>
 
-<section class="container">
+<section class="container max-w-[767px]">
 	{#if article}
 		<div class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3">
 			<h1 class="text-3xl">{article.title}</h1>
@@ -41,10 +41,12 @@
 			</form>
 			{#if comments}
 				{#each comments as comment}
-					<div class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3">
-						<p class="text-gray-700">{comment.name}</p>
-						<p class="text-gray-500">{new Date(comment.created_at).toLocaleString()}</p>
-						<p class="text-gray-600">{comment.content}</p>
+					<div>
+						<div class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3">
+							<p class="text-gray-700">{comment.name}</p>
+							<p class="text-gray-500">{new Date(comment.created_at).toLocaleString()}</p>
+							<p class="text-gray-600">{comment.content}</p>
+						</div>
 					</div>
 				{:else}
 					<p>No comments yet</p>
