@@ -28,7 +28,7 @@
 		</div>
 		<div class="mt-3 flex flex-col gap-3">
 			<h2 class="text-2xl">Comments</h2>
-			<form class="flex flex-col gap-3 justify-center" method="POST" action="?/comment">
+			<form class="flex flex-col justify-center gap-3" method="POST" action="?/comment">
 				<div>
 					<Label for="name">Name</Label>
 					<Input type="text" id="name" name="name" required />
