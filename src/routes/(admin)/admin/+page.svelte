@@ -10,8 +10,6 @@
 	const articles = data.articles;
 </script>
 
-<section class="container">
-	<h1>Admin Page</h1>
-	<p>This is an admin page.</p>
-	<ArticleTable articles={articles} />
-</section>
+<div class="container mt-12">
+	<ArticleTable {articles} />
+</div>

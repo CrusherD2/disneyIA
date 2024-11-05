@@ -1,4 +1,5 @@
-import type { PageServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
 	async function fetchArticles() {
@@ -16,3 +17,10 @@ export const load = (async ({ locals }) => {
 		articles: await fetchArticles()
 	};
 }) satisfies PageServerLoad;
+
+export const actions: Actions = {
+	search: async ({ request }) => {
+		// search logic
+		redirect(303, '/admin');
+	}
+};
