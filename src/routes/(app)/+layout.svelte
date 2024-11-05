@@ -22,13 +22,13 @@
 <header>
 	<nav class="flex items-center justify-between p-3">
 		<a href="/">
-			<Logo width={176} height={40} />
+			<Logo width={120} height={30} />
 		</a>
 		<ul class="flex flex-row gap-12">
-			<li class="hover:underline">
+			<li class="hover:underline font-bold">
 				<a href="/about">About</a>
 			</li>
-			<li class="hover:underline">
+			<li class="hover:underline font-bold">
 				<a href="/contact">Contact</a>
 			</li>
 		</ul>
@@ -42,6 +42,9 @@
 		</div>
 	</nav>
 </header>
-<main>
-	{@render children?.()}
+<main class="mb-32">
+	{@render children()}
 </main>
+<footer>
+	<p class="text-center text-gray-500 text-sm">© 2021 Disney AI Usage Archive</p>
+</footer>

@@ -17,7 +17,7 @@
 	</div>
 
 	<div class="mb-12 flex items-center justify-center">
-		<img src="/cover.png" alt="cover" />
+		<img src="/cover.png" alt="cover" class="h-96 w-full object-cover" />
 	</div>
 
 	<h2 class="mb-3 text-2xl font-bold">Latest Articles</h2>
