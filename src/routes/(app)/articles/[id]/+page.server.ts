@@ -37,8 +37,6 @@ export const actions: Actions = {
 
 		const formData = await request.formData();
 
-		console.log(formData)
-
 		const article_id = Number(params.id);
 
 		if (!params.id) {

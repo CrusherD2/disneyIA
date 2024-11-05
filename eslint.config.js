@@ -3,6 +3,7 @@ import prettier from 'eslint-config-prettier';
 import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import importSort from 'eslint-plugin-import-sort';
 
 export default tseslint.config(
 	eslint.configs.recommended,
@@ -10,6 +11,7 @@ export default tseslint.config(
 	...svelte.configs['flat/recommended'],
 	prettier,
 	...svelte.configs['flat/prettier'],
+	importSort,
 	{
 		languageOptions: {
 			globals: {

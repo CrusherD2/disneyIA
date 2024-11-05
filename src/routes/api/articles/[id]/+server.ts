@@ -14,7 +14,7 @@ export const DELETE: RequestHandler = async ({ locals, params }) => {
   const { data, error } = await locals.supabase.from('articles').delete().eq('id', id).select().single();
 
   if (error) {
-    console.log(error);
+    console.error(error);
     return new Response(error.message, { status: 500 });
   }
 
@@ -37,7 +37,7 @@ export const PATCH: RequestHandler = async ({ locals, request, params }) => {
   const { data, error } = await locals.supabase.from('articles').update(body).eq('id', id).select().single();
 
   if (error) {
-    console.log(error);
+    console.error(error);
     return new Response(error.message, { status: 500 });
   }
 

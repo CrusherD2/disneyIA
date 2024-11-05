@@ -12,7 +12,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
   const { data, error } = await locals.supabase.from('articles').insert(body).select().single();
 
   if (error) {
-    console.log(error);
+    console.error(error);
     return new Response(error.message, { status: 500 });
   }
 

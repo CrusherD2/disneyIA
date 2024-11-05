@@ -9,8 +9,6 @@ export const load = (async ({ locals }) => {
       return [];
     }
 
-    console.log(data)
-
     return data ?? [];
   }
   return {
