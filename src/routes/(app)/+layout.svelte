@@ -4,6 +4,9 @@
 
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import Logo from '$lib/components/logo.svelte';
+	import UserDropdown from './user-dropdown.svelte';
+	import ThemeSwitcher from '$lib/components/theme-switcher.svelte';
 
 	const { children, data }: { children: Snippet; data: LayoutData } = $props();
 
@@ -18,11 +21,10 @@
 
 <header>
 	<nav class="flex items-center justify-between p-3">
-		<div></div>
+		<a href="/">
+			<Logo width={176} height={40} />
+		</a>
 		<ul class="flex flex-row gap-12">
-			<li class="hover:underline">
-				<a href="/">Home</a>
-			</li>
 			<li class="hover:underline">
 				<a href="/about">About</a>
 			</li>
@@ -30,25 +32,14 @@
 				<a href="/contact">Contact</a>
 			</li>
 		</ul>
-		{#if session}
-			<DropdownMenu.Root>
-				<DropdownMenu.Trigger>
-					<Button>{user?.email}</Button>
-				</DropdownMenu.Trigger>
-				<DropdownMenu.Content>
-					<DropdownMenu.Group>
-						<DropdownMenu.Label>My Account</DropdownMenu.Label>
-						<DropdownMenu.Item>
-							<a href="/admin">Dashboard</a>
-						</DropdownMenu.Item>
-						<DropdownMenu.Separator />
-						<DropdownMenu.Item onclick={handleLogout}>Log out</DropdownMenu.Item>
-					</DropdownMenu.Group>
-				</DropdownMenu.Content>
-			</DropdownMenu.Root>
-		{:else}
-			<a href="/auth"> <Button>Login</Button></a>
-		{/if}
+		<div class="flex items-center gap-3">
+			{#if session && user && user.email}
+				<UserDropdown email={user.email} {handleLogout} />
+			{:else}
+				<a href="/auth"> <Button>Login</Button></a>
+			{/if}
+			<ThemeSwitcher />
+		</div>
 	</nav>
 </header>
 <main>

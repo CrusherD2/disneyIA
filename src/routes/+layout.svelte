@@ -4,6 +4,7 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
+	import { ModeWatcher } from 'mode-watcher';
 
 	let { data, children } = $props();
 	let { session, supabase } = $derived(data);
@@ -19,5 +20,6 @@
 	});
 </script>
 
+<ModeWatcher />
 <Toaster />
 {@render children?.()}
