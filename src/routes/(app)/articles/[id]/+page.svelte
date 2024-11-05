@@ -5,14 +5,26 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { Button } from '$lib/components/ui/button';
+	import DeleteCommentDialog from './delete-comment-dialog.svelte';
+	import { toast } from 'svelte-sonner';
 
 	interface Props {
 		data: PageData;
 	}
 
 	let { data }: Props = $props();
-	const article = data.article;
-	const comments = data.comments;
+	const { article, comments, supabase } = data;
+
+	async function handleDeleteComment(id: number) {
+		const { error } = await supabase.from('comments').delete().eq('id', id);
+		if (error) {
+			console.error('Error deleting comment:', error.message);
+			toast.error('Error deleting comment');
+			return
+		}
+		toast.success('Comment deleted');
+		window.location.reload();
+	}
 </script>
 
 <section class="container max-w-[767px]">
@@ -43,9 +55,22 @@
 				{#each comments as comment}
 					<div>
 						<div class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3">
-							<p class="text-gray-700">{comment.name}</p>
-							<p class="text-gray-500">{new Date(comment.created_at).toLocaleString()}</p>
-							<p class="text-gray-600">{comment.content}</p>
+							<div
+								class="group relative flex flex-col gap-3 rounded border border-gray-300 p-2 dark:border-gray-700"
+							>
+								<div>
+									<span class="text-gray-700 dark:text-gray-300">{comment.name}</span>
+									<span class="text-gray-500"
+										>at {new Date(comment.created_at).toLocaleString()}</span
+									>
+								</div>
+								<hr />
+								<p class="text-gray-600 dark:text-gray-300">{comment.content}</p>
+								<div class="absolute right-2 top-2 hidden gap-2 group-hover:flex">
+									<button class="text-blue-500 hover:underline">Edit</button>
+									<DeleteCommentDialog {comment} deleteComment={handleDeleteComment} />
+								</div>
+							</div>
 						</div>
 					</div>
 				{:else}

@@ -23,9 +23,9 @@
 	<h2 class="mb-3 text-2xl font-bold">Latest Articles</h2>
 	<div class="masonry-grid">
 		{#each articles as article}
-			<section class="masonry-item">
+			<div class="masonry-item">
 				<ArticleCard {...article} />
-			</section>
+			</div>
 		{:else}
 			<p>No articles found</p>
 		{/each}
