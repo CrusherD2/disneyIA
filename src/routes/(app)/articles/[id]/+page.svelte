@@ -7,12 +7,14 @@
 	import { Button } from '$lib/components/ui/button';
 	import DeleteCommentDialog from './delete-comment-dialog.svelte';
 	import { toast } from 'svelte-sonner';
+	import EditCommentDialog from './edit-comment-dialog.svelte';
 
 	interface Props {
 		data: PageData;
 	}
 
 	let { data }: Props = $props();
+
 	const { article, comments, supabase, user } = data;
 
 	async function handleDeleteComment(id: number) {
@@ -23,6 +25,18 @@
 			return;
 		}
 		toast.success('Comment deleted');
+		window.location.reload();
+	}
+
+	async function handleUpdateComment(id: number, name: string, content: string) {
+		const { error } = await supabase.from('comments').update({ content, name }).eq('id', id);
+		if (error) {
+			console.error('Error updating comment:', error.message);
+			toast.error('Error updating comment');
+			return;
+		}
+		toast.success('Comment updated');
+
 		window.location.reload();
 	}
 </script>
@@ -74,7 +88,7 @@
 								<p class="text-gray-600 dark:text-gray-300">{comment.content}</p>
 								{#if user}
 									<div class="absolute right-2 top-2 hidden gap-2 group-hover:flex">
-										<button class="text-blue-500 hover:underline">Edit</button>
+										<EditCommentDialog {comment} updateContent={handleUpdateComment} />
 										<DeleteCommentDialog {comment} deleteComment={handleDeleteComment} />
 									</div>
 								{/if}
