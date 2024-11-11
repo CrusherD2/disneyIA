@@ -1,20 +1,53 @@
-<div class="p-5 container">
-    <h1 class="text-4xl mb-4">About AI in Disney: A Double-Edged Sword</h1>
-    <div class="text-lg leading-relaxed flex flex-col gap-3">
-        <p>
-            Artificial Intelligence (AI) has been a game-changer across various industries, and Disney has eagerly embraced it. From animation to theme parks, AI is driving innovation and promising enhanced experiences. However, Disney's integration of AI has also brought its share of criticisms, raising concerns about creativity, authenticity, and even ethics.
-        </p>
-        <p>
-            One of the most notable applications of AI in Disney is in animation, where AI-driven techniques expedite complex tasks like facial expressions, lip-syncing, and background generation. While this undoubtedly saves time and resources, it often raises questions about the artistic quality. Critics argue that AI-created animations can feel overly uniform, potentially sacrificing the charm and individuality that have traditionally been hallmarks of Disney's storytelling.
-        </p>
-        <p>
-            Beyond animation, Disney’s theme parks have implemented AI to create immersive experiences, using everything from automated animatronics to interactive character encounters. On paper, this sounds promising. In reality, these AI-powered systems are sometimes unpredictable, detracting from the experience when glitches or mechanical issues arise. Guests have reported animatronics appearing "robotic" in ways that break immersion, while interactions with AI-driven characters can feel scripted, leading to less satisfying personal engagement.
-        </p>
-        <p>
-            Moreover, Disney’s reliance on AI has raised ethical questions within its workforce. Automation can replace tasks traditionally done by animators, designers, and park employees, stoking fears of job displacement. Long-time Disney fans and staff alike express concerns about the loss of human artistry, as AI gradually takes over creative tasks that once required skilled, dedicated artists.
-        </p>
-        <p>
-            Ultimately, while AI undoubtedly offers Disney exciting possibilities for innovation, its extensive use also highlights the need for balance. Maintaining the "Disney magic" may require Disney to rethink how and where AI fits into its creative ecosystem, allowing room for human artistry and authentic experiences that have always set Disney apart.
-        </p>
-    </div>
+<div class="container p-5">
+	<h1 class="mb-4 text-center text-4xl font-bold text-gray-900 dark:text-white">Sobre Nosotros</h1>
+
+	<p class="mb-6 text-lg">
+		Esta página está dedicada a mostrar el uso de la Inteligencia Artificial por parte de Disney y
+		las implicaciones éticas que presenta. Además, se sugiere alternativas mejores a las actuales,
+		buscando un equilibrio entre la innovación tecnológica y la preservación de la creatividad
+		humana.
+	</p>
+
+	<div class="flex flex-col gap-6 text-lg leading-relaxed">
+		<p>
+			La Inteligencia Artificial (IA) ha sido un cambio radical en diversas industrias, y Disney la
+			ha adoptado con entusiasmo. Desde la animación hasta los parques temáticos, la IA está
+			impulsando la innovación y prometiendo experiencias mejoradas. Sin embargo, la integración de
+			la IA en Disney también ha traído consigo críticas, generando preocupaciones sobre la
+			creatividad, la autenticidad e incluso la ética.
+		</p>
+		<p>
+			Una de las aplicaciones más destacadas de la IA en Disney es la animación, donde las técnicas
+			impulsadas por IA agilizan tareas complejas como las expresiones faciales, la sincronización
+			labial y la generación de fondos. Si bien esto indudablemente ahorra tiempo y recursos, a
+			menudo genera dudas sobre la calidad artística. Los críticos argumentan que las animaciones
+			creadas por IA pueden sentirse excesivamente uniformes, sacrificando potencialmente el encanto
+			y la individualidad que tradicionalmente han sido características del relato de Disney.
+		</p>
+		<p>
+			Más allá de la animación, los parques temáticos de Disney han implementado IA para crear
+			experiencias inmersivas, utilizando desde animatrónicos automatizados hasta encuentros
+			interactivos con personajes. En teoría, esto suena prometedor. En la práctica, estos sistemas
+			impulsados por IA son a veces impredecibles, lo que resta de la experiencia cuando surgen
+			fallos o problemas mecánicos. Los visitantes han reportado que los animatrónicos se ven
+			"robóticos" de manera que rompen la inmersión, mientras que las interacciones con personajes
+			impulsados por IA pueden sentirse guionizadas, lo que lleva a un compromiso personal menos
+			satisfactorio.
+		</p>
+		<p>
+			Además, la dependencia de Disney en la IA ha planteado preguntas éticas dentro de su fuerza
+			laboral. La automatización puede reemplazar tareas tradicionalmente realizadas por animadores,
+			diseñadores y empleados de los parques, lo que alimenta el temor al desplazamiento laboral.
+			Tanto los fanáticos de Disney de toda la vida como los empleados expresan su preocupación por
+			la pérdida de la creatividad humana, a medida que la IA va tomando tareas creativas que antes
+			requerían artistas capacitados y dedicados.
+		</p>
+		<p>
+			En última instancia, aunque la IA ofrece indudablemente a Disney emocionantes posibilidades
+			para la innovación, su uso extensivo también resalta la necesidad de un equilibrio. Mantener
+			la "magia de Disney" puede requerir que Disney repiense cómo y dónde encaja la IA en su
+			ecosistema creativo, permitiendo espacio para el arte humano y experiencias auténticas que
+			siempre han distinguido a Disney.
+		</p>
+	</div>
 </div>

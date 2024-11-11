@@ -25,11 +25,11 @@
 			<Logo width={120} height={30} />
 		</a>
 		<ul class="flex flex-row gap-12">
-			<li class="hover:underline font-bold">
-				<a href="/about">About</a>
+			<li class="font-bold hover:underline">
+				<a href="/about">Acerca</a>
 			</li>
-			<li class="hover:underline font-bold">
-				<a href="/contact">Contact</a>
+			<li class="font-bold hover:underline">
+				<a href="/contact">Contacto</a>
 			</li>
 		</ul>
 		<div class="flex items-center gap-3">
@@ -46,5 +46,5 @@
 	{@render children()}
 </main>
 <footer>
-	<p class="text-center text-gray-500 text-sm">© 2021 Disney AI Usage Archive</p>
+	<p class="text-center text-sm text-gray-500">© 2024 Disney AI Usage Archive</p>
 </footer>
