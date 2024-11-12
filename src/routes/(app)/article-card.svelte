@@ -7,8 +7,9 @@
 		title: string;
 		summary: string;
 		author: string;
-		image?: string; // Optional image property for featured articles
+		image?: string;
 		isFeatured?: boolean;
+		tags?: string[];
 	}
 
 	let { id, created_at, title, summary, author, image, isFeatured = false }: Props = $props();

@@ -2,9 +2,19 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import type { Article } from '$lib/types';
 	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
+
+	// Actualiza la interfaz para incluir 'tags'
+	interface Article {
+		id: number;
+		created_at: string;
+		title: string;
+		summary: string;
+		author: string;
+		tags?: string[]; // Propiedad opcional de tags
+		content: string;
+	}
 
 	const {
 		article
@@ -42,12 +52,15 @@
 		}
 	});
 
+	// Agregar el estado reactivo para los tags
 	let title = $state(article?.title || '');
 	let summary = $state(article?.summary || '');
 	let author = $state(article?.author || '');
+	let tags = $state(article?.tags ? article.tags.join(', ') : ''); // Manejo de tags como texto
 
 	let isPending = $state(false);
 
+	// Función para manejar el envío del artículo
 	async function handleSubmitArticle() {
 		try {
 			if (
@@ -60,7 +73,10 @@
 				return;
 			}
 
-			const url = (isUpdating && article) ? `/api/articles/${article.id}` : '/api/articles';
+			// Convierte los tags a un array
+			const tagsArray = tags.split(',').map((tag) => tag.trim());
+
+			const url = isUpdating && article ? `/api/articles/${article.id}` : '/api/articles';
 
 			isPending = true;
 			const res = await fetch(url, {
@@ -72,7 +88,8 @@
 					title: title,
 					summary: summary,
 					author: author,
-					content: editor.children[0].innerHTML
+					content: editor.children[0].innerHTML,
+					tags: tagsArray // Incluye los tags en el cuerpo de la solicitud
 				})
 			});
 
@@ -107,6 +124,11 @@
 	<div>
 		<Label for="author">Author</Label>
 		<Input type="text" id="author" bind:value={author} required />
+	</div>
+	<div>
+		<Label for="tags">Tags</Label>
+		<!-- Campo para los tags, separados por comas -->
+		<Input type="text" id="tags" bind:value={tags} placeholder="Tag1, Tag2, Tag3" />
 	</div>
 
 	<div>
