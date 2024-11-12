@@ -17,6 +17,7 @@ export type Database = {
           created_at: string
           id: number
           summary: string
+          tags: string | null
           title: string
         }
         Insert: {
@@ -26,6 +27,7 @@ export type Database = {
           created_at?: string
           id?: number
           summary: string
+          tags?: string | null
           title: string
         }
         Update: {
@@ -35,27 +37,28 @@ export type Database = {
           created_at?: string
           id?: number
           summary?: string
+          tags?: string | null
           title?: string
         }
         Relationships: []
       }
       comments: {
         Row: {
-          article_id: number | null
+          article_id: number
           content: string | null
           created_at: string
           id: number
           name: string | null
         }
         Insert: {
-          article_id?: number | null
+          article_id: number
           content?: string | null
           created_at?: string
           id?: number
           name?: string | null
         }
         Update: {
-          article_id?: number | null
+          article_id?: number
           content?: string | null
           created_at?: string
           id?: number

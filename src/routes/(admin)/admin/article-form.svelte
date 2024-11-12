@@ -2,24 +2,14 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import Label from '$lib/components/ui/label/label.svelte';
+	import type { Article } from '$lib/types';
 	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
-
-	// Actualiza la interfaz para incluir 'tags'
-	interface Article {
-		id: number;
-		created_at: string;
-		title: string;
-		summary: string;
-		author: string;
-		tags?: string[]; // Propiedad opcional de tags
-		content: string;
-	}
 
 	const {
 		article
 	}: {
-		article: Article;
+		article?: Article;
 	} = $props();
 
 	let editor: HTMLElement;
@@ -53,10 +43,10 @@
 	});
 
 	// Agregar el estado reactivo para los tags
-	let title = $state(article?.title || '');
-	let summary = $state(article?.summary || '');
-	let author = $state(article?.author || '');
-	let tags = $state(article?.tags ? article.tags.join(', ') : ''); // Manejo de tags como texto
+	let title = $state(article?.title ?? '');
+	let summary = $state(article?.summary ?? '');
+	let author = $state(article?.author ?? '');
+	let tags: string = $state(article?.tags ?? ''); // Manejo de tags como texto
 
 	let isPending = $state(false);
 
@@ -94,10 +84,10 @@
 			});
 
 			if (!res.ok) {
-				toast.error('Failed to submit article');
+				toast.error('Error al crear articulo');
 				return;
 			}
-			toast.success(`Article submitted successfully`);
+			toast.success(`Articulo creado correctamente`);
 
 			setTimeout(() => {
 				location.href = '/admin';
@@ -112,17 +102,17 @@
 </script>
 
 <form class="flex flex-col gap-3" onsubmit={handleSubmitArticle}>
-	<Button type="submit">{isPending ? 'Saving...' : 'Submit'}</Button>
+	<Button type="submit">{isPending ? 'Guardando...' : 'Guardar'}</Button>
 	<div>
-		<Label for="title">Title</Label>
+		<Label for="title">Titulo</Label>
 		<Input type="text" id="title" bind:value={title} required />
 	</div>
 	<div>
-		<Label for="summary">Summary</Label>
+		<Label for="summary">Resumen</Label>
 		<Input type="text" id="summary" bind:value={summary} required />
 	</div>
 	<div>
-		<Label for="author">Author</Label>
+		<Label for="author">Autor</Label>
 		<Input type="text" id="author" bind:value={author} required />
 	</div>
 	<div>
@@ -132,7 +122,7 @@
 	</div>
 
 	<div>
-		<Label for="content">Content</Label>
+		<Label for="content">Contenido</Label>
 		<div class="editor-wrapper">
 			<div bind:this={editor}></div>
 		</div>

@@ -18,7 +18,7 @@
 	const { articles } = data;
 
 	// Estado reactivo para la categoría seleccionada
-	let selectedCategory: string | null = null;
+	let selectedCategory: string | null = $state(null);
 
 	// Generar categorías basadas en los artículos
 	let categories = {
@@ -36,10 +36,19 @@
 			: null;
 
 	// Filtrar artículos según la categoría seleccionada
-	function getFilteredArticles() {
-		if (!selectedCategory) return articles; // Si selectedCategory es null, no filtramos y devolvemos todos los artículos
-		return articles.filter((article) => article.tags?.includes(selectedCategory as string)); // 'as string' asegura que selectedCategory sea tratado como un string
-	}
+	// State for filtered articles
+	let filteredArticles = $state(articles);
+
+	// Update filtered articles when category changes
+	$effect(() => {
+		if (!selectedCategory) {
+			filteredArticles = articles;
+		} else {
+			filteredArticles = articles.filter((article) => 
+				article.tags?.includes(selectedCategory as string)
+			);
+		}
+	});
 </script>
 
 <main class="container flex flex-col items-center justify-center">
@@ -70,7 +79,7 @@
 	<!-- Contenedor para los filtros y el header de artículos -->
 	<div class="mb-8 flex w-full items-center justify-between">
 		<!-- Header de Artículos -->
-		{#if getFilteredArticles().length > 0}
+		{#if filteredArticles.length > 0}
 			<header class="flex-grow text-left">
 				<h3 class="text-2xl font-semibold">Artículos</h3>
 			</header>
@@ -94,7 +103,7 @@
 
 	<!-- Artículos filtrados -->
 	<div class="masonry-grid">
-		{#each getFilteredArticles() as article}
+		{#each filteredArticles as article}
 			<div class="masonry-item">
 				<ArticleCard {...article} isFeatured={false} />
 			</div>
@@ -133,16 +142,5 @@
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
-	}
-
-	/* Ajuste de la fuente para que ambos textos sean consistentes */
-	.text-xl {
-		font-size: 1.25rem;
-	}
-	.text-2xl {
-		font-size: 1.5rem;
-	}
-	.text-3xl {
-		font-size: 1.875rem;
 	}
 </style>
