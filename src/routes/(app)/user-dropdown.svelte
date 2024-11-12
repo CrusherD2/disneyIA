@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { toggleMode } from 'mode-watcher';
-	import Sun from 'lucide-svelte/icons/sun';
-	import Moon from 'lucide-svelte/icons/moon';
 
 	type Props = {
 		email: string;
