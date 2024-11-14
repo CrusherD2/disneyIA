@@ -3,8 +3,9 @@
 	import { Input } from '$lib/components/ui/input';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import type { Article } from '$lib/types';
-	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
+	import Editor from '@tinymce/tinymce-svelte';
+	import { Textarea } from '$lib/components/ui/textarea';
 
 	const {
 		article
@@ -12,53 +13,50 @@
 		article?: Article;
 	} = $props();
 
-	let editor: HTMLElement;
+	let conf = {
+		height: '80svh',
+		menubar: true,
+		plugins: [
+			'advlist',
+			'autolink',
+			'lists',
+			'link',
+			'image',
+			'charmap',
+			'anchor',
+			'searchreplace',
+			'visualblocks',
+			'code',
+			'fullscreen',
+			'insertdatetime',
+			'media',
+			'table',
+			'preview',
+			'help',
+			'wordcount'
+		],
+		toolbar:
+			'undo redo | blocks | ' +
+			'bold italic forecolor | alignleft aligncenter ' +
+			'alignright alignjustify | bullist numlist outdent indent | ' +
+			'removeformat | help'
+	};
 
 	let isUpdating = !!article;
-
-	const toolbarOptions = [
-		[{ header: [1, 2, false] }],
-		['bold', 'italic', 'underline'],
-		['link', 'image'],
-		[{ list: 'ordered' }, { list: 'bullet' }],
-		[{ indent: '-1' }, { indent: '+1' }],
-		[{ align: [] }],
-		['clean']
-	];
-
-	onMount(async () => {
-		const { default: Quill } = await import('quill');
-
-		new Quill(editor, {
-			modules: {
-				toolbar: toolbarOptions
-			},
-			theme: 'snow',
-			placeholder: 'Write your story...'
-		});
-
-		if (isUpdating && article) {
-			editor.children[0].innerHTML = article.content;
-		}
-	});
 
 	// Agregar el estado reactivo para los tags
 	let title = $state(article?.title ?? '');
 	let summary = $state(article?.summary ?? '');
 	let author = $state(article?.author ?? '');
 	let tags: string = $state(article?.tags ?? ''); // Manejo de tags como texto
+	let content = $state(article?.content ?? '<p>This is the initial content of the editor.</p>');
 
 	let isPending = $state(false);
 
 	// Función para manejar el envío del artículo
 	async function handleSubmitArticle() {
 		try {
-			if (
-				!title ||
-				!summary ||
-				!editor.children[0].innerHTML ||
-				editor.children[0].innerHTML === '<p><br></p>'
-			) {
+			if (!title || !summary) {
 				toast.error('Please fill in all fields');
 				return;
 			}
@@ -78,7 +76,7 @@
 					title: title,
 					summary: summary,
 					author: author,
-					content: editor.children[0].innerHTML,
+					content: content,
 					tags: tagsArray // Incluye los tags en el cuerpo de la solicitud
 				})
 			});
@@ -101,32 +99,37 @@
 	}
 </script>
 
-<form class="flex flex-col gap-3" onsubmit={handleSubmitArticle}>
-	<Button type="submit">{isPending ? 'Guardando...' : 'Guardar'}</Button>
-	<div>
-		<Label for="title">Titulo</Label>
-		<Input type="text" id="title" bind:value={title} required />
-	</div>
-	<div>
-		<Label for="summary">Resumen</Label>
-		<Input type="text" id="summary" bind:value={summary} required />
-	</div>
-	<div>
-		<Label for="author">Autor</Label>
-		<Input type="text" id="author" bind:value={author} required />
-	</div>
-	<div>
-		<Label for="tags">Tags</Label>
-		<!-- Campo para los tags, separados por comas -->
-		<Input type="text" id="tags" bind:value={tags} placeholder="Tag1, Tag2, Tag3" />
-	</div>
-
-	<div>
-		<Label for="content">Contenido</Label>
-		<div class="editor-wrapper">
-			<div bind:this={editor}></div>
+<form class="flex flex-col gap-3 lg:flex-row" onsubmit={handleSubmitArticle}>
+	<section class="flex flex-col gap-3 lg:min-w-[500px]">
+		<Button type="submit">{isPending ? 'Guardando...' : 'Guardar'}</Button>
+		<div>
+			<Label for="title">Titulo</Label>
+			<Textarea id="title" bind:value={title} required />
 		</div>
-	</div>
+		<div>
+			<Label for="summary">Resumen</Label>
+			<Textarea id="summary" bind:value={summary} required />
+		</div>
+		<div>
+			<Label for="author">Autor</Label>
+			<Input type="text" id="author" bind:value={author} required />
+		</div>
+		<div>
+			<Label for="tags">Tags</Label>
+			<!-- Campo para los tags, separados por comas -->
+			<Input type="text" id="tags" bind:value={tags} placeholder="Tag1, Tag2, Tag3" />
+		</div>
+	</section>
+	<section class="flex w-full flex-col gap-3">
+		<Label for="content">Contenido</Label>
+		<Editor
+			id="content"
+			apiKey="rp4b9m2rr94wwfj47pai9w3qsw116rgs12zhbgvbgl5l5vyc"
+			channel="7"
+			{conf}
+			bind:value={content}
+		/>
+	</section>
 </form>
 
 <style>
