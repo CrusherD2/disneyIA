@@ -18,23 +18,23 @@
 <section>
 	<form method="post" action="?/search" class="flex flex-row gap-3">
 		<Button class="mb-3">
-			<a href="/admin/articles/new">New Article</a>
+			<a href="/admin/articles/new">Nuevo Artículo</a>
 		</Button>
-		<Input placeholder="Search" class="mb-3" />
+		<Input placeholder="Buscar" class="mb-3" />
 		<Button>
-			<a href="/admin">Reset</a>
+			<a href="/admin">Resetear</a>
 		</Button>
 	</form>
 	<Table.Root>
-		<Table.Caption>Articles</Table.Caption>
+		<Table.Caption>Artículos</Table.Caption>
 		<Table.Header>
 			<Table.Row>
 				<Table.Head class="w-[100px]">ID</Table.Head>
-				<Table.Head>Author</Table.Head>
-				<Table.Head>Title</Table.Head>
-				<Table.Head>Summary</Table.Head>
-				<Table.Head class="text-right">Created At</Table.Head>
-				<Table.Head class="text-center">Actions</Table.Head>
+				<Table.Head>Autor</Table.Head>
+				<Table.Head>Título</Table.Head>
+				<Table.Head>Resumen</Table.Head>
+				<Table.Head class="text-right">Fecha de creación</Table.Head>
+				<Table.Head class="text-center">Acciones</Table.Head>
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>

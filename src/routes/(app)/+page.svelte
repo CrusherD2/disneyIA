@@ -9,7 +9,7 @@
 		title: string;
 		summary: string;
 		author: string;
-		tags?: string[]; // Agregamos `tags` como propiedad opcional
+		tags?: string[];
 		image?: string;
 	}
 
@@ -25,7 +25,7 @@
 		years: Array.from(
 			new Set(articles.map((article) => new Date(article.created_at).getFullYear().toString()))
 		),
-		types: ['Incidente', 'Otro Tipo'], // Personaliza según tus necesidades
+		types: ['2023', '2022'], // Personaliza según tus necesidades
 		levels: ['Películas', 'Series']
 	};
 
@@ -44,7 +44,7 @@
 		if (!selectedCategory) {
 			filteredArticles = articles;
 		} else {
-			filteredArticles = articles.filter((article) => 
+			filteredArticles = articles.filter((article) =>
 				article.tags?.includes(selectedCategory as string)
 			);
 		}
@@ -77,19 +77,17 @@
 	{/if}
 
 	<!-- Contenedor para los filtros y el header de artículos -->
-	<div class="mb-8 flex w-full items-center justify-between">
+	<div class="article-header mb-8 flex w-full items-center justify-between">
 		<!-- Header de Artículos -->
 		{#if filteredArticles.length > 0}
-			<header class="flex-grow text-left">
-				<h3 class="text-2xl font-semibold">Artículos</h3>
-			</header>
+			<h3 class="text-2xl font-semibold">Artículos</h3>
 		{:else}
 			<p class="text-xl text-gray-500">No se encontraron artículos.</p>
 		{/if}
 
 		<!-- Selector de categorías -->
-		<div class="category-select ml-4 flex-shrink-0">
-			<label for="category" class="text-xl font-medium">Filtrar por categoría:</label>
+		<div class="category-select">
+			<h3 for="category" class="text-2xl font-semibold">Filtrar por categoría:</h3>
 			<select id="category" bind:value={selectedCategory} class="rounded-lg border p-2">
 				<option value="">Todas</option>
 				{#each Object.entries(categories) as [categoryType, categoryOptions]}
@@ -132,15 +130,21 @@
 	/* Alineación de texto y márgenes */
 	h2,
 	h3 {
-		text-align: left; /* Asegura que el texto esté alineado a la izquierda */
+		text-align: left;
 		margin-bottom: 16px;
 	}
 
-	/* Estilos para el contenedor que contiene "Artículos" y el filtro */
-	.flex {
+	/* Estilos para el contenedor de "Artículos" y el filtro */
+	.article-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
+	}
+
+	/* Alineación para el selector de categoría */
+	.category-select {
+		display: flex;
+		align-items: center;
 	}
 </style>

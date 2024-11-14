@@ -10,6 +10,6 @@
 </script>
 
 <div class="container pb-12">
-	<h1 class="mb-3 text-3xl">Editing article</h1>
+	<h1 class="mb-3 text-3xl">Edición de Artículo</h1>
 	<ArticleForm article={data.article} />
 </div>

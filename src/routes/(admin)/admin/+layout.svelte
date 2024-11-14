@@ -9,29 +9,29 @@
 
 <Menubar.Root>
 	<Menubar.Menu>
-		<Menubar.Trigger>Articles</Menubar.Trigger>
+		<Menubar.Trigger>Artículos</Menubar.Trigger>
 		<Menubar.Content>
 			<Menubar.Item>
-				<a href="/admin">View Articles</a>
+				<a href="/admin">Ver Artículos</a>
 			</Menubar.Item>
 			<Menubar.Item>
-				<a href="/admin/articles/new">New Article</a>
-			</Menubar.Item>
-		</Menubar.Content>
-	</Menubar.Menu>
-	<Menubar.Menu>
-		<Menubar.Trigger>Routes</Menubar.Trigger>
-		<Menubar.Content>
-			<Menubar.Item>
-				<a href="/">Home Page</a>
+				<a href="/admin/articles/new">Nuevo Artículos</a>
 			</Menubar.Item>
 		</Menubar.Content>
 	</Menubar.Menu>
 	<Menubar.Menu>
-		<Menubar.Trigger>Profile</Menubar.Trigger>
+		<Menubar.Trigger>Rutas</Menubar.Trigger>
 		<Menubar.Content>
 			<Menubar.Item>
-				<a href="/auth/logout">Logout</a>
+				<a href="/">Página de inicio</a>
+			</Menubar.Item>
+		</Menubar.Content>
+	</Menubar.Menu>
+	<Menubar.Menu>
+		<Menubar.Trigger>Perfil</Menubar.Trigger>
+		<Menubar.Content>
+			<Menubar.Item>
+				<a href="/auth/logout">Cerrar Sesión</a>
 			</Menubar.Item>
 		</Menubar.Content>
 	</Menubar.Menu>

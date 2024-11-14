@@ -18,12 +18,12 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
-			<DropdownMenu.Label>My Account</DropdownMenu.Label>
+			<DropdownMenu.Label>Mi cuenta</DropdownMenu.Label>
 			<DropdownMenu.Item>
-				<a href="/admin">Dashboard</a>
+				<a href="/admin">Editar artículos</a>
 			</DropdownMenu.Item>
 			<DropdownMenu.Separator />
-			<DropdownMenu.Item onclick={handleLogout}>Log out</DropdownMenu.Item>
+			<DropdownMenu.Item onclick={handleLogout}>Cerrar sesión</DropdownMenu.Item>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

@@ -45,7 +45,7 @@
 			{#if session && user && user.email}
 				<UserDropdown email={user.email} {handleLogout} />
 			{:else}
-				<a href="/auth"> <Button>Login</Button></a>
+				<a href="/auth"> <Button>Iniciar Sesión</Button></a>
 			{/if}
 			<ThemeSwitcher />
 		</div>
