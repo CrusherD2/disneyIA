@@ -69,15 +69,15 @@
 		color: white;
 		display: flex;
 		flex-direction: column;
-		justify-content: flex-end; /* Align elements to the bottom */
+		justify-content: flex-end;
 		padding: 16px;
 	}
 
 	.title-at-bottom {
-		margin-bottom: 8px; /* Adjust spacing between title and footer */
+		margin-bottom: 8px;
 	}
 
 	.overlay p {
-		margin: 0; /* Ensure no extra margin */
+		margin: 0;
 	}
 </style>
