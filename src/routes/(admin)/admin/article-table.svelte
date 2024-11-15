@@ -2,17 +2,15 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import * as Table from '$lib/components/ui/table';
+	import type { Article, Tag } from '$lib/types';
 	import DeleteArticleDialog from './delete-article-dialog.svelte';
 	import SquarePen from 'lucide-svelte/icons/square-pen';
 
-	export let articles: {
-		author: string;
-		content: string;
-		created_at: string;
-		id: number;
-		summary: string;
-		title: string;
-	}[];
+	type Props = {
+		articles: Article[];
+	};
+
+	const { articles }: Props = $props();
 </script>
 
 <section>

@@ -7,9 +7,11 @@
 	}: {
 		data: PageData;
 	} = $props();
+
+	const article = data.article!;
 </script>
 
 <div class="px-12 py-12">
 	<h1 class="mb-3 text-3xl">Edición de Artículo</h1>
-	<ArticleForm article={data.article} />
+	<ArticleForm {article} tags={data.tags} />
 </div>

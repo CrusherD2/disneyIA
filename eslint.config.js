@@ -1,9 +1,10 @@
+import svelte, { rules } from 'eslint-plugin-svelte';
+
 import eslint from '@eslint/js';
-import prettier from 'eslint-config-prettier';
-import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
 import importSort from 'eslint-plugin-import-sort';
+import prettier from 'eslint-config-prettier';
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
 	eslint.configs.recommended,
@@ -30,5 +31,11 @@ export default tseslint.config(
 	},
 	{
 		ignores: ['build/', '.svelte-kit/', 'dist/']
+	},
+	{
+		rules: {
+			'simple-import-sort/imports': 'error',
+			'simple-import-sort/exports': 'error'
+		}
 	}
 );

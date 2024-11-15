@@ -1,5 +1,6 @@
-import { redirect } from '@sveltejs/kit';
+import type { Tag } from '$lib/types';
 import type { Actions, PageServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
 
 export const load = (async ({ locals }) => {
 	async function fetchArticles() {
@@ -13,8 +14,20 @@ export const load = (async ({ locals }) => {
 		return articles ?? [];
 	}
 
+	async function fetchTags(): Promise<Tag[]> {
+		const { data: tags, error } = await locals.supabase.from('tags').select('*');
+
+		if (error) {
+			console.error('Error fetching tags:', error.message);
+			return [];
+		}
+
+		return tags ?? [];
+	}
+
 	return {
-		articles: await fetchArticles()
+		articles: await fetchArticles(),
+		tags: await fetchTags()
 	};
 }) satisfies PageServerLoad;
 

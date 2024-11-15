@@ -1,16 +1,22 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
+	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import type { Article } from '$lib/types';
+	import type { Article, Tag } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import Editor from '@tinymce/tinymce-svelte';
 	import { Textarea } from '$lib/components/ui/textarea';
+	import * as Select from '$lib/components/ui/select';
+	import CreateTagDialog from './create-tag-dialog.svelte';
+	import { Check, SquarePen } from 'lucide-svelte/icons';
+	import { cn } from '$lib/utils';
 
 	const {
-		article
+		article,
+		tags
 	}: {
 		article?: Article;
+		tags: Tag[];
 	} = $props();
 
 	let conf = {
@@ -48,13 +54,47 @@
 	let title = $state(article?.title ?? '');
 	let summary = $state(article?.summary ?? '');
 	let author = $state(article?.author ?? '');
-	let tags: string = $state(article?.tags ?? ''); // Manejo de tags como texto
+	let articleTags: number[] = $state(article?.tags ?? []); // Manejo de tags como texto
 	let content = $state(article?.content ?? '<p>This is the initial content of the editor.</p>');
 
 	let isPending = $state(false);
 
 	// Add backgroundImage to the state
 	let backgroundImage = $state(article?.backgroundImage ?? '');
+
+	// Codigo para crear tags
+	let isTagDialogOpen = $state(false);
+	let isTagDialogLoading = $state(false);
+
+	async function createTag(name: string) {
+		isTagDialogLoading = true;
+		try {
+			const res = await fetch('/api/tags', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ name })
+			});
+
+			if (!res.ok) {
+				toast.error('Error al crear tag');
+				return;
+			}
+
+			const tag = await res.json();
+
+			tags.push(tag);
+
+			toast.success('Tag creado correctamente');
+		} catch (error) {
+			console.error(error);
+			toast.error('Failed to create tag');
+		} finally {
+			isTagDialogLoading = false;
+			isTagDialogOpen = false;
+		}
+	}
 
 	// Función para manejar el envío del artículo
 	async function handleSubmitArticle() {
@@ -63,9 +103,6 @@
 				toast.error('Please fill in all fields');
 				return;
 			}
-
-			// Convierte los tags a un array
-			const tagsArray = tags.split(',').map((tag) => tag.trim());
 
 			const url = isUpdating && article ? `/api/articles/${article.id}` : '/api/articles';
 
@@ -80,7 +117,6 @@
 					summary: summary,
 					author: author,
 					content: content,
-					tags: tagsArray, // Incluye los tags en el cuerpo de la solicitud
 					backgroundImage // Add this to the request body
 				})
 			});
@@ -121,7 +157,32 @@
 		<div>
 			<Label for="tags">Tags</Label>
 			<!-- Campo para los tags, separados por comas -->
-			<Input type="text" id="tags" bind:value={tags} placeholder="Tag1, Tag2, Tag3" />
+			<div class="flex flex-row gap-3">
+				{#if tags.length > 0}
+					<select class="w-full overflow-y-hidden rounded-md border-[1px] flex" multiple>
+						{#each tags as tag}
+							{#if articleTags.includes(tag.id)}
+								<Check />
+							{/if}
+							<option
+								value={tag.id}
+								selected={articleTags.includes(tag.id)}
+								class={cn('',)}
+								onclick={() => {
+									if (articleTags.includes(tag.id)) {
+										articleTags = articleTags.filter((t) => t !== tag.id);
+									} else {
+										articleTags.push(tag.id);
+									}
+								}}
+							>
+								{tag.name}
+							</option>
+						{/each}
+					</select>
+				{/if}
+				<CreateTagDialog {createTag} isOpen={isTagDialogOpen} isLoading={isTagDialogLoading} />
+			</div>
 		</div>
 		<div>
 			<Label for="backgroundImage">Background Image URL</Label>

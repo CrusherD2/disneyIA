@@ -15,17 +15,18 @@
 		<Card.Root>
 			{#if isCarousel}
 				<!-- Carousel Style: Text overlaid on image -->
-				<div class="carousel-style" style="background-image: url('{article.backgroundImage}')">
+				<div
+					class="carousel-style rounded-md"
+					style="background-image: url('{article.backgroundImage}')"
+				>
 					<div class="overlay">
 						<Card.Header>
 							<Card.Title>{article.title}</Card.Title>
 						</Card.Header>
 
 						<Card.Content>
-							<p>
-								{article.summary.length > 150
-									? article.summary.slice(0, article.summary.slice(0, 150).lastIndexOf(' ')) + '...'
-									: article.summary}
+							<p class="truncate">
+								{article.summary}
 							</p>
 						</Card.Content>
 

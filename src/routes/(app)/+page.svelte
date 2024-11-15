@@ -1,13 +1,16 @@
 <script lang="ts">
 	import { navigating } from '$app/stores';
+
 	import type { PageData } from './$types';
-	import ArticleCard from './article-card.svelte';
-	import ArticleCarousel from './article-carousel.svelte';
+
 	import type { Article } from '$lib/types';
 
-	// Obtén los datos de la página
-	const { articles }: PageData = $props();
+	import ArticleCarousel from './article-carousel.svelte';
+	import ArticleCard from './article-card.svelte';
 
+	// Obtén los datos de la página
+	const { data }: PageData = $props();
+	const { articles } = data;
 	// Estado reactivo para la categoría seleccionada
 	let selectedCategory: string | null = $state(null);
 
@@ -44,7 +47,6 @@
 <!-- Add progress bar at the top of the page -->
 {#if $navigating}
 	<div class="progress-container">
-		<!-- svelte-ignore element_invalid_self_closing_tag -->
 		<div class="progress-bar" />
 	</div>
 {/if}
@@ -65,7 +67,7 @@
 	<ArticleCarousel {carouselArticles} />
 
 	<!-- Contenedor para los filtros y el header de artículos -->
-	<div class="article-header mb-8 flex w-full items-center justify-between">
+	<div class="mb-8 flex w-full items-center justify-between">
 		<!-- Header de Artículos -->
 		{#if filteredArticles.length > 0}
 			<h3 class="text-2xl font-semibold">Artículos</h3>
@@ -74,9 +76,13 @@
 		{/if}
 
 		<!-- Selector de categorías -->
-		<div class="category-select">
+		<div class="flex items-center gap-4">
 			<label for="category" class="text-2xl font-semibold">Filtrar por categoría:</label>
-			<select id="category" bind:value={selectedCategory} class="rounded-lg border p-2">
+			<select
+				id="category"
+				bind:value={selectedCategory}
+				class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+			>
 				<option value="">Todas</option>
 				{#each Object.entries(categories) as [categoryType, categoryOptions]}
 					{#each categoryOptions as option}
@@ -88,9 +94,9 @@
 	</div>
 
 	<!-- Artículos filtrados -->
-	<div class="grid-container">
+	<div class="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3">
 		{#each filteredArticles as article}
-			<div class="grid-item">
+			<div class="flex justify-center">
 				<ArticleCard {article} />
 			</div>
 		{/each}
@@ -107,11 +113,6 @@
 		max-width: 1400px;
 		margin: 0 auto;
 		padding: 0 1rem;
-	}
-
-	.grid-item {
-		display: flex;
-		justify-content: center;
 	}
 
 	/* Remove the old masonry styles and keep other existing styles */
