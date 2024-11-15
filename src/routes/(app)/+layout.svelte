@@ -30,18 +30,19 @@
 			<Logo width={120} height={30} />
 		</a>
 
-		<!-- Enlaces de navegación: 'Acerca' y 'Contacto' -->
-		<ul class="flex flex-row gap-12">
-			<li class="font-bold hover:underline">
-				<a href="/about">Acerca</a>
-			</li>
-			<li class="font-bold hover:underline">
-				<a href="/contact">Contacto</a>
-			</li>
-		</ul>
+		<!-- Espacio vacío en el medio -->
+		<div></div>
 
-		<!-- Parte de la derecha con el Dropdown de usuario, el botón de login y el switch de tema -->
-		<div class="flex items-center gap-3">
+		<!-- Parte de la derecha con navegación, Dropdown de usuario, el botón de login y el switch de tema -->
+		<div class="flex items-center gap-6">
+			<ul class="flex flex-row gap-6">
+				<li class="font-bold hover:underline">
+					<a href="/about">Acerca</a>
+				</li>
+				<li class="font-bold hover:underline">
+					<a href="/contact">Contacto</a>
+				</li>
+			</ul>
 			{#if session && user && user.email}
 				<UserDropdown email={user.email} {handleLogout} />
 			{:else}

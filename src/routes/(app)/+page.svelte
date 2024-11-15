@@ -41,7 +41,9 @@
 			filteredArticles = articles;
 			return;
 		}
-		filteredArticles = articles.filter((article) => article && article.tags?.includes(selectedTag!));
+		filteredArticles = articles.filter(
+			(article) => article && article.tags?.includes(selectedTag!)
+		);
 	});
 </script>
 
@@ -68,32 +70,34 @@
 	<ArticleCarousel tags={formattedTags} {carouselArticles} />
 
 	<!-- Contenedor para los filtros y el header de artículos -->
-	<div class="mb-8 flex w-full items-center justify-between">
-		<!-- Header de Artículos -->
-		{#if filteredArticles.length > 0}
-			<h3 class="text-2xl font-semibold">Artículos</h3>
-		{:else}
-			<p class="text-xl text-gray-500">No se encontraron artículos.</p>
-		{/if}
+	<div class="max-w-8xl mx-auto px-4">
+		<div class="mb-8 flex w-full items-center justify-between">
+			<!-- Header de Artículos -->
+			{#if filteredArticles.length > 0}
+				<h3 class="text-2xl font-semibold">Artículos</h3>
+			{:else}
+				<p class="text-xl text-gray-500">No se encontraron artículos.</p>
+			{/if}
 
-		<!-- Selector de categorías -->
-		<div class="flex items-center gap-4">
-			<label for="category" class="text-2xl font-semibold">Filtrar por categoría:</label>
-			<select
-				id="category"
-				bind:value={selectedTag}
-				class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-			>
-				<option value='' selected>Todas</option>
-				{#each tags as tag}
-					<option value={tag.id} class="capitalize">{tag.name}</option>
-				{/each}
-			</select>
+			<!-- Selector de categorías -->
+			<div class="flex items-center gap-4">
+				<label for="category" class="text-2xl font-semibold">Filtrar por categoría:</label>
+				<select
+					id="category"
+					bind:value={selectedTag}
+					class="rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+				>
+					<option value="" selected>Todas</option>
+					{#each tags as tag}
+						<option value={tag.id} class="capitalize">{tag.name}</option>
+					{/each}
+				</select>
+			</div>
 		</div>
 	</div>
 
 	<!-- Artículos filtrados -->
-	<div class="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3">
+	<div class="max-w-8xl mx-auto grid grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3">
 		{#each filteredArticles as article}
 			<div class="flex justify-center">
 				<ArticleCard {article} tags={formattedTags} />
@@ -131,5 +135,29 @@
 		100% {
 			width: 100%;
 		}
+	}
+
+	/* Add these new styles for the select element */
+	select {
+		background-color: var(--select-background);
+		color: var(--select-text);
+		border-color: var(--select-border);
+	}
+
+	select option {
+		background-color: var(--select-background);
+		color: var(--select-text);
+	}
+
+	:global([data-theme='dark']) {
+		--select-background: rgb(31, 41, 55);
+		--select-text: rgb(229, 231, 235);
+		--select-border: rgb(75, 85, 99);
+	}
+
+	:global([data-theme='light']) {
+		--select-background: rgb(255, 255, 255);
+		--select-text: rgb(17, 24, 39);
+		--select-border: rgb(209, 213, 219);
 	}
 </style>

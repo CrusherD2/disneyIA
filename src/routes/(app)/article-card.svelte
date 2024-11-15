@@ -41,7 +41,7 @@
 				</div>
 			{:else}
 				<!-- Regular article style with separated image and text -->
-				<div class="content-section min-w-96 min-h-96">
+				<div class="content-section min-h-96 min-w-96">
 					{#if article.backgroundImage}
 						<div
 							class="image-section"
@@ -50,18 +50,17 @@
 					{/if}
 
 					<Card.Header>
+						{#if article.tags && article.tags.length > 0}
+							<div class="tags-container">
+								{#each article.tags as tag}
+									<span class="tag">
+										{tags.find((t) => t.value === tag)?.label || 'Unknown'}
+									</span>
+								{/each}
+							</div>
+						{/if}
 						<Card.Title>{article.title}</Card.Title>
 					</Card.Header>
-
-					{#if article.tags && article.tags.length > 0}
-						<div class="mt-4 flex items-center justify-center rounded-md bg-secondary px-0 py-2">
-							{#each article.tags as tag}
-								<span class="tag capitalize"
-									>{tags.find((t) => t.value === tag)?.label || 'Unknown'}</span
-								>
-							{/each}
-						</div>
-					{/if}
 
 					<Card.Content>
 						<p class="text-sm text-gray-300">Author: {article.author}</p>
@@ -76,20 +75,40 @@
 <style>
 	/* Regular article styles */
 	.image-section {
-		width: calc(100% - 2rem);
+		width: calc(100% - 1rem);
 		height: 180px;
 		background-size: cover;
 		background-position: center;
-		margin: 1rem;
+		background-repeat: no-repeat;
+		margin: 0.5rem;
+		margin-top: 1rem;
 		margin-bottom: 0.25rem;
 		border-radius: 0.5rem;
+		object-fit: cover;
+		aspect-ratio: 16 / 9;
+		background-color: theme('colors.zinc.100');
 	}
 
 	.content-section {
-		background-color: rgb(9, 9, 11);
-		color: white;
+		background-color: theme('colors.white');
+		color: theme('colors.zinc.950');
 		flex-grow: 1;
-		padding: 0.25rem 1rem;
+		padding: 0.5rem;
+		min-height: 450px;
+		max-height: fit-content;
+		display: flex;
+		flex-direction: column;
+		min-width: 200px;
+		max-width: 340px;
+	}
+
+	:global(.content-section :is(.card-header, .card-content)) {
+		padding: 0 0.5rem;
+	}
+
+	:global(.dark) .content-section {
+		background-color: theme('colors.zinc.950');
+		color: theme('colors.white');
 	}
 
 	/* Carousel article styles */
@@ -99,8 +118,10 @@
 		height: 400px;
 		background-size: cover;
 		background-position: center;
+		background-repeat: no-repeat;
 		display: flex;
 		align-items: flex-end;
+		object-fit: cover;
 	}
 
 	.overlay {
@@ -116,19 +137,26 @@
 	}
 
 	.tags-container {
-		padding: 0.5rem 1rem;
-		margin: 0 1rem 0.5rem 1rem;
-		background-color: rgb(15, 15, 20);
-		border-radius: 0.25rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		padding: 0.5rem 0;
+		margin: 0 0 0.5rem 0;
+		justify-content: flex-start;
 	}
 
 	.tag {
-		color: #3b82f6;
+		background-color: theme('colors.zinc.100');
+		color: theme('colors.blue.600');
 		font-size: 0.875rem;
-		margin-right: 0.5rem;
-		background-color: rgb(30, 30, 40);
-		padding: 0.25rem 0.5rem;
+		padding: 0.25rem 0.75rem;
 		border-radius: 0.25rem;
 		display: inline-block;
+		text-transform: capitalize;
+	}
+
+	:global(.dark) .tag {
+		background-color: theme('colors.zinc.800');
+		color: theme('colors.blue.400');
 	}
 </style>
