@@ -43,21 +43,61 @@
 
 <section class="container max-w-[1000px] text-black dark:text-white">
 	{#if article}
+		<header class="w-full">
+			<div class="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+				<div
+					class="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0"
+				>
+					<div class="flex flex-col space-y-2">
+						<h1 class="text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl">
+							{article.title}
+						</h1>
+						<div
+							class="flex flex-col space-y-2 text-sm text-gray-600 dark:text-gray-400 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0"
+						>
+							<span>Por {article.author}</span>
+							<span class="hidden sm:inline">•</span>
+							<span>{new Date(article.created_at).toLocaleDateString()}</span>
+							<span class="hidden sm:inline">•</span>
+							<span>{article.reading_time} min read</span>
+						</div>
+					</div>
+
+					<div class="flex flex-wrap gap-2">
+						{#each article.tags as tagId}
+							{#if tags.find((t) => t.value === tagId)}
+								<span
+									class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+								>
+									{tags.find((t) => t.value === tagId)?.label}
+								</span>
+							{/if}
+						{/each}
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<article class="container mx-auto px-4 sm:px-6 lg:px-8">
+			{#if article.backgroundImage}
+				<div class="mb-8 overflow-hidden rounded-lg">
+					<img
+						src={article.backgroundImage}
+						alt={article.title}
+						class="h-auto w-full object-cover sm:h-64 md:h-96"
+					/>
+				</div>
+			{/if}
+
+			<div class="prose prose-lg dark:prose-invert sm:prose-xl lg:prose-2xl mx-auto max-w-none">
+				{@html article.content}
+			</div>
+		</article>
+
 		<div
-			class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3 dark:border-b-white"
+			class="container mx-auto mt-8 border-t border-gray-200 px-4 pt-6 dark:border-gray-700 sm:px-6 lg:px-8"
 		>
-			<h1 class="text-3xl">{article.title}</h1>
-			<p class="text-gray-600 dark:text-gray-400">{article.summary}</p>
-			<p class="text-gray-500 dark:text-gray-400">
-				{new Date(article.created_at).toLocaleDateString()}
-			</p>
-			<p class="text-gray-700 dark:text-gray-300">By {article.author}</p>
-		</div>
-		<div>
-			{@html article.content}
-		</div>
-		<div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
-			<h2 class="mb-6 text-2xl font-semibold">Comentarios</h2>
+			<h2 class="mb-6 text-xl font-semibold sm:text-2xl">Comentarios</h2>
 			<form class="flex flex-col justify-center gap-3" method="POST" action="?/comment">
 				<div>
 					<Label for="name">Nombre</Label>
