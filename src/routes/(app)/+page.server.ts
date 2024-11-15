@@ -1,6 +1,8 @@
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
+	const articlesPerPage = 16;
+
 	async function fetchArticles() {
 		const { data, error } = await locals.supabase
 			.from('articles')

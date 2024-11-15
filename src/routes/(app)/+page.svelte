@@ -11,11 +11,11 @@
 		data: PageData;
 	};
 
-	// Obtén los datos de la página
+	// Obtiene los datos iniciales de la página
 	const { data }: Props = $props();
 	const { articles, tags } = data;
 
-	// Sort tags in reverse alphabetical order (Z to A)
+	// Ordena las etiquetas alfabéticamente de Z a A y las formatea para su uso
 	const formattedTags = tags
 		.sort((a, b) => b.name.localeCompare(a.name))
 		.map((tag) => {
@@ -25,22 +25,22 @@
 			};
 		});
 
-	// Sort tags for the buttons display as well (Z to A)
+	// Ordena las etiquetas para los botones también de Z a A
 	const sortedTags = tags.sort((a, b) => b.name.localeCompare(a.name));
 
-	// Estado reactivo para la categoría seleccionada
+	// Maneja el estado de la categoría seleccionada
 	let selectedTag: number | null = $state(null);
 
-	// Filtrar artículos según la categoría seleccionada
+	// Almacena los artículos filtrados
 	let filteredArticles = $state(articles);
 
-	// Filtrar los primeros 5 artículos para el carousel
+	// Selecciona los primeros 5 artículos para el carrusel y añade imágenes por defecto si faltan
 	let carouselArticles = articles.slice(0, 5).map((article, index) => ({
 		...article,
-		image: article?.backgroundImage || `/carousel-${(index % 3) + 1}.jpg` // Fallback to default carousel images
+		image: article?.backgroundImage || `/carousel-${(index % 3) + 1}.jpg`
 	}));
 
-	// Actualizar los artículos filtrados cuando cambie la categoría
+	// Efecto que filtra los artículos cuando cambia la categoría seleccionada
 	$effect(() => {
 		console.log('Selected tag:', selectedTag);
 		if (!selectedTag) {
@@ -53,7 +53,6 @@
 	});
 </script>
 
-<!-- Progress bar - Principle 8: Communicate Effectively -->
 {#if $navigating}
 	<div class="fixed left-0 top-0 z-50 h-1 w-full bg-gray-100">
 		<div class="animate-loading h-full bg-primary"></div>
@@ -61,7 +60,7 @@
 {/if}
 
 <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-	<!-- Header - Principle 1: Don't Make Users Think & Principle 7: Use White Space -->
+	<!-- Encabezado principal de la página -->
 	<div class="mb-12 space-y-4 text-center">
 		<h1 class="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
 			Repositorio del uso de IA por Disney
@@ -72,13 +71,13 @@
 		</p>
 	</div>
 
-	<!-- Featured Articles - Principle 4: Strive for Feature Exposure -->
+	<!-- Sección de artículos destacados con carrusel -->
 	<section class="mb-12">
 		<h2 class="mb-6 text-2xl font-semibold">Artículos Destacados</h2>
 		<ArticleCarousel {carouselArticles} {tags} />
 	</section>
 
-	<!-- Category Filter - Principle 2: Don't Squander Users' Patience -->
+	<!-- Filtro de categorías -->
 	<section class="mb-8">
 		<div class="flex flex-col gap-6">
 			<h2 class="text-xl font-semibold sm:text-2xl">Explorar por Categoría</h2>
@@ -108,7 +107,7 @@
 		</div>
 	</section>
 
-	<!-- Articles Grid - Principle 6: Strive for Simplicity -->
+	<!-- Cuadrícula de artículos filtrados -->
 	<section class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 		{#each filteredArticles as article}
 			<div class="transform transition-transform duration-200 hover:scale-[1.02]">
@@ -123,7 +122,7 @@
 </main>
 
 <style>
-	/* Add these new styles for the progress bar */
+	/* Estilos para la barra de progreso de navegación */
 	.progress-container {
 		position: fixed;
 		top: 0;
@@ -153,7 +152,7 @@
 		}
 	}
 
-	/* Add these new styles for the select element */
+	/* Estilos para el elemento select en modo claro y oscuro */
 	select {
 		background-color: var(--select-background);
 		color: var(--select-text);

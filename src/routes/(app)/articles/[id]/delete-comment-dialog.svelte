@@ -5,9 +5,10 @@
 	type Props = {
 		comment: Comment;
 		deleteComment: (id: number) => Promise<void>;
+		class: string;
 	};
 
-	const { comment, deleteComment }: Props = $props();
+	const { comment, deleteComment, class: className }: Props = $props();
 
 	async function handleDeleteComment() {
 		if (!comment || !comment.id) return;

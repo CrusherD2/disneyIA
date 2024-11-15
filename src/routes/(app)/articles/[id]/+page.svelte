@@ -1,22 +1,27 @@
 <script lang="ts">
+	// Importaciones de componentes y tipos necesarios
 	import type { PageData } from './$types';
 
+	// Importación de componentes UI básicos
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { Button } from '$lib/components/ui/button';
 	import DeleteCommentDialog from './delete-comment-dialog.svelte';
-	import { toast } from 'svelte-sonner';
 	import EditCommentDialog from './edit-comment-dialog.svelte';
+	import { toast } from 'svelte-sonner';
 
+	// Definición de tipos para las props
 	interface Props {
 		data: PageData;
 	}
 
 	let { data }: Props = $props();
 
+	// Desestructuración de datos necesarios
 	const { article, comments, supabase, user } = data;
 
+	// Función para eliminar un comentario de la base de datos
 	async function handleDeleteComment(id: number) {
 		const { error } = await supabase.from('comments').delete().eq('id', id);
 		if (error) {
@@ -28,6 +33,7 @@
 		window.location.reload();
 	}
 
+	// Función para actualizar el contenido de un comentario
 	async function handleUpdateComment(id: number, name: string, content: string) {
 		const { error } = await supabase.from('comments').update({ content, name }).eq('id', id);
 		if (error) {
@@ -41,70 +47,128 @@
 	}
 </script>
 
+<!-- Contenedor principal del artículo -->
 <section class="container max-w-[1000px] text-black dark:text-white">
 	{#if article}
+		<!-- Cabecera del artículo: título, resumen, fecha y autor -->
 		<div
 			class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3 dark:border-b-white"
 		>
-			<h1 class="text-3xl">{article.title}</h1>
+			<h1 class="text-3xl font-bold">{article.title}</h1>
 			<p class="text-gray-600 dark:text-gray-400">{article.summary}</p>
 			<p class="text-gray-500 dark:text-gray-400">
 				{new Date(article.created_at).toLocaleDateString()}
 			</p>
 			<p class="text-gray-700 dark:text-gray-300">By {article.author}</p>
 		</div>
-		<div>
+		<!-- Contenido principal del artículo -->
+		<div class="text-xl">
 			{@html article.content}
 		</div>
-		<div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
-			<h2 class="mb-6 text-2xl font-semibold">Comentarios</h2>
-			<form class="flex flex-col justify-center gap-3" method="POST" action="?/comment">
-				<div>
-					<Label for="name">Nombre</Label>
-					<Input type="text" id="name" name="name" required />
+		<!-- Sección de comentarios -->
+		<section class="mt-16 border-t border-gray-100 pt-12 dark:border-gray-800">
+			<h2 class="mb-8 text-3xl font-bold tracking-tight">Comentarios</h2>
+
+			<!-- Formulario de comentarios -->
+			<form
+				class="mb-12 rounded-xl bg-gray-50 p-6 dark:bg-gray-800/50"
+				method="POST"
+				action="?/comment"
+			>
+				<div class="space-y-6">
+					<div>
+						<Label for="name" class="mb-2 block text-sm font-medium">Nombre</Label>
+						<Input
+							type="text"
+							id="name"
+							name="name"
+							class="w-full rounded-lg border-gray-200 bg-white transition-colors focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900"
+							required
+						/>
+					</div>
+					<div>
+						<Label for="content" class="mb-2 block text-sm font-medium">Tu comentario</Label>
+						<Textarea
+							id="content"
+							name="content"
+							class="min-h-[120px] w-full rounded-lg border-gray-200 bg-white transition-colors focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900"
+							required
+						/>
+					</div>
+					<Button
+						type="submit"
+						class="w-full transform rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto"
+					>
+						Publicar comentario
+					</Button>
 				</div>
-				<div>
-					<Label for="content">Comentario</Label>
-					<Textarea id="content" name="content" required />
-				</div>
-				<Button type="submit">Submit</Button>
 			</form>
+
+			<!-- Lista de comentarios -->
 			{#if comments}
-				{#each comments as comment}
-					<div class="my-4">
-						<div
-							class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+				<div class="space-y-8">
+					{#each comments as comment}
+						<article
+							class="transform rounded-xl bg-white p-6 shadow-sm transition-all hover:shadow-md dark:bg-gray-800/90"
 						>
-							<div class="group relative">
-								<div
-									class="flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700"
-								>
-									<div>
-										<span class="font-bold text-gray-800 dark:text-gray-200">{comment.name}</span>
-										<span class="ml-2 text-sm text-gray-500 dark:text-gray-400">
-											at {new Date(comment.created_at).toLocaleString()}
-										</span>
+							<div class="group">
+								<header class="mb-4 flex items-center justify-between">
+									<div class="flex items-center space-x-3">
+										<!-- Avatar placeholder -->
+										<div
+											class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900"
+										>
+											<span class="text-sm font-medium text-blue-600 dark:text-blue-300">
+												{comment.name[0].toUpperCase()}
+											</span>
+										</div>
+										<div>
+											<h3 class="font-medium text-gray-900 dark:text-gray-100">
+												{comment.name}
+											</h3>
+											<time class="text-sm text-gray-500 dark:text-gray-400">
+												{new Date(comment.created_at).toLocaleString()}
+											</time>
+										</div>
 									</div>
+
 									{#if user}
-										<div class="hidden gap-2 group-hover:flex">
-											<EditCommentDialog {comment} updateContent={handleUpdateComment} />
-											<DeleteCommentDialog {comment} deleteComment={handleDeleteComment} />
+										<div
+											class="hidden gap-2 opacity-0 transition-opacity group-hover:flex group-hover:opacity-100"
+										>
+											<EditCommentDialog
+												{comment}
+												updateContent={handleUpdateComment}
+												class="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+											/>
+											<DeleteCommentDialog
+												{comment}
+												deleteComment={handleDeleteComment}
+												class="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+											/>
 										</div>
 									{/if}
-								</div>
-								<div class="mt-3">
-									<p class="text-gray-600 dark:text-gray-300">{comment.content}</p>
+								</header>
+
+								<div class="pl-13">
+									<p class="text-gray-600 dark:text-gray-300">
+										{comment.content}
+									</p>
 								</div>
 							</div>
+						</article>
+					{:else}
+						<div class="rounded-lg bg-gray-50 p-8 text-center dark:bg-gray-800">
+							<p class="text-gray-500 dark:text-gray-400">No hay comentarios todavía</p>
 						</div>
-					</div>
-				{:else}
-					<p>No hay comentarios todavía</p>
-				{/each}
+					{/each}
+				</div>
 			{:else}
-				<p>Sé el primero en comentar</p>
+				<div class="rounded-lg bg-gray-50 p-8 text-center dark:bg-gray-800">
+					<p class="text-gray-500 dark:text-gray-400">Sé el primero en comentar</p>
+				</div>
 			{/if}
-		</div>
+		</section>
 	{:else}
 		<h1>Artículo no encontrado</h1>
 	{/if}

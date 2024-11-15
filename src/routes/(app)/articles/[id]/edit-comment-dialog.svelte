@@ -15,14 +15,17 @@
 	let content = $state(comment?.content);
 	let name = $state(comment?.name);
 
+	let className = '';
+	export { className as class };
+
 	async function handleUpdateContent() {
 		if (!comment || !content) {
-      throw new Error('Comment or content is missing');
-    }
+			throw new Error('Comment or content is missing');
+		}
 
-    if (!content || !name) {
-      throw new Error('Name or content is missing');
-    }
+		if (!content || !name) {
+			throw new Error('Name or content is missing');
+		}
 
 		await updateContent(comment.id, name, content);
 	}
@@ -35,7 +38,7 @@
 			<Dialog.Title>Are you sure absolutely sure?</Dialog.Title>
 			<Dialog.Description class="flex flex-col gap-3">
 				<Input bind:value={name} />
-        <Textarea bind:value={content} />
+				<Textarea bind:value={content} />
 				<Button onclick={handleUpdateContent}>Update</Button>
 			</Dialog.Description>
 		</Dialog.Header>
