@@ -13,9 +13,19 @@ export const load = (async ({ locals }) => {
 
 		return data ?? [];
 	}
-	const articles = await fetchArticles();
+
+	async function fetchTags() {
+		const { data, error } = await locals.supabase.from('tags').select('*');
+		if (error) {
+			console.error('Error fetching tags', error);
+			return [];
+		}
+
+		return data ?? [];
+	}
 
 	return {
-		articles
+		articles: await fetchArticles(),
+		tags: await fetchTags()
 	};
 }) satisfies PageServerLoad;

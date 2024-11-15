@@ -8,13 +8,14 @@
 
 	type Props = {
 		carouselArticles: Article[];
+		tags: { label: string; value: number }[];
 	};
 
-	let { carouselArticles }: Props = $props();
+	let { carouselArticles, tags }: Props = $props();
 
 	// Estado para el slide actual
 	let currentSlide = $state(0);
-	const autoPlayInterval = 5000; // 5 segundos entre slides
+	const autoPlayInterval = $state(5 * 1000); // 5 segundos entre slides
 
 	// Get the API from Carousel
 	let emblaApi: any = $state();
@@ -22,7 +23,32 @@
 	// Set up auto-advance on mount
 	onMount(() => {
 		const interval = setInterval(nextSlide, autoPlayInterval);
-		return () => clearInterval(interval);
+
+		let autoPlayIntervalId: any;
+
+		const checkHover: any = () => {
+			const carousel = document.getElementById('carousel');
+			if (!carousel) return;
+
+			const isHovered = isHover(carousel);
+			if (isHovered !== checkHover.hovered) {
+				checkHover.hovered = isHovered;
+				if (isHovered) {
+					clearInterval(autoPlayIntervalId);
+				} else {
+					autoPlayIntervalId = setInterval(nextSlide, autoPlayInterval);
+				}
+			}
+		};
+
+		autoPlayIntervalId = interval;
+
+		document.addEventListener('mousemove', checkHover);
+
+		return () => {
+			clearInterval(interval);
+			document.removeEventListener('mousemove', checkHover);
+		};
 	});
 
 	// Function to handle previous slide
@@ -40,6 +66,8 @@
 			currentSlide = emblaApi.selectedScrollSnap();
 		}
 	}
+
+	const isHover = (e: HTMLElement) => e.parentElement?.querySelector(':hover') === e;
 </script>
 
 <div class="mb-12">
@@ -52,11 +80,11 @@
 			skipSnaps: true
 		}}
 	>
-		<Carousel.Content>
+		<Carousel.Content id="carousel">
 			{#each carouselArticles as article, i}
 				<Carousel.Item class="flex w-full justify-center">
 					<div class="w-[95%] max-w-[1400px]">
-						<ArticleCard {article} isCarousel={true} />
+						<ArticleCard {tags} {article} isCarousel={true} />
 					</div>
 				</Carousel.Item>
 			{/each}
@@ -64,12 +92,7 @@
 
 		<!-- Replace the carousel navigation buttons -->
 		<div class="absolute left-[-5rem] top-1/2 z-10 -translate-y-1/2">
-			<button
-				class="border-md pointer bg-white p-1 text-white"
-				onclick={prevSlide}
-				type="button"
-				aria-label="buton"
-			>
+			<button class="carousel-arrow" onclick={prevSlide} type="button" aria-label="buton">
 				<ChevronLeft />
 			</button>
 		</div>
@@ -102,5 +125,25 @@
 	/* If needed, you can also add these styles */
 	:global(.embla__slide) {
 		flex: 0 0 100% !important; /* Forces full width slides */
+	}
+
+	.carousel-arrow {
+		background: rgba(0, 0, 0, 0.5);
+		border-radius: 50%;
+		padding: 0.75rem;
+		color: white;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: none;
+		z-index: 20;
+		pointer-events: auto;
+		width: 56px;
+		height: 56px;
+	}
+
+	.carousel-arrow:hover {
+		background: rgba(0, 0, 0, 0.7);
 	}
 </style>

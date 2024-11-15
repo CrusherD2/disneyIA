@@ -5,9 +5,13 @@
 	type Props = {
 		article: Article;
 		isCarousel?: boolean;
+		tags: {
+			label: string;
+			value: number;
+		}[];
 	};
 
-	let { article, isCarousel = false }: Props = $props();
+	let { article, isCarousel = false, tags }: Props = $props();
 </script>
 
 {#if article}
@@ -43,9 +47,11 @@
 					</Card.Header>
 
 					{#if article.tags && article.tags.length > 0}
-						<div class="tags-container">
+						<div class="flex items-center justify-center rounded-md bg-secondary py-2 mt-4 px-0">
 							{#each article.tags as tag}
-								<span class="tag">{tag}</span>
+								<span class="tag capitalize"
+									>{tags.find((t) => t.value === tag)?.label || 'Unknown'}</span
+								>
 							{/each}
 						</div>
 					{/if}

@@ -3,25 +3,27 @@
 
 	import type { PageData } from './$types';
 
-	import type { Article } from '$lib/types';
-
 	import ArticleCarousel from './article-carousel.svelte';
 	import ArticleCard from './article-card.svelte';
+	import type { Tag } from '$lib/types';
+
+	type Props = {
+		data: PageData;
+	};
 
 	// Obtén los datos de la página
-	const { data }: PageData = $props();
-	const { articles } = data;
-	// Estado reactivo para la categoría seleccionada
-	let selectedCategory: string | null = $state(null);
+	const { data }: Props = $props();
+	const { articles, tags } = data;
 
-	// Generar categorías basadas en los artículos
-	let categories = {
-		years: Array.from(
-			new Set(articles.map((article) => new Date(article!.created_at).getFullYear().toString()))
-		),
-		types: ['2023', '2022'], // Personaliza según tus necesidades
-		levels: ['Películas', 'Series']
-	};
+	const formattedTags = tags.map((tag) => {
+		return {
+			label: tag.name,
+			value: tag.id
+		};
+	});
+
+	// Estado reactivo para la categoría seleccionada
+	let selectedTag: number | null = $state(null);
 
 	// Filtrar artículos según la categoría seleccionada
 	let filteredArticles = $state(articles);
@@ -34,20 +36,19 @@
 
 	// Actualizar los artículos filtrados cuando cambie la categoría
 	$effect(() => {
-		if (!selectedCategory) {
+		console.log('Selected tag:', selectedTag);
+		if (!selectedTag) {
 			filteredArticles = articles;
-		} else {
-			filteredArticles = articles.filter(
-				(article) => article && article.tags?.includes(selectedCategory as string)
-			);
+			return;
 		}
+		filteredArticles = articles.filter((article) => article && article.tags?.includes(selectedTag!));
 	});
 </script>
 
 <!-- Add progress bar at the top of the page -->
 {#if $navigating}
 	<div class="progress-container">
-		<div class="progress-bar" />
+		<div class="progress-bar"></div>
 	</div>
 {/if}
 
@@ -64,7 +65,7 @@
 	</div>
 
 	<!-- Carousel section with proper spacing -->
-	<ArticleCarousel {carouselArticles} />
+	<ArticleCarousel tags={formattedTags} {carouselArticles} />
 
 	<!-- Contenedor para los filtros y el header de artículos -->
 	<div class="mb-8 flex w-full items-center justify-between">
@@ -80,14 +81,12 @@
 			<label for="category" class="text-2xl font-semibold">Filtrar por categoría:</label>
 			<select
 				id="category"
-				bind:value={selectedCategory}
+				bind:value={selectedTag}
 				class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
 			>
-				<option value="">Todas</option>
-				{#each Object.entries(categories) as [categoryType, categoryOptions]}
-					{#each categoryOptions as option}
-						<option value={option}>{option}</option>
-					{/each}
+				<option value='' selected>Todas</option>
+				{#each tags as tag}
+					<option value={tag.id} class="capitalize">{tag.name}</option>
 				{/each}
 			</select>
 		</div>
@@ -97,38 +96,13 @@
 	<div class="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3">
 		{#each filteredArticles as article}
 			<div class="flex justify-center">
-				<ArticleCard {article} />
+				<ArticleCard {article} tags={formattedTags} />
 			</div>
 		{/each}
 	</div>
 </main>
 
 <style>
-	/* Replace the masonry-grid styles with this new grid layout */
-	.grid-container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 2rem;
-		width: 100%;
-		max-width: 1400px;
-		margin: 0 auto;
-		padding: 0 1rem;
-	}
-
-	/* Remove the old masonry styles and keep other existing styles */
-	.article-header {
-		max-width: 1400px;
-		margin: 0 auto;
-		padding: 0 1rem;
-		margin-bottom: 2rem;
-	}
-
-	.category-select {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-
 	/* Add these new styles for the progress bar */
 	.progress-container {
 		position: fixed;
@@ -157,25 +131,5 @@
 		100% {
 			width: 100%;
 		}
-	}
-
-	.carousel-arrow {
-		background: rgba(0, 0, 0, 0.5);
-		border-radius: 50%;
-		padding: 0.75rem;
-		color: white;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border: none;
-		z-index: 20;
-		pointer-events: auto;
-		width: 56px;
-		height: 56px;
-	}
-
-	.carousel-arrow:hover {
-		background: rgba(0, 0, 0, 0.7);
 	}
 </style>
