@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           author: string
           author_id: string
+          backgroundImage: string | null
           content: string
           created_at: string
           id: number
@@ -23,6 +24,7 @@ export type Database = {
         Insert: {
           author: string
           author_id: string
+          backgroundImage?: string | null
           content: string
           created_at?: string
           id?: number
@@ -33,6 +35,7 @@ export type Database = {
         Update: {
           author?: string
           author_id?: string
+          backgroundImage?: string | null
           content?: string
           created_at?: string
           id?: number
@@ -73,6 +76,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      tags: {
+        Row: {
+          created_at: string
+          id: number
+          name: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
