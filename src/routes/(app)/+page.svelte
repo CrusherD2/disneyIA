@@ -2,12 +2,11 @@
 	import { navigating } from '$app/stores';
 	import type { PageData } from './$types';
 	import ArticleCard from './article-card.svelte';
-	import { tick } from 'svelte';
 	import ArticleCarousel from './article-carousel.svelte';
+	import type { Article } from '$lib/types';
 
 	// Obtén los datos de la página
-	const { data }: { data: { articles: Article[] } } = $props();
-	const { articles } = data;
+	const { articles }: PageData = $props();
 
 	// Estado reactivo para la categoría seleccionada
 	let selectedCategory: string | null = $state(null);
@@ -15,7 +14,7 @@
 	// Generar categorías basadas en los artículos
 	let categories = {
 		years: Array.from(
-			new Set(articles.map((article) => new Date(article.created_at).getFullYear().toString()))
+			new Set(articles.map((article) => new Date(article!.created_at).getFullYear().toString()))
 		),
 		types: ['2023', '2022'], // Personaliza según tus necesidades
 		levels: ['Películas', 'Series']
@@ -27,7 +26,7 @@
 	// Filtrar los primeros 5 artículos para el carousel
 	let carouselArticles = articles.slice(0, 5).map((article, index) => ({
 		...article,
-		image: article.image || `/carousel-${(index % 3) + 1}.jpg` // Fallback to default carousel images
+		image: article?.backgroundImage || `/carousel-${(index % 3) + 1}.jpg` // Fallback to default carousel images
 	}));
 
 	// Actualizar los artículos filtrados cuando cambie la categoría
@@ -35,8 +34,8 @@
 		if (!selectedCategory) {
 			filteredArticles = articles;
 		} else {
-			filteredArticles = articles.filter((article) =>
-				article.tags?.includes(selectedCategory as string)
+			filteredArticles = articles.filter(
+				(article) => article && article.tags?.includes(selectedCategory as string)
 			);
 		}
 	});
@@ -92,7 +91,7 @@
 	<div class="grid-container">
 		{#each filteredArticles as article}
 			<div class="grid-item">
-				<ArticleCard {...article} isFeatured={false} />
+				<ArticleCard {article} />
 			</div>
 		{/each}
 	</div>
@@ -157,11 +156,6 @@
 		100% {
 			width: 100%;
 		}
-	}
-
-	/* If needed, you can also add these styles */
-	:global(.embla__slide) {
-		flex: 0 0 100% !important; /* Forces full width slides */
 	}
 
 	.carousel-arrow {

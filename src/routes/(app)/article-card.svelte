@@ -1,90 +1,68 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
+	import type { Article } from '$lib/types';
 
-	interface Props {
-		id: number;
-		created_at: string;
-		title: string;
-		summary: string;
-		author: string;
-		image?: string;
-		backgroundImage?: string;
-		isFeatured?: boolean;
-		tags?: string[];
+	type Props = {
+		article: Article;
 		isCarousel?: boolean;
-	}
+	};
 
-	let {
-		id,
-		created_at,
-		title,
-		summary,
-		author,
-		image,
-		backgroundImage,
-		isFeatured = false,
-		isCarousel = false,
-		tags = []
-	}: Props = $props();
+	let { article, isCarousel = false }: Props = $props();
 </script>
 
-<a href="/articles/{id}">
-	<Card.Root class={isFeatured ? 'featured card-container' : 'card-container'}>
-		{#if isCarousel}
-			<!-- Carousel Style: Text overlaid on image -->
-			<div class="carousel-style" style="background-image: url('{backgroundImage || image}')">
-				<div class="overlay">
+{#if article}
+	<a href="/articles/{article.id}">
+		<Card.Root>
+			{#if isCarousel}
+				<!-- Carousel Style: Text overlaid on image -->
+				<div class="carousel-style" style="background-image: url('{article.backgroundImage}')">
+					<div class="overlay">
+						<Card.Header>
+							<Card.Title>{article.title}</Card.Title>
+						</Card.Header>
+
+						<Card.Content>
+							<p>
+								{article.summary.length > 150
+									? article.summary.slice(0, article.summary.slice(0, 150).lastIndexOf(' ')) + '...'
+									: article.summary}
+							</p>
+						</Card.Content>
+
+						<Card.Footer class="flex flex-col items-start">
+							<p class="text-sm text-gray-300">Author: {article.author}</p>
+						</Card.Footer>
+					</div>
+				</div>
+			{:else}
+				<!-- Regular article style with separated image and text -->
+				<div class="content-section">
 					<Card.Header>
-						<Card.Title>{title}</Card.Title>
+						<Card.Title>{article.title}</Card.Title>
 					</Card.Header>
 
+					{#if article.tags && article.tags.length > 0}
+						<div class="tags-container">
+							{#each article.tags as tag}
+								<span class="tag">{tag}</span>
+							{/each}
+						</div>
+					{/if}
+
+					<!-- svelte-ignore element_invalid_self_closing_tag -->
+					<div class="image-section" style="background-image: url('{article.backgroundImage}');" />
+
 					<Card.Content>
-						<p>
-							{summary.length > 150
-								? summary.slice(0, summary.slice(0, 150).lastIndexOf(' ')) + '...'
-								: summary}
-						</p>
+						<p class="text-sm text-gray-300">Author: {article.author}</p>
+						<p class="text-sm text-gray-300">{new Date(article.created_at).toLocaleString()}</p>
 					</Card.Content>
-
-					<Card.Footer class="flex flex-col items-start">
-						<p class="text-sm text-gray-300">Author: {author}</p>
-					</Card.Footer>
 				</div>
-			</div>
-		{:else}
-			<!-- Regular article style with separated image and text -->
-			<div class="content-section">
-				<Card.Header>
-					<Card.Title>{title}</Card.Title>
-				</Card.Header>
-
-				{#if tags && tags.length > 0}
-					<div class="tags-container">
-						{#each tags as tag}
-							<span class="tag">{tag}</span>
-						{/each}
-					</div>
-				{/if}
-
-				<div class="image-section" style="background-image: url('{backgroundImage || image}');" />
-
-				<Card.Content>
-					<p class="text-sm text-gray-300">Author: {author}</p>
-					<p class="text-sm text-gray-300">{new Date(created_at).toLocaleString()}</p>
-				</Card.Content>
-			</div>
-		{/if}
-	</Card.Root>
-</a>
+			{/if}
+		</Card.Root>
+	</a>
+{/if}
 
 <style>
-	.card-container {
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
-		height: 100%;
-	}
-
 	/* Regular article styles */
 	.image-section {
 		width: calc(100% - 2rem);
