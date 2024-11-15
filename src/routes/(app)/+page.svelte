@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { navigating } from '$app/stores';
-
 	import type { PageData } from './$types';
 
 	import ArticleCarousel from './article-carousel.svelte';
@@ -42,22 +40,15 @@
 
 	// Efecto que filtra los artículos cuando cambia la categoría seleccionada
 	$effect(() => {
-		console.log('Selected tag:', selectedTag);
 		if (!selectedTag) {
 			filteredArticles = articles;
-			return;
+		} else {
+			filteredArticles = articles.filter(
+				(article) => article && article.tags?.includes(selectedTag!)
+			);
 		}
-		filteredArticles = articles.filter(
-			(article) => article && article.tags?.includes(selectedTag!)
-		);
 	});
 </script>
-
-{#if $navigating}
-	<div class="fixed left-0 top-0 z-50 h-1.5 w-full bg-slate-100 dark:bg-slate-800">
-		<div class="animate-loading h-full bg-blue-600 dark:bg-blue-500"></div>
-	</div>
-{/if}
 
 <!-- Hero Section (as provided in previous response) -->
 <section class="relative mb-24 overflow-hidden bg-slate-50 dark:bg-slate-900">

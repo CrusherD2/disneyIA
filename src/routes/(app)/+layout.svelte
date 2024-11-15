@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { LayoutData } from './$types';
+	import { navigating } from '$app/stores';
+	import { afterNavigate } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	// Importa componentes personalizados que se usan en el encabezado
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -22,6 +25,28 @@
 		if (error) console.error('Sign out error', error.message); // Muestra errores si ocurren
 		window.location.reload(); // Recarga la página después del cierre de sesin
 	}
+
+	// Add this to handle all navigation scenarios
+	afterNavigate(() => {
+		// This ensures the navigation state is properly reset
+		console.log('Navigation state:', $navigating);
+	});
+
+	let isNavigating = false;
+
+	$effect(() => {
+		isNavigating = !!$navigating;
+		console.log('Navigation state:', isNavigating);
+	});
+
+	onMount(() => {
+		console.log('Layout mounted');
+	});
+
+	// Add this to debug
+	afterNavigate(() => {
+		console.log('After navigate:', $navigating);
+	});
 </script>
 
 <header
@@ -75,6 +100,12 @@
 	</nav>
 </header>
 
+{#if $navigating}
+	<div
+		class="fixed bottom-4 right-4 z-[9999] h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"
+	></div>
+{/if}
+
 <main class="mb-32 mt-[73px]">
 	<!-- Renderiza el contenido principal de la página -->
 	{@render children()}
@@ -87,8 +118,10 @@
 		<p class="text-center text-xs text-gray-500 dark:text-gray-400">
 			© 2024 Disney AI Usage Archive
 		</p>
-		<div
-			class="fixed bottom-4 right-4 h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"
-		></div>
 	</div>
+	{#if isNavigating}
+		<div
+			class="fixed bottom-4 right-4 z-50 h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"
+		></div>
+	{/if}
 </footer>
