@@ -41,13 +41,20 @@
 				</div>
 			{:else}
 				<!-- Regular article style with separated image and text -->
-				<div class="content-section">
+				<div class="content-section min-w-96 min-h-96">
+					{#if article.backgroundImage}
+						<div
+							class="image-section"
+							style="background-image: url('{article.backgroundImage}');"
+						></div>
+					{/if}
+
 					<Card.Header>
 						<Card.Title>{article.title}</Card.Title>
 					</Card.Header>
 
 					{#if article.tags && article.tags.length > 0}
-						<div class="flex items-center justify-center rounded-md bg-secondary py-2 mt-4 px-0">
+						<div class="mt-4 flex items-center justify-center rounded-md bg-secondary px-0 py-2">
 							{#each article.tags as tag}
 								<span class="tag capitalize"
 									>{tags.find((t) => t.value === tag)?.label || 'Unknown'}</span
@@ -55,9 +62,6 @@
 							{/each}
 						</div>
 					{/if}
-
-					<!-- svelte-ignore element_invalid_self_closing_tag -->
-					<div class="image-section" style="background-image: url('{article.backgroundImage}');" />
 
 					<Card.Content>
 						<p class="text-sm text-gray-300">Author: {article.author}</p>
