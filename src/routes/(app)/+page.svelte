@@ -1,17 +1,9 @@
 <script lang="ts">
+	import { navigating } from '$app/stores';
 	import type { PageData } from './$types';
 	import ArticleCard from './article-card.svelte';
-
-	// Define los artículos con la propiedad `tags`
-	interface Article {
-		id: number;
-		created_at: string;
-		title: string;
-		summary: string;
-		author: string;
-		tags?: string[];
-		image?: string;
-	}
+	import { tick } from 'svelte';
+	import ArticleCarousel from './article-carousel.svelte';
 
 	// Obtén los datos de la página
 	const { data }: { data: { articles: Article[] } } = $props();
@@ -29,17 +21,16 @@
 		levels: ['Películas', 'Series']
 	};
 
-	// Obtener el artículo destacado (primer artículo, con imagen de portada personalizada)
-	const featuredArticle =
-		articles.length > 0
-			? { ...articles[0], image: '/test.jpg' } // Aquí puedes personalizar la imagen
-			: null;
-
 	// Filtrar artículos según la categoría seleccionada
-	// State for filtered articles
 	let filteredArticles = $state(articles);
 
-	// Update filtered articles when category changes
+	// Filtrar los primeros 5 artículos para el carousel
+	let carouselArticles = articles.slice(0, 5).map((article, index) => ({
+		...article,
+		image: article.image || `/carousel-${(index % 3) + 1}.jpg` // Fallback to default carousel images
+	}));
+
+	// Actualizar los artículos filtrados cuando cambie la categoría
 	$effect(() => {
 		if (!selectedCategory) {
 			filteredArticles = articles;
@@ -51,30 +42,28 @@
 	});
 </script>
 
-<main class="container flex flex-col items-center justify-center">
+<!-- Add progress bar at the top of the page -->
+{#if $navigating}
+	<div class="progress-container">
+		<!-- svelte-ignore element_invalid_self_closing_tag -->
+		<div class="progress-bar" />
+	</div>
+{/if}
+
+<main class="container mx-auto max-w-7xl px-4 py-8">
 	<!-- Encabezado principal y descripción -->
-	<div class="mb-6 w-full text-left">
-		<h1 class="mb-3 mt-12 text-center text-4xl font-bold">Repositorio del uso de IA por Disney</h1>
-		<p class="mb-3 text-center text-sm text-gray-500">Implicaciones Éticas</p>
+	<div class="mb-12 text-center">
+		<h1 class="mb-3 text-4xl font-bold">Repositorio del uso de IA por Disney</h1>
+		<p class="text-sm text-gray-500">Implicaciones Éticas</p>
 	</div>
 
 	<!-- Encabezado de artículo destacado -->
-	<div class="mb-6 w-full text-left">
-		<h2 class="mb-3 text-2xl font-bold">Artículo Destacado</h2>
+	<div class="mb-6">
+		<h2 class="text-2xl font-bold">Artículo Destacado</h2>
 	</div>
 
-	<!-- Sección del artículo destacado -->
-	{#if featuredArticle}
-		<div class="mb-12 w-full">
-			<!-- Muestra el componente ArticleCard para el artículo destacado, pasando los datos del artículo -->
-			<ArticleCard {...featuredArticle} isFeatured={true} />
-		</div>
-	{:else}
-		<!-- Fallback: se muestra una imagen de portada si no hay artículos destacados -->
-		<div class="mb-12 flex items-center justify-center">
-			<img src="/cover.png" alt="cover" class="h-96 w-full object-cover" />
-		</div>
-	{/if}
+	<!-- Carousel section with proper spacing -->
+	<ArticleCarousel {carouselArticles} />
 
 	<!-- Contenedor para los filtros y el header de artículos -->
 	<div class="article-header mb-8 flex w-full items-center justify-between">
@@ -87,7 +76,7 @@
 
 		<!-- Selector de categorías -->
 		<div class="category-select">
-			<h3 for="category" class="text-2xl font-semibold">Filtrar por categoría:</h3>
+			<label for="category" class="text-2xl font-semibold">Filtrar por categoría:</label>
 			<select id="category" bind:value={selectedCategory} class="rounded-lg border p-2">
 				<option value="">Todas</option>
 				{#each Object.entries(categories) as [categoryType, categoryOptions]}
@@ -100,9 +89,9 @@
 	</div>
 
 	<!-- Artículos filtrados -->
-	<div class="masonry-grid">
+	<div class="grid-container">
 		{#each filteredArticles as article}
-			<div class="masonry-item">
+			<div class="grid-item">
 				<ArticleCard {...article} isFeatured={false} />
 			</div>
 		{/each}
@@ -110,41 +99,88 @@
 </main>
 
 <style>
-	/* Asegura que el texto "Artículo Destacado" esté alineado a la izquierda */
-	.text-left {
-		text-align: left;
-	}
-
-	/* Ajusta el diseño del grid */
-	.masonry-grid {
+	/* Replace the masonry-grid styles with this new grid layout */
+	.grid-container {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		grid-auto-rows: auto;
-		gap: 16px;
-	}
-
-	.masonry-item {
-		break-inside: avoid;
-	}
-
-	/* Alineación de texto y márgenes */
-	h2,
-	h3 {
-		text-align: left;
-		margin-bottom: 16px;
-	}
-
-	/* Estilos para el contenedor de "Artículos" y el filtro */
-	.article-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 2rem;
 		width: 100%;
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: 0 1rem;
 	}
 
-	/* Alineación para el selector de categoría */
+	.grid-item {
+		display: flex;
+		justify-content: center;
+	}
+
+	/* Remove the old masonry styles and keep other existing styles */
+	.article-header {
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: 0 1rem;
+		margin-bottom: 2rem;
+	}
+
 	.category-select {
 		display: flex;
 		align-items: center;
+		gap: 1rem;
+	}
+
+	/* Add these new styles for the progress bar */
+	.progress-container {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 3px;
+		z-index: 1000;
+		background-color: #f3f4f6;
+	}
+
+	.progress-bar {
+		height: 100%;
+		background-color: #3b82f6;
+		animation: loading 1s infinite linear;
+		transform-origin: 0%;
+	}
+
+	@keyframes loading {
+		0% {
+			width: 0%;
+		}
+		50% {
+			width: 50%;
+		}
+		100% {
+			width: 100%;
+		}
+	}
+
+	/* If needed, you can also add these styles */
+	:global(.embla__slide) {
+		flex: 0 0 100% !important; /* Forces full width slides */
+	}
+
+	.carousel-arrow {
+		background: rgba(0, 0, 0, 0.5);
+		border-radius: 50%;
+		padding: 0.75rem;
+		color: white;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: none;
+		z-index: 20;
+		pointer-events: auto;
+		width: 56px;
+		height: 56px;
+	}
+
+	.carousel-arrow:hover {
+		background: rgba(0, 0, 0, 0.7);
 	}
 </style>

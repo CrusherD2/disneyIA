@@ -53,6 +53,9 @@
 
 	let isPending = $state(false);
 
+	// Add backgroundImage to the state
+	let backgroundImage = $state(article?.backgroundImage ?? '');
+
 	// Función para manejar el envío del artículo
 	async function handleSubmitArticle() {
 		try {
@@ -77,7 +80,8 @@
 					summary: summary,
 					author: author,
 					content: content,
-					tags: tagsArray // Incluye los tags en el cuerpo de la solicitud
+					tags: tagsArray, // Incluye los tags en el cuerpo de la solicitud
+					backgroundImage // Add this to the request body
 				})
 			});
 
@@ -118,6 +122,15 @@
 			<Label for="tags">Tags</Label>
 			<!-- Campo para los tags, separados por comas -->
 			<Input type="text" id="tags" bind:value={tags} placeholder="Tag1, Tag2, Tag3" />
+		</div>
+		<div>
+			<Label for="backgroundImage">Background Image URL</Label>
+			<Input
+				type="text"
+				id="backgroundImage"
+				bind:value={backgroundImage}
+				placeholder="https://example.com/image.jpg"
+			/>
 		</div>
 	</section>
 	<section class="flex w-full flex-col gap-3">
