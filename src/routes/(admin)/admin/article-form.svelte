@@ -6,10 +6,8 @@
 	import { toast } from 'svelte-sonner';
 	import Editor from '@tinymce/tinymce-svelte';
 	import { Textarea } from '$lib/components/ui/textarea';
-	import * as Select from '$lib/components/ui/select';
+	import MultiSelect from 'svelte-multiselect';
 	import CreateTagDialog from './create-tag-dialog.svelte';
-	import { Check, SquarePen } from 'lucide-svelte/icons';
-	import { cn } from '$lib/utils';
 
 	const {
 		article,
@@ -50,11 +48,27 @@
 
 	let isUpdating = !!article;
 
+	console.log(tags)
+
 	// Agregar el estado reactivo para los tags
 	let title = $state(article?.title ?? '');
 	let summary = $state(article?.summary ?? '');
 	let author = $state(article?.author ?? '');
-	let articleTags: number[] = $state(article?.tags ?? []); // Manejo de tags como texto
+	let articleTags: {
+		value: number;
+		label: string;
+	}[] = $state(
+		(() => {
+			console.log(article?.tags);
+			if (!article?.tags) return [];
+			return article.tags.map((tag) => {
+				return {
+					value: tag,
+					label: tags.find((t) => t.id === tag)?.name ?? ''
+				};
+			});
+		})()
+	); // Manejo de tags como texto
 	let content = $state(article?.content ?? '<p>This is the initial content of the editor.</p>');
 
 	let isPending = $state(false);
@@ -117,6 +131,7 @@
 					summary: summary,
 					author: author,
 					content: content,
+					tags: articleTags.map((tag) => tag.value),
 					backgroundImage // Add this to the request body
 				})
 			});
@@ -140,7 +155,7 @@
 </script>
 
 <form class="flex flex-col gap-3 lg:flex-row" onsubmit={handleSubmitArticle}>
-	<section class="flex flex-col gap-3 lg:min-w-[500px]">
+	<section class="flex flex-col gap-3 lg:min-w-[500px] lg:max-w-[500px]">
 		<Button type="submit">{isPending ? 'Guardando...' : 'Guardar'}</Button>
 		<div>
 			<Label for="title">Titulo</Label>
@@ -154,32 +169,20 @@
 			<Label for="author">Autor</Label>
 			<Input type="text" id="author" bind:value={author} required />
 		</div>
-		<div>
+		<div class="w-full">
 			<Label for="tags">Tags</Label>
 			<!-- Campo para los tags, separados por comas -->
-			<div class="flex flex-row gap-3">
-				{#if tags.length > 0}
-					<select class="w-full overflow-y-hidden rounded-md border-[1px] flex" multiple>
-						{#each tags as tag}
-							{#if articleTags.includes(tag.id)}
-								<Check />
-							{/if}
-							<option
-								value={tag.id}
-								selected={articleTags.includes(tag.id)}
-								class={cn('',)}
-								onclick={() => {
-									if (articleTags.includes(tag.id)) {
-										articleTags = articleTags.filter((t) => t !== tag.id);
-									} else {
-										articleTags.push(tag.id);
-									}
-								}}
-							>
-								{tag.name}
-							</option>
-						{/each}
-					</select>
+			<div class="flex w-full gap-3">
+				{#if tags && tags.length > 0}
+					<MultiSelect
+						bind:selected={articleTags}
+						options={tags.map((tag) => {
+							return {
+								value: tag.id,
+								label: tag.name
+							};
+						})}
+					/>
 				{/if}
 				<CreateTagDialog {createTag} isOpen={isTagDialogOpen} isLoading={isTagDialogLoading} />
 			</div>

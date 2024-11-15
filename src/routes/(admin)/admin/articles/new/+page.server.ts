@@ -1,6 +1,5 @@
 import type { PageServerLoad } from './$types';
 
-
 export const load = (async ({ locals }) => {
 	async function fetchTags() {
 		const { data: tags, error } = await locals.supabase.from('tags').select('*');
@@ -9,7 +8,7 @@ export const load = (async ({ locals }) => {
 			console.error('Error fetching tags:', error.message);
 			return [];
 		}
-
+		console.log('tags:', tags);
 		return tags ?? [];
 	}
 
