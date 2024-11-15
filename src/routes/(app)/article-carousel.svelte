@@ -15,7 +15,7 @@
 
 	// Estado para el slide actual
 	let currentSlide = $state(0);
-	const autoPlayInterval = $state(5 * 1000); // 5 segundos entre slides
+	const autoPlayInterval = $state(6 * 1000); // 6 segundos entre slides
 
 	// Get the API from Carousel
 	let emblaApi: any = $state();

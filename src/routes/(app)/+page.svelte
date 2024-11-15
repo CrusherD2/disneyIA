@@ -15,12 +15,18 @@
 	const { data }: Props = $props();
 	const { articles, tags } = data;
 
-	const formattedTags = tags.map((tag) => {
-		return {
-			label: tag.name,
-			value: tag.id
-		};
-	});
+	// Sort tags in reverse alphabetical order (Z to A)
+	const formattedTags = tags
+		.sort((a, b) => b.name.localeCompare(a.name))
+		.map((tag) => {
+			return {
+				label: tag.name,
+				value: tag.id
+			};
+		});
+
+	// Sort tags for the buttons display as well (Z to A)
+	const sortedTags = tags.sort((a, b) => b.name.localeCompare(a.name));
 
 	// Estado reactivo para la categoría seleccionada
 	let selectedTag: number | null = $state(null);
@@ -47,72 +53,73 @@
 	});
 </script>
 
-<!-- Add progress bar at the top of the page -->
+<!-- Progress bar - Principle 8: Communicate Effectively -->
 {#if $navigating}
-	<div class="progress-container">
-		<div class="progress-bar"></div>
+	<div class="fixed left-0 top-0 z-50 h-1 w-full bg-gray-100">
+		<div class="animate-loading h-full bg-primary"></div>
 	</div>
 {/if}
 
-<main class="container mx-auto max-w-7xl px-4 py-8">
-	<!-- Encabezado principal y descripción -->
-	<div class="mb-12 text-center">
-		<h1 class="mb-3 text-4xl font-bold">Repositorio del uso de IA por Disney</h1>
-		<p class="text-sm text-gray-500">Implicaciones Éticas</p>
+<main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+	<!-- Header - Principle 1: Don't Make Users Think & Principle 7: Use White Space -->
+	<div class="mb-12 space-y-4 text-center">
+		<h1 class="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+			Repositorio del uso de IA por Disney
+		</h1>
+		<p class="text-base text-gray-600 dark:text-gray-400">
+			Explorando el impacto y las implicaciones éticas de la inteligencia artificial en la industria
+			del entretenimiento
+		</p>
 	</div>
 
-	<!-- Encabezado de artículo destacado -->
-	<div class="mb-6">
-		<h2 class="text-2xl font-bold">Artículo Destacado</h2>
-	</div>
+	<!-- Featured Articles - Principle 4: Strive for Feature Exposure -->
+	<section class="mb-12">
+		<h2 class="mb-6 text-2xl font-semibold">Artículos Destacados</h2>
+		<ArticleCarousel {carouselArticles} {tags} />
+	</section>
 
-	<!-- Carousel section with proper spacing -->
-	<ArticleCarousel tags={formattedTags} {carouselArticles} />
+	<!-- Category Filter - Principle 2: Don't Squander Users' Patience -->
+	<section class="mb-8">
+		<div class="flex flex-col gap-6">
+			<h2 class="text-xl font-semibold sm:text-2xl">Explorar por Categoría</h2>
 
-	<!-- Contenedor para los filtros y el header de artículos -->
-	<div class="mb-8 flex flex-col gap-4 px-4 sm:px-6 lg:px-8">
-		<!-- Header y filtros -->
-		<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-			<!-- Header de Artículos -->
-			{#if filteredArticles.length > 0}
-				<h3 class="text-xl font-semibold sm:text-2xl lg:text-3xl">Artículos</h3>
-			{:else}
-				<p class="text-lg text-gray-500 sm:text-xl">No se encontraron artículos.</p>
-			{/if}
-
-			<!-- Selector de categorías -->
-			<div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-				<label for="category" class="text-lg font-medium sm:text-xl">Filtrar por categoría:</label>
-				<select
-					id="category"
-					bind:value={selectedTag}
-					class="w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm
-						   focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500
-						   dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200
-						   sm:w-auto sm:min-w-[200px]"
+			<div class="flex flex-wrap gap-3">
+				<button
+					class="rounded-full px-5 py-2.5 text-sm font-medium shadow-sm transition-all duration-200
+						   {!selectedTag
+						? 'bg-blue-200 text-black dark:bg-blue-600 dark:text-white'
+						: 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'}"
+					on:click={() => (selectedTag = null)}
 				>
-					<option value={null} selected>Todas</option>
-					{#each tags as tag}
-						<option value={tag.id} class="capitalize">{tag.name}</option>
-					{/each}
-				</select>
+					Todas
+				</button>
+				{#each sortedTags as tag}
+					<button
+						class="rounded-full px-5 py-2.5 text-sm font-medium shadow-sm transition-all duration-200
+							   {selectedTag === tag.id
+							? 'bg-blue-200 text-black dark:bg-blue-600 dark:text-white'
+							: 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'}"
+						on:click={() => (selectedTag = tag.id)}
+					>
+						{tag.name}
+					</button>
+				{/each}
 			</div>
 		</div>
-	</div>
+	</section>
 
-	<!-- Artículos filtrados -->
-	<div
-		class="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 sm:gap-6 sm:px-6 lg:grid-cols-3 lg:gap-8 lg:px-8 xl:grid-cols-4"
-	>
+	<!-- Articles Grid - Principle 6: Strive for Simplicity -->
+	<section class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 		{#each filteredArticles as article}
-			<div
-				class="flex h-full w-full transform rounded-lg border border-gray-200 p-0 shadow-sm
-						transition duration-300 hover:scale-[1.02] hover:shadow-md dark:border-gray-700"
-			>
-				<ArticleCard {article} tags={formattedTags} class="w-full" />
+			<div class="transform transition-transform duration-200 hover:scale-[1.02]">
+				<ArticleCard {article} tags={formattedTags} />
 			</div>
+		{:else}
+			<p class="col-span-full text-center text-gray-500">
+				No se encontraron artículos para esta categoría.
+			</p>
 		{/each}
-	</div>
+	</section>
 </main>
 
 <style>

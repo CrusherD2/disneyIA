@@ -63,8 +63,13 @@
 					</Card.Header>
 
 					<Card.Content>
-						<p class="text-sm text-gray-300">Author: {article.author}</p>
-						<p class="text-sm text-gray-300">{new Date(article.created_at).toLocaleString()}</p>
+						<p class="text-sm">
+							<span class="text-gray-500 dark:text-gray-300">Author: </span>
+							<span class="text-gray-700 dark:text-gray-300">{article.author}</span>
+						</p>
+						<p class="text-sm text-gray-700 dark:text-gray-300">
+							{new Date(article.created_at).toLocaleString()}
+						</p>
 					</Card.Content>
 				</div>
 			{/if}
