@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Importaciones de componentes y tipos necesarios
 	import type { PageData } from './$types';
+	import { fly } from 'svelte/transition';
 
 	// Importación de componentes UI básicos
 	import { Label } from '$lib/components/ui/label';
@@ -48,7 +49,11 @@
 </script>
 
 <!-- Contenedor principal del artículo -->
-<section class="container max-w-[1000px] text-black dark:text-white">
+<section
+	class="container max-w-[1000px] text-black dark:text-white"
+	in:fly={{ y: 50, duration: 300, delay: 300 }}
+	out:fly={{ y: 50, duration: 300 }}
+>
 	{#if article}
 		<!-- Cabecera del artículo: título, resumen, fecha y autor -->
 		<div

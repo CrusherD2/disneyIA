@@ -48,7 +48,7 @@
 
 	let isUpdating = !!article;
 
-	console.log(tags)
+	console.log(tags);
 
 	// Agregar el estado reactivo para los tags
 	let title = $state(article?.title ?? '');

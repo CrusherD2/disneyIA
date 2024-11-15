@@ -1,163 +1,61 @@
 <script lang="ts">
-	import * as Card from '$lib/components/ui/card';
 	import type { Article } from '$lib/types';
+	import { goto } from '$app/navigation';
 
-	type Props = {
-		article: Article;
-		isCarousel?: boolean;
-		tags: {
-			label: string;
-			value: number;
-		}[];
-	};
+	export let article: Article;
+	export let tags: Array<{ id: number; name: string }>;
 
-	let { article, isCarousel = false, tags }: Props = $props();
+	function handleClick() {
+		goto(`/articles/${article.id}`);
+	}
+
+	function truncate(text: string, length = 100) {
+		return text.length > length ? text.substring(0, length) + '...' : text;
+	}
 </script>
 
-{#if article}
-	<a href="/articles/{article.id}" class="h-full w-full">
-		<Card.Root class="h-full overflow-hidden">
-			{#if isCarousel}
-				<!-- Carousel Style: Text overlaid on image -->
-				<div
-					class="carousel-style rounded-md"
-					style="background-image: url('{article.backgroundImage}')"
-				>
-					<div class="overlay">
-						<Card.Header>
-							<Card.Title>{article.title}</Card.Title>
-						</Card.Header>
+<div
+	role="button"
+	tabindex="0"
+	on:click={handleClick}
+	on:keydown={(e) => e.key === 'Enter' && handleClick()}
+	class="group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-xl bg-gradient-to-br from-white to-gray-50 transition-all duration-200 hover:scale-[1.02] hover:from-blue-50 hover:to-indigo-50 hover:shadow-xl dark:from-gray-800/90 dark:to-gray-900/90 dark:hover:from-gray-800 dark:hover:to-gray-700"
+>
+	<div class="relative aspect-video w-full overflow-hidden">
+		<img
+			src={article.backgroundImage || '/placeholder.jpg'}
+			alt={article.title}
+			class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
+		/>
+		<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+	</div>
 
-						<Card.Content>
-							<p class="truncate">
-								{article.summary}
-							</p>
-						</Card.Content>
-
-						<Card.Footer class="flex flex-col items-start">
-							<p class="text-sm text-gray-300">Author: {article.author}</p>
-						</Card.Footer>
-					</div>
-				</div>
-			{:else}
-				<!-- Regular article style with separated image and text -->
-				<div class="content-section w-full">
-					{#if article.backgroundImage}
-						<div
-							class="image-section -mx-2 -mt-2"
-							style="background-image: url('{article.backgroundImage}');"
-						></div>
-					{/if}
-
-					<Card.Header>
-						{#if article.tags && article.tags.length > 0}
-							<div class="tags-container">
-								{#each article.tags as tag}
-									<span class="tag">
-										{tags.find((t) => t.value === tag)?.label || 'Unknown'}
-									</span>
-								{/each}
-							</div>
-						{/if}
-						<Card.Title>{article.title}</Card.Title>
-					</Card.Header>
-
-					<Card.Content>
-						<p class="text-sm">
-							<span class="text-gray-500 dark:text-gray-300">Author: </span>
-							<span class="text-gray-700 dark:text-gray-300">{article.author}</span>
-						</p>
-						<p class="text-sm text-gray-700 dark:text-gray-300">
-							{new Date(article.created_at).toLocaleString()}
-						</p>
-					</Card.Content>
-				</div>
-			{/if}
-		</Card.Root>
-	</a>
-{/if}
+	<div class="flex flex-1 flex-col p-6">
+		<h3 class="mb-3 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+			{article.title}
+		</h3>
+		<p class="line-clamp mb-4 flex-1 text-gray-600 dark:text-gray-300">
+			{truncate(article.summary)}
+		</p>
+		<div class="mt-auto flex items-center justify-between text-sm">
+			<span class="text-gray-500 dark:text-gray-400"
+				>{new Date(article.created_at).toLocaleDateString()}</span
+			>
+			<span
+				class="font-medium text-blue-600 transition-colors group-hover:text-blue-500 dark:text-blue-400 dark:group-hover:text-blue-300"
+			>
+				Leer más →
+			</span>
+		</div>
+	</div>
+</div>
 
 <style>
-	/* Regular article styles */
-	.image-section {
-		width: 100%;
-		height: auto;
-		min-height: 180px;
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		margin: 0;
-		border-radius: 0.5rem;
-		aspect-ratio: 16 / 9;
-		background-color: theme('colors.zinc.100');
-	}
-
-	.content-section {
-		background: theme('colors.white');
-		color: theme('colors.zinc.900');
-		width: 100%;
-		flex-grow: 1;
-		padding: 0;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-	}
-
-	:global(.content-section :is(.card-header, .card-content)) {
-		padding: 0.25rem 0.75rem;
-	}
-
-	:global(.dark) .content-section {
-		background: rgb(1, 4, 12);
-		color: theme('colors.white');
-	}
-
-	/* Carousel article styles */
-	.carousel-style {
-		position: relative;
-		width: 100%;
-		height: 400px;
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		display: flex;
-		align-items: flex-end;
-		object-fit: cover;
-	}
-
-	.overlay {
-		width: 100%;
-		padding: 1rem;
-		padding-bottom: 0.5rem;
-		color: white;
-		background: linear-gradient(transparent, rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0.9));
-	}
-
-	:global(.card) {
-		height: 100%;
-	}
-
-	.tags-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-		padding: 0.25rem 0;
-		margin: 0 0 0.25rem 0;
-		justify-content: flex-start;
-	}
-
-	.tag {
-		background-color: theme('colors.zinc.100');
-		color: theme('colors.blue.600');
-		font-size: 0.875rem;
-		padding: 0.25rem 0.75rem;
-		border-radius: 0.25rem;
-		display: inline-block;
-		text-transform: capitalize;
-	}
-
-	:global(.dark) .tag {
-		background-color: theme('colors.zinc.800');
-		color: theme('colors.blue.400');
+	.line-clamp {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		line-clamp: 2;
+		overflow: hidden;
 	}
 </style>

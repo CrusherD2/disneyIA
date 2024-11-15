@@ -8,6 +8,7 @@
 	import Logo from '$lib/components/logo.svelte';
 	import UserDropdown from './user-dropdown.svelte';
 	import ThemeSwitcher from '$lib/components/theme-switcher.svelte';
+	import SearchBar from '$lib/components/SearchBar.svelte';
 
 	// Obtiene los datos de la página, como las propiedades de usuario y sesión
 	const { children, data }: { children: Snippet; data: LayoutData } = $props();
@@ -24,25 +25,44 @@
 </script>
 
 <header
-	class="fixed top-0 z-50 w-full border-b border-gray-300 bg-gray-200 dark:border-gray-700 dark:bg-gray-900"
+	class="fixed top-0 z-50 w-full border-b border-gray-200/20 bg-white/75 shadow-sm backdrop-blur-lg dark:border-gray-800/30 dark:bg-gray-950/75"
 >
-	<nav class="flex items-center justify-between p-3">
-		<!-- Contenedor del logo con ajuste de altura y alineación centrada -->
-		<a href="/" class="flex h-[40px] items-center">
-			<Logo width={120} height={30} />
+	<nav class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+		<!-- Logo container -->
+		<a
+			href="/"
+			onclick={(e) => {
+				e.preventDefault();
+				if (window.location.pathname === '/') {
+					window.scrollTo({ top: 0, behavior: 'smooth' });
+				} else {
+					window.location.href = '/';
+				}
+			}}
+			class="flex items-center gap-2"
+		>
+			<Logo size={30} />
 		</a>
 
-		<!-- Espacio vacío en el medio -->
-		<div></div>
-
-		<!-- Parte de la derecha con navegación, Dropdown de usuario, el botón de login y el switch de tema -->
-		<div class="flex items-center gap-6">
-			<ul class="flex flex-row gap-6">
-				<li class="font-bold hover:underline">
-					<a href="/about">Acerca</a>
+		<!-- Navigation and controls -->
+		<div class="flex items-center gap-8">
+			<ul class="flex items-center gap-8">
+				<li>
+					<SearchBar {supabase} />
 				</li>
-				<li class="font-bold hover:underline">
-					<a href="/contact">Contacto</a>
+				<li class="flex items-center">
+					<a
+						href="/about"
+						class="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+						>Acerca</a
+					>
+				</li>
+				<li class="flex items-center">
+					<a
+						href="/contact"
+						class="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+						>Contacto</a
+					>
 				</li>
 			</ul>
 			{#if session && user && user.email}
@@ -53,9 +73,6 @@
 			<ThemeSwitcher />
 		</div>
 	</nav>
-
-	<!-- Línea horizontal debajo del header -->
-	<hr class="border-gray-300 dark:border-gray-700" />
 </header>
 
 <main class="mb-32 mt-[73px]">
@@ -63,9 +80,15 @@
 	{@render children()}
 </main>
 
-<footer class="fixed bottom-0 w-full bg-gray-200 py-3 dark:bg-gray-900">
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<p class="text-center text-xs text-gray-500">© 2024 Disney AI Usage Archive</p>
-		<!-- Add social links or additional footer content -->
+<footer
+	class="fixed bottom-0 w-full border-t border-gray-100/10 bg-white/80 backdrop-blur-md dark:border-gray-800/50 dark:bg-gray-950/80"
+>
+	<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<p class="text-center text-xs text-gray-500 dark:text-gray-400">
+			© 2024 Disney AI Usage Archive
+		</p>
+		<div
+			class="fixed bottom-4 right-4 h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"
+		></div>
 	</div>
 </footer>
