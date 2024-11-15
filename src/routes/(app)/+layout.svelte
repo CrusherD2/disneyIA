@@ -19,11 +19,13 @@
 	async function handleLogout() {
 		const { error } = await supabase.auth.signOut(); // Cierra la sesión usando Supabase
 		if (error) console.error('Sign out error', error.message); // Muestra errores si ocurren
-		window.location.reload(); // Recarga la página después del cierre de sesión
+		window.location.reload(); // Recarga la página después del cierre de sesin
 	}
 </script>
 
-<header class="border-b border-gray-300 bg-gray-200 dark:border-gray-700 dark:bg-gray-900">
+<header
+	class="fixed top-0 z-50 w-full border-b border-gray-300 bg-gray-200 dark:border-gray-700 dark:bg-gray-900"
+>
 	<nav class="flex items-center justify-between p-3">
 		<!-- Contenedor del logo con ajuste de altura y alineación centrada -->
 		<a href="/" class="flex h-[40px] items-center">
@@ -56,12 +58,14 @@
 	<hr class="border-gray-300 dark:border-gray-700" />
 </header>
 
-<main class="mb-32">
+<main class="mb-32 mt-[73px]">
 	<!-- Renderiza el contenido principal de la página -->
 	{@render children()}
 </main>
 
-<footer class="bg-gray-200 dark:bg-gray-900">
-	<!-- Pie de página con el texto del copyright -->
-	<p class="text-center text-sm text-gray-500">© 2024 Disney AI Usage Archive</p>
+<footer class="fixed bottom-0 w-full bg-gray-200 py-3 dark:bg-gray-900">
+	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<p class="text-center text-xs text-gray-500">© 2024 Disney AI Usage Archive</p>
+		<!-- Add social links or additional footer content -->
+	</div>
 </footer>

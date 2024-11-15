@@ -41,7 +41,7 @@
 	}
 </script>
 
-<section class="container max-w-[767px] text-black dark:text-white">
+<section class="container max-w-[1000px] text-black dark:text-white">
 	{#if article}
 		<div
 			class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3 dark:border-b-white"
@@ -56,53 +56,56 @@
 		<div>
 			{@html article.content}
 		</div>
-		<div class="mt-3 flex flex-col gap-3">
-			<h2 class="text-2xl">Comments</h2>
+		<div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
+			<h2 class="mb-6 text-2xl font-semibold">Comentarios</h2>
 			<form class="flex flex-col justify-center gap-3" method="POST" action="?/comment">
 				<div>
-					<Label for="name">Name</Label>
+					<Label for="name">Nombre</Label>
 					<Input type="text" id="name" name="name" required />
 				</div>
 				<div>
-					<Label for="content">Comment</Label>
+					<Label for="content">Comentario</Label>
 					<Textarea id="content" name="content" required />
 				</div>
 				<Button type="submit">Submit</Button>
 			</form>
 			{#if comments}
 				{#each comments as comment}
-					<div>
+					<div class="my-4">
 						<div
-							class="mb-3 flex flex-col gap-3 border border-x-0 border-t-0 border-b-black pb-3 dark:border-b-white"
+							class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900"
 						>
-							<div
-								class="group relative flex flex-col gap-3 rounded border border-gray-300 p-2 dark:border-gray-700"
-							>
-								<div>
-									<span class="text-gray-700 dark:text-gray-300">{comment.name}</span>
-									<span class="text-gray-500 dark:text-gray-400"
-										>at {new Date(comment.created_at).toLocaleString()}</span
-									>
-								</div>
-								<hr />
-								<p class="text-gray-600 dark:text-gray-300">{comment.content}</p>
-								{#if user}
-									<div class="absolute right-2 top-2 hidden gap-2 group-hover:flex">
-										<EditCommentDialog {comment} updateContent={handleUpdateComment} />
-										<DeleteCommentDialog {comment} deleteComment={handleDeleteComment} />
+							<div class="group relative">
+								<div
+									class="flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700"
+								>
+									<div>
+										<span class="font-bold text-gray-800 dark:text-gray-200">{comment.name}</span>
+										<span class="ml-2 text-sm text-gray-500 dark:text-gray-400">
+											at {new Date(comment.created_at).toLocaleString()}
+										</span>
 									</div>
-								{/if}
+									{#if user}
+										<div class="hidden gap-2 group-hover:flex">
+											<EditCommentDialog {comment} updateContent={handleUpdateComment} />
+											<DeleteCommentDialog {comment} deleteComment={handleDeleteComment} />
+										</div>
+									{/if}
+								</div>
+								<div class="mt-3">
+									<p class="text-gray-600 dark:text-gray-300">{comment.content}</p>
+								</div>
 							</div>
 						</div>
 					</div>
 				{:else}
-					<p>No comments yet</p>
+					<p>No hay comentarios todavía</p>
 				{/each}
 			{:else}
-				<p>Be the first to comment</p>
+				<p>Sé el primero en comentar</p>
 			{/if}
 		</div>
 	{:else}
-		<h1>Article not found</h1>
+		<h1>Artículo no encontrado</h1>
 	{/if}
 </section>

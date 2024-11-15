@@ -15,8 +15,8 @@
 </script>
 
 {#if article}
-	<a href="/articles/{article.id}">
-		<Card.Root>
+	<a href="/articles/{article.id}" class="h-full w-full">
+		<Card.Root class="h-full overflow-hidden">
 			{#if isCarousel}
 				<!-- Carousel Style: Text overlaid on image -->
 				<div
@@ -41,10 +41,10 @@
 				</div>
 			{:else}
 				<!-- Regular article style with separated image and text -->
-				<div class="content-section min-h-96 min-w-96">
+				<div class="content-section w-full">
 					{#if article.backgroundImage}
 						<div
-							class="image-section"
+							class="image-section -mx-2 -mt-2"
 							style="background-image: url('{article.backgroundImage}');"
 						></div>
 					{/if}
@@ -75,39 +75,35 @@
 <style>
 	/* Regular article styles */
 	.image-section {
-		width: calc(100% - 1rem);
-		height: 180px;
+		width: 100%;
+		height: auto;
+		min-height: 180px;
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
-		margin: 0.5rem;
-		margin-top: 1rem;
-		margin-bottom: 0.25rem;
+		margin: 0;
 		border-radius: 0.5rem;
-		object-fit: cover;
 		aspect-ratio: 16 / 9;
 		background-color: theme('colors.zinc.100');
 	}
 
 	.content-section {
-		background-color: theme('colors.white');
-		color: theme('colors.zinc.950');
+		background: theme('colors.white');
+		color: theme('colors.zinc.900');
+		width: 100%;
 		flex-grow: 1;
-		padding: 0.5rem;
-		min-height: 450px;
-		max-height: fit-content;
+		padding: 0;
+		height: 100%;
 		display: flex;
 		flex-direction: column;
-		min-width: 200px;
-		max-width: 340px;
 	}
 
 	:global(.content-section :is(.card-header, .card-content)) {
-		padding: 0 0.5rem;
+		padding: 0.25rem 0.75rem;
 	}
 
 	:global(.dark) .content-section {
-		background-color: theme('colors.zinc.950');
+		background: rgb(1, 4, 12);
 		color: theme('colors.white');
 	}
 
@@ -140,8 +136,8 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
-		padding: 0.5rem 0;
-		margin: 0 0 0.5rem 0;
+		padding: 0.25rem 0;
+		margin: 0 0 0.25rem 0;
 		justify-content: flex-start;
 	}
 
