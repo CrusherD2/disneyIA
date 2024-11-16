@@ -37,7 +37,7 @@
 </script>
 
 <div
-	class="relative h-[600px] w-full overflow-hidden rounded-2xl"
+	class="relative h-[500px] w-full overflow-hidden rounded-2xl"
 	on:mouseenter={() => (isPaused = true)}
 	on:mouseleave={() => (isPaused = false)}
 	role="region"
@@ -51,14 +51,17 @@
 		>
 			<!-- Content Container -->
 			<div class="relative flex h-full flex-col">
-				<!-- Text Section -->
-				<div class="relative z-10 flex flex-1 flex-col justify-center space-y-6 p-12 text-white">
+				<!-- Text Section - Mobile adjustments -->
+				<div
+					class="relative z-10 flex flex-1 flex-col justify-end space-y-3 p-4 pb-16 text-white
+					sm:justify-center sm:space-y-6 sm:p-12 sm:pb-12"
+				>
 					<!-- Tags -->
 					<div class="flex flex-wrap gap-2">
 						{#each article.tags as tagId}
 							{#if tags.find((t) => t.value === tagId)}
 								<span
-									class="rounded-full bg-blue-500/20 px-4 py-1 text-sm font-medium backdrop-blur-sm"
+									class="rounded-full bg-blue-500/20 px-3 py-0.5 text-xs font-medium backdrop-blur-sm"
 								>
 									{tags.find((t) => t.value === tagId)?.label}
 								</span>
@@ -67,11 +70,11 @@
 					</div>
 
 					<!-- Title and Summary -->
-					<div class="max-w-3xl space-y-4">
-						<h2 class="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
+					<div class="max-w-3xl space-y-2">
+						<h2 class="text-xl font-bold leading-tight tracking-tight sm:text-4xl">
 							{article.title}
 						</h2>
-						<p class="text-lg text-gray-100/90">
+						<p class="line-clamp-2 text-sm text-gray-100/90 sm:line-clamp-none sm:text-base">
 							{article.summary}
 						</p>
 					</div>
@@ -79,12 +82,12 @@
 					<!-- CTA Button -->
 					<a
 						href="/articles/{article.id}"
-						class="inline-flex w-fit items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/25"
+						class="inline-flex w-fit items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-blue-700 hover:shadow-lg sm:gap-3 sm:px-6 sm:py-3 sm:text-base"
 					>
 						Leer artículo
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							class="h-5 w-5"
+							class="h-4 w-4 sm:h-5 sm:w-5"
 							viewBox="0 0 20 20"
 							fill="currentColor"
 						>
@@ -97,9 +100,9 @@
 					</a>
 				</div>
 
-				<!-- Gradient Separator -->
+				<!-- Enhanced gradient overlay -->
 				<div
-					class="absolute inset-0 z-[1] bg-gradient-to-b from-black/80 via-black/50 to-transparent"
+					class="absolute inset-0 z-[1] bg-gradient-to-t from-black/90 via-black/50 to-transparent"
 				></div>
 
 				<!-- Image -->
@@ -114,51 +117,115 @@
 		</div>
 	{/each}
 
-	<!-- Navigation Buttons -->
-	<div class="absolute bottom-8 right-8 z-20 flex gap-2">
-		<button
-			on:click={() => updateIndex('prev')}
-			class="rounded-full bg-black/30 p-3 text-white backdrop-blur-sm transition-all hover:bg-black/50"
-			aria-label="Previous slide"
-		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-6 w-6"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke="currentColor"
+	<!-- Controls Container - Mobile version -->
+	<div
+		class="absolute bottom-0 left-0 right-0 z-20 flex items-center justify-between bg-black/20 px-4 py-2 backdrop-blur-sm sm:hidden"
+	>
+		<!-- Progress Indicators -->
+		<div class="flex gap-1.5">
+			{#each carouselArticles as _, i}
+				<button
+					on:click={() => (currentIndex = i)}
+					class={`h-1 rounded-full transition-all ${
+						currentIndex === i ? 'w-6 bg-white' : 'w-4 bg-white/30'
+					}`}
+					aria-label="Go to slide {i + 1}"
+				></button>
+			{/each}
+		</div>
+
+		<!-- Navigation Buttons -->
+		<div class="flex gap-2">
+			<button
+				on:click={() => updateIndex('prev')}
+				class="rounded-full bg-black/30 p-2 text-white transition-all hover:bg-black/50"
+				aria-label="Previous slide"
 			>
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-			</svg>
-		</button>
-		<button
-			on:click={() => updateIndex('next')}
-			class="rounded-full bg-black/30 p-3 text-white backdrop-blur-sm transition-all hover:bg-black/50"
-			aria-label="Next slide"
-		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-6 w-6"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke="currentColor"
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-4 w-4"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M15 19l-7-7 7-7"
+					/>
+				</svg>
+			</button>
+			<button
+				on:click={() => updateIndex('next')}
+				class="rounded-full bg-black/30 p-2 text-white transition-all hover:bg-black/50"
+				aria-label="Next slide"
 			>
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-			</svg>
-		</button>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-4 w-4"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+				</svg>
+			</button>
+		</div>
 	</div>
 
-	<!-- Progress Indicators -->
-	<div class="absolute bottom-8 left-8 z-20 flex gap-2">
-		{#each carouselArticles as _, i}
+	<!-- Desktop Controls - Original version -->
+	<div class="hidden sm:block">
+		<!-- Your original desktop controls here -->
+		<div class="absolute bottom-8 left-8 z-20 flex gap-2">
+			{#each carouselArticles as _, i}
+				<button
+					on:click={() => (currentIndex = i)}
+					class={`h-2 rounded-full transition-all ${
+						currentIndex === i ? 'w-8 bg-white' : 'w-6 bg-white/30'
+					}`}
+					aria-label="Go to slide {i + 1}"
+				></button>
+			{/each}
+		</div>
+
+		<div class="absolute bottom-8 right-8 z-20 flex gap-2">
 			<button
-				on:click={() => (currentIndex = i)}
-				class={`h-2 w-8 rounded-full transition-all ${
-					currentIndex === i ? 'bg-white' : 'bg-white/30'
-				}`}
-				aria-label="Go to slide {i + 1}"
-			></button>
-		{/each}
+				on:click={() => updateIndex('prev')}
+				class="rounded-full bg-black/50 p-3 text-white backdrop-blur-sm transition-all hover:bg-black/70"
+				aria-label="Previous slide"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-6 w-6"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M15 19l-7-7 7-7"
+					/>
+				</svg>
+			</button>
+			<button
+				on:click={() => updateIndex('next')}
+				class="rounded-full bg-black/50 p-3 text-white backdrop-blur-sm transition-all hover:bg-black/70"
+				aria-label="Next slide"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-6 w-6"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+				</svg>
+			</button>
+		</div>
 	</div>
 </div>
 

@@ -142,7 +142,7 @@
 			<!-- Left column: Main heading and description -->
 			<div class="flex flex-col justify-center space-y-6 sm:space-y-8">
 				<div class="space-y-4 sm:space-y-6">
-					<h1 class="text-3xl font-bold tracking-tight sm:text-4xl lg:text-6xl">
+					<h1 class="text-2xl font-bold tracking-tight sm:text-4xl lg:text-6xl">
 						Repositorio del uso de IA por Disney
 					</h1>
 					<p class="text-lg text-gray-600 dark:text-gray-300 sm:text-xl">
@@ -180,12 +180,14 @@
 					<div class="space-y-4 text-gray-600 dark:text-gray-300">
 						<p>
 							Este repositorio documenta y analiza cómo Disney implementa la inteligencia artificial
-							en sus diferentes divisiones, desde la producción de películas hasta la experiencia en
-							parques temáticos.
+							en sus diferentes producciones de contenido multimedia, desde películas y series hasta
+							animación y efectos visuales.
 						</p>
 						<p>
 							Nuestro objetivo es proporcionar una visión equilibrada que explore tanto las
-							innovaciones tecnológicas como las consideraciones éticas asociadas.
+							innovaciones tecnológicas como las consideraciones éticas asociadas, incluyendo
+							comparativas detalladas de los diferentes modelos de IA utilizados en sus
+							producciones.
 						</p>
 						<ul class="grid gap-2">
 							<li class="flex items-center gap-2">
@@ -218,7 +220,7 @@
 										d="M5 13l4 4L19 7"
 									/>
 								</svg>
-								Actualizaciones regulares
+								Comparativas de modelos de IA
 							</li>
 							<li class="flex items-center gap-2">
 								<svg
@@ -366,8 +368,16 @@
 
 	.articles-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 		gap: 1rem;
+		padding: 0 1rem;
+	}
+
+	@media (max-width: 640px) {
+		.articles-grid {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
 	}
 
 	.article-card {

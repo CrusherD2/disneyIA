@@ -4,6 +4,7 @@
 	import { navigating } from '$app/stores';
 	import { afterNavigate } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { slide } from 'svelte/transition';
 
 	// Importa componentes personalizados que se usan en el encabezado
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -32,7 +33,7 @@
 		console.log('Navigation state:', $navigating);
 	});
 
-	let isNavigating = false;
+	let isNavigating = $state(false);
 
 	$effect(() => {
 		isNavigating = !!$navigating;
@@ -47,56 +48,126 @@
 	afterNavigate(() => {
 		console.log('After navigate:', $navigating);
 	});
+
+	// Add state for mobile menu
+	let isMobileMenuOpen = $state(false);
 </script>
 
 <header
 	class="fixed top-0 z-50 w-full border-b border-gray-200/20 bg-white/75 shadow-sm backdrop-blur-lg dark:border-gray-800/30 dark:bg-gray-950/75"
 >
-	<nav class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-		<!-- Logo container -->
-		<a
-			href="/"
-			onclick={(e) => {
-				e.preventDefault();
-				if (window.location.pathname === '/') {
-					window.scrollTo({ top: 0, behavior: 'smooth' });
-				} else {
-					window.location.href = '/';
-				}
-			}}
-			class="flex items-center gap-2"
-		>
-			<Logo size={30} />
-		</a>
+	<nav class="mx-auto px-4 py-3 sm:px-6 lg:px-8">
+		<!-- Main header row -->
+		<div class="flex items-center justify-between">
+			<!-- Left side: Logo only -->
+			<div class="flex items-center">
+				<a href="/" class="flex items-center gap-2">
+					<Logo class="h-8 w-8" />
+				</a>
+			</div>
 
-		<!-- Navigation and controls -->
-		<div class="flex items-center gap-8">
-			<ul class="flex items-center gap-8">
-				<li>
+			<!-- Right side: Search, nav links, theme, and menu -->
+			<div class="flex items-center gap-4">
+				<!-- Desktop Search -->
+				<div class="hidden sm:block">
 					<SearchBar {supabase} />
-				</li>
-				<li class="flex items-center">
-					<a
-						href="/about"
-						class="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-						>Acerca</a
-					>
-				</li>
-				<li class="flex items-center">
-					<a
-						href="/contact"
-						class="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-						>Contacto</a
-					>
-				</li>
-			</ul>
-			{#if session && user && user.email}
-				<UserDropdown email={user.email} {handleLogout} />
-			{:else}
-				<a href="/auth"> <Button>Iniciar Sesión</Button></a>
-			{/if}
-			<ThemeSwitcher />
+				</div>
+
+				<!-- Desktop Navigation -->
+				<ul class="hidden items-center gap-6 sm:flex">
+					<li>
+						<a
+							href="/about"
+							class="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+							>Acerca</a
+						>
+					</li>
+					<li>
+						<a
+							href="/contact"
+							class="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+							>Contacto</a
+						>
+					</li>
+				</ul>
+
+				<ThemeSwitcher />
+
+				<!-- Mobile menu button -->
+				<button
+					class="rounded-lg p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 sm:hidden"
+					on:click={() => (isMobileMenuOpen = !isMobileMenuOpen)}
+					aria-label="Toggle menu"
+				>
+					{#if !isMobileMenuOpen}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M4 6h16M4 12h16m-7 6h7"
+							/>
+						</svg>
+					{:else}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					{/if}
+				</button>
+			</div>
 		</div>
+
+		<!-- Mobile menu -->
+		{#if isMobileMenuOpen}
+			<div
+				class="absolute left-0 right-0 mt-3 bg-white px-4 py-3 shadow-lg dark:bg-gray-900 sm:hidden"
+				transition:slide={{ duration: 200 }}
+			>
+				<!-- Mobile Search -->
+				<div class="mb-4">
+					<SearchBar {supabase} />
+				</div>
+
+				<!-- Mobile Navigation -->
+				<ul class="space-y-4">
+					<li>
+						<a
+							href="/about"
+							class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+							on:click={() => (isMobileMenuOpen = false)}
+						>
+							Acerca
+						</a>
+					</li>
+					<li>
+						<a
+							href="/contact"
+							class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+							on:click={() => (isMobileMenuOpen = false)}
+						>
+							Contacto
+						</a>
+					</li>
+				</ul>
+			</div>
+		{/if}
 	</nav>
 </header>
 
@@ -125,3 +196,17 @@
 		></div>
 	{/if}
 </footer>
+
+<!-- Add some styles for the slide transition -->
+<style>
+	/* Ensure the mobile menu animates smoothly */
+	.slide-enter-active,
+	.slide-leave-active {
+		transition: transform 0.2s ease-out;
+	}
+
+	.slide-enter-from,
+	.slide-leave-to {
+		transform: translateY(-100%);
+	}
+</style>
