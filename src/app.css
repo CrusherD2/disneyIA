@@ -38,7 +38,7 @@
 
 	.dark {
 		--background: 222.2 84% 4.9%;
-		--foreground: 210 40% 98%;
+		--foreground: 0 0% 100%;
 
 		--muted: 217.2 32.6% 17.5%;
 		--muted-foreground: 215 20.2% 65.1%;
@@ -70,19 +70,28 @@
 
 @layer base {
 	* {
-		@apply border-border;
+		/* Remove the border-border apply */
+		/* @apply border-border; */
 	}
 
 	body {
 		@apply bg-background text-foreground;
 	}
+
+	/* Single transition definition */
+	* {
+		transition: background-color 500ms ease-in-out,
+			color 500ms ease-in-out,
+			border-color 500ms ease-in-out,
+			outline-color 500ms ease-in-out,
+			fill 500ms ease-in-out,
+			stroke 500ms ease-in-out;
+	}
 }
 
-/* Add these CSS rules */
 html {
 	scrollbar-gutter: stable;
 	overflow-y: scroll;
-	/* Forces scrollbar to always show */
 }
 
 body {

@@ -106,34 +106,34 @@
 		<!-- Noise texture overlay -->
 		<div class="absolute inset-0 opacity-[0.15] [background-image:url('/noise.png')]"></div>
 
-		<!-- Main gradient background -->
+		<!-- Main gradient background - Enhanced light mode -->
 		<div
-			class="absolute inset-0 bg-gradient-to-br from-blue-500/40 via-purple-500/30 to-pink-500/40
+			class="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-purple-500/25 to-pink-500/30
 			dark:from-blue-900/50 dark:via-purple-800/40 dark:to-pink-900/50"
 		></div>
 
-		<!-- Accent gradients -->
+		<!-- Accent gradients - Enhanced light mode -->
 		<div
-			class="absolute inset-0 bg-gradient-to-tr from-transparent via-yellow-200/10 to-orange-300/20
+			class="absolute inset-0 bg-gradient-to-tr from-transparent via-yellow-300/20 to-orange-400/30
 			dark:via-yellow-700/10 dark:to-orange-800/20"
 		></div>
 
-		<!-- Center spotlight -->
+		<!-- Center spotlight - Enhanced light mode -->
 		<div
 			class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))]
-			from-white/20 via-transparent to-transparent dark:from-white/10"
+			from-white/30 via-transparent to-transparent dark:from-white/10"
 		></div>
 
-		<!-- Top-right corner accent -->
+		<!-- Top-right corner accent - Enhanced light mode -->
 		<div
 			class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))]
-			from-teal-300/20 via-transparent to-transparent dark:from-teal-700/20"
+			from-teal-400/30 via-transparent to-transparent dark:from-teal-700/20"
 		></div>
 
-		<!-- Bottom-left corner accent -->
+		<!-- Bottom-left corner accent - Enhanced light mode -->
 		<div
 			class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))]
-			from-indigo-300/20 via-transparent to-transparent dark:from-indigo-700/20"
+			from-indigo-400/30 via-transparent to-transparent dark:from-indigo-700/20"
 		></div>
 	</div>
 
@@ -247,7 +247,7 @@
 <!-- Contenedor principal que organiza todo el contenido -->
 <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 	<!-- Sección de artículos destacados con carrusel -->
-	<section class="mb-12 sm:mb-24">
+	<section id="featured" class="mb-12 sm:mb-24">
 		<div class="mb-4 text-center sm:mb-6">
 			<h2 class="text-2xl font-bold tracking-tight sm:text-3xl sm:text-4xl">
 				Artículos Destacados
@@ -259,12 +259,12 @@
 		<div
 			class="relative overflow-hidden rounded-2xl bg-gradient-to-b from-slate-50 to-white p-1 shadow-lg dark:from-slate-900 dark:to-slate-800"
 		>
-			<ArticleCarousel {carouselArticles} {tags} />
+			<ArticleCarousel {carouselArticles} tags={formattedTags} />
 		</div>
 	</section>
 
 	<!-- Sección de filtros por categoría -->
-	<section id="explore" class="mb-8 sm:mb-12">
+	<section id="explore" class="mb-8 scroll-mt-24 sm:mb-12">
 		<div class="mb-6 sm:mb-8">
 			<h2 class="text-xl font-bold tracking-tight sm:text-2xl">Explorar por Categoría</h2>
 			<p class="mt-2 text-sm text-gray-600 dark:text-gray-400 sm:text-base">
@@ -303,7 +303,7 @@
 
 	<!-- Cuadrícula responsive de artículos -->
 	<!-- Muestra un mensaje cuando no hay artículos en la categoría seleccionada -->
-	<section class="mb-12 sm:mb-16">
+	<section class="mb-24 sm:mb-32">
 		<div class="articles-grid">
 			{#each filteredArticles as article (article.id)}
 				<div

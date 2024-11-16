@@ -50,7 +50,7 @@
 
 <!-- Contenedor principal del artículo -->
 <section
-	class="container max-w-[1000px] text-black dark:text-white"
+	class="container mx-auto max-w-[1000px] text-black dark:text-white"
 	in:fly={{ y: 50, duration: 300, delay: 300 }}
 	out:fly={{ y: 50, duration: 300 }}
 >

@@ -2,8 +2,10 @@
 	import { createEventDispatcher } from 'svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { fade, slide } from 'svelte/transition';
-	import { goto } from '$app/navigation';
+	import { goto, beforeNavigate } from '$app/navigation';
 	import { Search } from 'lucide-svelte';
+	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 
 	export let supabase: any;
 
@@ -21,32 +23,36 @@
 		}
 
 		try {
+			console.log('Searching for:', searchQuery);
 			const { data, error } = await supabase
 				.from('articles')
-				.select('id, title, content')
+				.select('id, title, backgroundImage')
 				.ilike('title', `%${searchQuery}%`)
+				.order('created_at', { ascending: false })
 				.limit(5);
 
 			if (error) throw error;
 
+			console.log('Search results:', data);
 			searchResults = data || [];
-			showResults = true;
+			showResults = searchResults.length > 0;
 		} catch (error) {
 			console.error('Search error:', error);
 			searchResults = [];
+			showResults = false;
 		}
 	}
 
-	function handleResultClick(articleId: string) {
-		goto(`/articles/${articleId}`);
-		searchQuery = '';
+	async function handleResultClick(articleId: string) {
 		showResults = false;
-		isExpanded = false;
+		if (browser) {
+			window.location.href = `/articles/${articleId}`;
+		}
 	}
 
 	function handleClickOutside(event: MouseEvent) {
 		const target = event.target as HTMLElement;
-		if (target.closest('button') && !isExpanded) {
+		if (target.closest('a') || target.closest('button[data-nav]')) {
 			return;
 		}
 		if (!target.closest('.search-container')) {
@@ -61,6 +67,15 @@
 		event.stopPropagation();
 		isExpanded = true;
 	}
+
+	beforeNavigate(() => {
+		showResults = false;
+	});
+
+	onMount(() => {
+		searchResults = [];
+		showResults = false;
+	});
 </script>
 
 <svelte:window on:click={handleClickOutside} />
@@ -82,7 +97,12 @@
 					placeholder="Buscar artículos..."
 					bind:value={searchQuery}
 					on:input={handleSearch}
-					on:focus={() => searchQuery.length >= 2 && (showResults = true)}
+					on:focus={() => {
+						if (searchQuery.length >= 2) {
+							showResults = true;
+							handleSearch();
+						}
+					}}
 					class="w-[200px] md:w-[300px]"
 				/>
 				<button
@@ -107,31 +127,25 @@
 		{/if}
 	</div>
 
-	{#if showResults && searchResults.length > 0}
+	{#if showResults}
 		<div
 			class="absolute top-full z-50 mt-1 w-full rounded-md border bg-white p-2 shadow-lg dark:bg-gray-800"
 			transition:fade
 		>
-			{#each searchResults as result}
-				<button
-					class="w-full rounded-md p-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
-					on:click={() => handleResultClick(result.id)}
-				>
-					<div class="font-medium">{result.title}</div>
-					{#if result.content}
-						<div class="text-sm text-gray-500 dark:text-gray-400">
-							{result.content.slice(0, 100)}...
-						</div>
-					{/if}
-				</button>
-			{/each}
-		</div>
-	{:else if showResults && searchQuery.length >= 2}
-		<div
-			class="absolute top-full z-50 mt-1 w-full rounded-md border bg-white p-2 shadow-lg dark:bg-gray-800"
-			transition:fade
-		>
-			<p class="text-sm text-gray-500 dark:text-gray-400">No se encontraron resultados</p>
+			{#if searchResults.length > 0}
+				<div class="flex flex-col gap-1">
+					{#each searchResults as result}
+						<button
+							class="w-full rounded-md px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+							on:click={() => handleResultClick(result.id)}
+						>
+							<div class="font-medium">{result.title}</div>
+						</button>
+					{/each}
+				</div>
+			{:else}
+				<p class="text-sm text-gray-500 dark:text-gray-400">No se encontraron resultados</p>
+			{/if}
 		</div>
 	{/if}
 </div>
