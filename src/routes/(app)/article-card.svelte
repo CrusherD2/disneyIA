@@ -1,9 +1,13 @@
 <script lang="ts">
-	import type { Article } from '$lib/types';
+	import type { Article, Tag } from '$lib/types';
 	import { goto } from '$app/navigation';
 
 	export let article: Article;
-	export let tags: Array<{ id: number; name: string }>;
+	export let tags: Tag[];
+
+	const articleTags = (article.tags ?? [])
+		.map((tagId: number) => tags.find((t) => t.id === tagId))
+		.filter((tag): tag is Tag => tag !== undefined) as Tag[];
 
 	function handleClick() {
 		goto(`/articles/${article.id}`);
@@ -27,10 +31,20 @@
 			alt={article.title}
 			class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
 		/>
-		<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+		<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
 	</div>
 
 	<div class="flex flex-1 flex-col p-6">
+		<div class="-ml-2 mb-2 flex w-full flex-wrap items-start gap-2 text-left">
+			{#each articleTags as tag}
+				<span
+					class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-600
+					dark:bg-blue-900/30 dark:text-blue-400"
+				>
+					{tag.name}
+				</span>
+			{/each}
+		</div>
 		<h3 class="mb-3 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
 			{article.title}
 		</h3>

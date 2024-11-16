@@ -52,6 +52,7 @@
 		"clsx": "^2.1.1",
 		"eslint-plugin-simple-import-sort": "^12.1.1",
 		"quill": "2.0.2",
+		"supabase": "^1.219.2",
 		"svelte-headless-table": "^0.18.3",
 		"tailwind-merge": "^2.5.4",
 		"tailwind-variants": "^0.2.1"

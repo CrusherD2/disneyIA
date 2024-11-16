@@ -9,6 +9,9 @@
 	let intervalId: ReturnType<typeof setInterval>;
 	let isPaused = false;
 
+	const CAROUSEL_INTERVAL = 3000; // 3 seconds between slides
+	const TRANSITION_DURATION = 300; // 300ms for the slide animation
+
 	function updateIndex(direction: 'prev' | 'next') {
 		if (direction === 'next') {
 			currentIndex = (currentIndex + 1) % carouselArticles.length;
@@ -22,7 +25,7 @@
 			if (!isPaused) {
 				updateIndex('next');
 			}
-		}, 5000); // Changes slide every 5 seconds
+		}, CAROUSEL_INTERVAL); // Changes slide every 3 seconds
 	}
 
 	onMount(() => {
@@ -164,5 +167,9 @@
 	.transition-opacity {
 		transition-property: opacity;
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.carousel-slide {
+		transition: transform 300ms ease-in-out; /* Reduced from likely 500ms */
 	}
 </style>

@@ -72,7 +72,20 @@
 	* {
 		@apply border-border;
 	}
+
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+/* Add these CSS rules */
+html {
+	scrollbar-gutter: stable;
+	overflow-y: scroll;
+	/* Forces scrollbar to always show */
+}
+
+body {
+	width: 100vw;
+	overflow-x: hidden;
 }

@@ -23,7 +23,11 @@
 
 <ModeWatcher />
 <Toaster />
-{@render children?.()}
+<div
+	class="flex min-h-screen flex-col bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 via-slate-50 to-purple-50/70 dark:from-gray-900 dark:via-slate-900 dark:to-blue-900/50"
+>
+	{@render children()}
+</div>
 
 {#if $navigating}
 	{console.log('navigating:', $navigating)}
