@@ -7,64 +7,76 @@
 </script>
 
 <div class="min-h-screen bg-background">
-	<Menubar.Root class="border-b px-4 py-2">
-		<div class="flex items-center justify-between">
-			<div class="flex items-center gap-4">
-				<Menubar.Menu>
-					<Menubar.Trigger class="gap-2">
-						<FileText class="h-4 w-4" />
-						<span>Artículos</span>
-					</Menubar.Trigger>
-					<Menubar.Content>
-						<Menubar.Item>
-							<a href="/admin" class="flex items-center gap-2">
-								<FileText class="h-4 w-4" />
-								Ver Artículos
-							</a>
-						</Menubar.Item>
-						<Menubar.Item>
-							<a href="/admin/articles/new" class="flex items-center gap-2">
-								<Plus class="h-4 w-4" />
-								Nuevo Artículo
-							</a>
-						</Menubar.Item>
-					</Menubar.Content>
-				</Menubar.Menu>
+	<Menubar.Root class="border-b border-gray-800 bg-gray-900/80">
+		<div class="w-full border-x border-gray-800">
+			<nav class="flex h-14 items-center">
+				<div class="flex items-center gap-6 pl-2">
+					<Menubar.Menu>
+						<Menubar.Trigger
+							class="flex items-center gap-2 text-sm text-white/80 transition-colors hover:text-white"
+						>
+							<FileText class="h-4 w-4" />
+							<span>Artículos</span>
+						</Menubar.Trigger>
+						<Menubar.Content
+							class="mt-1 w-48 rounded-md border border-gray-800 bg-gray-900 py-1 shadow-lg"
+						>
+							<Menubar.Item>
+								<a
+									href="/admin"
+									class="flex w-full items-center gap-2 px-4 py-1.5 text-sm text-white/80 hover:text-white"
+								>
+									<FileText class="h-4 w-4" />
+									Ver Artículos
+								</a>
+							</Menubar.Item>
+							<Menubar.Item>
+								<a
+									href="/admin/articles/new"
+									class="flex w-full items-center gap-2 px-4 py-1.5 text-sm text-white/80 hover:text-white"
+								>
+									<Plus class="h-4 w-4" />
+									Nuevo Artículo
+								</a>
+							</Menubar.Item>
+						</Menubar.Content>
+					</Menubar.Menu>
 
-				<Menubar.Menu>
-					<Menubar.Trigger class="gap-2">
+					<a
+						href="/"
+						class="flex items-center gap-2 text-sm text-white/80 transition-colors hover:text-white"
+					>
 						<Home class="h-4 w-4" />
-						<span>Rutas</span>
-					</Menubar.Trigger>
-					<Menubar.Content>
-						<Menubar.Item>
-							<a href="/" class="flex items-center gap-2">
-								<Home class="h-4 w-4" />
-								Página de inicio
-							</a>
-						</Menubar.Item>
-					</Menubar.Content>
-				</Menubar.Menu>
-			</div>
+						<span>Página de inicio</span>
+					</a>
 
-			<Menubar.Menu>
-				<Menubar.Trigger class="gap-2">
-					<UserCircle class="h-4 w-4" />
-					<span>Perfil</span>
-				</Menubar.Trigger>
-				<Menubar.Content>
-					<Menubar.Item class="text-destructive focus:bg-destructive/10">
-						<a href="/auth/logout" class="flex items-center gap-2">
-							<LogOut class="h-4 w-4" />
-							Cerrar Sesión
-						</a>
-					</Menubar.Item>
-				</Menubar.Content>
-			</Menubar.Menu>
+					<Menubar.Menu>
+						<Menubar.Trigger
+							class="flex items-center gap-2 text-sm text-white/80 transition-colors hover:text-white"
+						>
+							<UserCircle class="h-4 w-4" />
+							<span>Perfil</span>
+						</Menubar.Trigger>
+						<Menubar.Content
+							class="mt-1 w-48 rounded-md border border-gray-800 bg-gray-900 py-1 shadow-lg"
+						>
+							<Menubar.Item>
+								<a
+									href="/auth/logout"
+									class="flex w-full items-center gap-2 px-4 py-1.5 text-sm text-red-400/80 hover:text-red-400"
+								>
+									<LogOut class="h-4 w-4" />
+									Cerrar Sesión
+								</a>
+							</Menubar.Item>
+						</Menubar.Content>
+					</Menubar.Menu>
+				</div>
+			</nav>
 		</div>
 	</Menubar.Root>
 
-	<main class="container py-8">
+	<main class="w-full border-x border-gray-800 py-8">
 		{@render children()}
 	</main>
 </div>

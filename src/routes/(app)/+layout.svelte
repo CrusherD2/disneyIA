@@ -54,7 +54,7 @@
 </script>
 
 <header
-	class="fixed top-0 z-50 w-full border-b border-gray-200/20 bg-white/75 shadow-sm backdrop-blur-lg dark:border-gray-800/30 dark:bg-gray-950/75"
+	class="fixed top-0 z-50 w-full border-b border-gray-200/20 bg-white/75 shadow-sm backdrop-blur-lg transition-[backdrop-filter,background-color,border-color] duration-200 dark:border-gray-800/30 dark:bg-gray-950/75"
 >
 	<nav class="mx-auto px-4 py-3 sm:px-6 lg:px-8">
 		<!-- Main header row -->
@@ -93,10 +93,14 @@
 
 				<ThemeSwitcher />
 
+				{#if user && user.email}
+					<UserDropdown email={user.email} {handleLogout} />
+				{/if}
+
 				<!-- Mobile menu button -->
 				<button
 					class="rounded-lg p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 sm:hidden"
-					on:click={() => (isMobileMenuOpen = !isMobileMenuOpen)}
+					onclick={() => (isMobileMenuOpen = !isMobileMenuOpen)}
 					aria-label="Toggle menu"
 				>
 					{#if !isMobileMenuOpen}
@@ -138,7 +142,6 @@
 		{#if isMobileMenuOpen}
 			<div
 				class="absolute left-0 right-0 mt-3 bg-white px-4 py-3 shadow-lg dark:bg-gray-900 sm:hidden"
-				transition:slide={{ duration: 200 }}
 			>
 				<!-- Mobile Search -->
 				<div class="mb-4">
@@ -151,7 +154,7 @@
 						<a
 							href="/about"
 							class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-							on:click={() => (isMobileMenuOpen = false)}
+							onclick={() => (isMobileMenuOpen = false)}
 						>
 							Acerca
 						</a>
@@ -160,7 +163,7 @@
 						<a
 							href="/contact"
 							class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-							on:click={() => (isMobileMenuOpen = false)}
+							onclick={() => (isMobileMenuOpen = false)}
 						>
 							Contacto
 						</a>
@@ -196,17 +199,3 @@
 		></div>
 	{/if}
 </footer>
-
-<!-- Add some styles for the slide transition -->
-<style>
-	/* Ensure the mobile menu animates smoothly */
-	.slide-enter-active,
-	.slide-leave-active {
-		transition: transform 0.2s ease-out;
-	}
-
-	.slide-enter-from,
-	.slide-leave-to {
-		transform: translateY(-100%);
-	}
-</style>

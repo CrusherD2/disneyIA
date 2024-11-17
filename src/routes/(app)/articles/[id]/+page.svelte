@@ -70,7 +70,7 @@
 					<!-- Categoría del artículo si existe -->
 					{#if article.category}
 						<div
-							class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm text-primary backdrop-blur-sm"
+							class="bg-primary/10 text-primary inline-flex items-center rounded-full px-3 py-1 text-sm backdrop-blur-sm"
 						>
 							{article.category}
 						</div>
@@ -240,7 +240,7 @@
 	</article>
 </div>
 
-<style lang="ts">
+<style lang="postcss">
 	:global(.video-container) {
 		position: relative;
 		width: calc(100% + 2rem);

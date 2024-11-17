@@ -156,43 +156,72 @@
 
 <form class="flex flex-col gap-3 lg:flex-row" onsubmit={handleSubmitArticle}>
 	<section class="flex flex-col gap-3 lg:min-w-[500px] lg:max-w-[500px]">
-		<Button type="submit">{isPending ? 'Guardando...' : 'Guardar'}</Button>
-		<div>
-			<Label for="title">Titulo</Label>
-			<Textarea id="title" bind:value={title} required />
+		<Button
+			type="submit"
+			class="bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-sm"
+		>
+			{isPending ? 'Guardando...' : 'Guardar'}
+		</Button>
+
+		<div class="space-y-2">
+			<Label class="text-sm font-medium" for="title">Título</Label>
+			<Textarea
+				id="title"
+				bind:value={title}
+				required
+				class="border-input placeholder:text-muted-foreground focus-visible:ring-ring min-h-[80px] resize-none rounded-md border bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+				placeholder="Ingresa el título del artículo..."
+			/>
 		</div>
-		<div>
-			<Label for="summary">Resumen</Label>
-			<Textarea id="summary" bind:value={summary} required />
+
+		<div class="space-y-2">
+			<Label class="text-sm font-medium" for="summary">Resumen</Label>
+			<Textarea
+				id="summary"
+				bind:value={summary}
+				required
+				class="border-input placeholder:text-muted-foreground focus-visible:ring-ring min-h-[120px] resize-none rounded-md border bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+				placeholder="Escribe un breve resumen del artículo..."
+			/>
 		</div>
-		<div>
-			<Label for="author">Autor</Label>
-			<Input type="text" id="author" bind:value={author} required />
+
+		<div class="space-y-2">
+			<Label class="text-sm font-medium" for="author">Autor</Label>
+			<Input
+				type="text"
+				id="author"
+				bind:value={author}
+				required
+				class="border-input placeholder:text-muted-foreground focus-visible:ring-ring rounded-md border bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+				placeholder="Nombre del autor"
+			/>
 		</div>
-		<div class="w-full">
-			<Label for="tags">Tags</Label>
-			<!-- Campo para los tags, separados por comas -->
+
+		<div class="w-full space-y-2">
+			<Label class="text-sm font-medium" for="tags">Tags</Label>
 			<div class="flex w-full gap-3">
 				{#if tags && tags.length > 0}
 					<MultiSelect
 						bind:selected={articleTags}
-						options={tags.map((tag) => {
-							return {
-								value: tag.id,
-								label: tag.name
-							};
-						})}
+						options={tags.map((tag) => ({
+							value: tag.id,
+							label: tag.name
+						}))}
+						class="border-input focus-visible:ring-ring w-full rounded-md border bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+						placeholder="Selecciona los tags..."
 					/>
 				{/if}
 				<CreateTagDialog {createTag} isOpen={isTagDialogOpen} isLoading={isTagDialogLoading} />
 			</div>
 		</div>
-		<div>
-			<Label for="backgroundImage">Background Image URL</Label>
+
+		<div class="space-y-2">
+			<Label class="text-sm font-medium" for="backgroundImage">Background Image URL</Label>
 			<Input
 				type="text"
 				id="backgroundImage"
 				bind:value={backgroundImage}
+				class="border-input placeholder:text-muted-foreground focus-visible:ring-ring rounded-md border bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
 				placeholder="https://example.com/image.jpg"
 			/>
 		</div>
