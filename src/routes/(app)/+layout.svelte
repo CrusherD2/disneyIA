@@ -61,7 +61,16 @@
 		<div class="flex items-center justify-between">
 			<!-- Left side: Logo only -->
 			<div class="flex items-center">
-				<a href="/" class="flex items-center gap-2">
+				<a
+					href="/"
+					class="flex items-center gap-2"
+					onclick={(e) => {
+						if (window.location.pathname === '/') {
+							e.preventDefault();
+							window.scrollTo({ top: 0, behavior: 'smooth' });
+						}
+					}}
+				>
 					<Logo class="h-8 w-8" />
 				</a>
 			</div>
