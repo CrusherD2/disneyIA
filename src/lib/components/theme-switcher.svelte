@@ -12,8 +12,22 @@
 
 	function toggleTheme() {
 		requestAnimationFrame(() => {
+			const root = document.documentElement;
+
+			// Forzar reflow
+			root.style.setProperty('--transitioning', 'true');
+			root.offsetHeight;
+
+			// Aplicar transiciones
+			root.classList.add('transitioning');
 			isDark = !isDark;
 			setMode(isDark ? 'dark' : 'light');
+
+			// Remover clase después de la transición
+			setTimeout(() => {
+				root.classList.remove('transitioning');
+				root.style.removeProperty('--transitioning');
+			}, 500);
 		});
 	}
 </script>
@@ -23,7 +37,9 @@
 	size="icon"
 	on:click={toggleTheme}
 	class="group relative h-8 w-16 overflow-hidden rounded-full p-0.5 transition-all duration-500
-	{isDark ? 'bg-slate-700' : 'bg-slate-200'}"
+	{isDark
+		? 'bg-slate-700 transition-colors duration-500'
+		: 'bg-slate-200 transition-colors duration-500'}"
 >
 	<div class="absolute inset-0 flex items-center justify-between px-2">
 		<Sun
@@ -43,31 +59,42 @@
 </Button>
 
 <style>
+	/* Definir variables CSS para colores de texto */
+	:global(:root) {
+		--text-primary: rgb(17, 24, 39);
+		--text-secondary: rgb(75, 85, 99);
+		--text-tertiary: rgb(107, 114, 128);
+	}
+
+	:global(:root.dark) {
+		--text-primary: rgb(255, 255, 255);
+		--text-secondary: rgb(209, 213, 219);
+		--text-tertiary: rgb(156, 163, 175);
+	}
+
+	/* Base styles */
+	:global(*) {
+		transition: none !important;
+	}
+
+	:global(.transitioning) {
+		isolation: isolate;
+	}
+
 	:global(.transitioning *) {
-		transition: all 700ms ease-in-out !important;
+		transition: all 500ms ease-in-out !important;
 	}
 
-	:global(.transitioning .bg-gradient-to-br),
-	:global(.transitioning .bg-gradient-to-tr),
-	:global(.transitioning [class*='from-']),
-	:global(.transitioning [class*='via-']),
-	:global(.transitioning [class*='to-']) {
-		transition:
-			background-color 700ms ease-in-out,
-			background-image 700ms ease-in-out !important;
+	/* Clases de texto personalizadas */
+	:global(.text-theme-primary) {
+		color: var(--text-primary);
 	}
 
-	:global(.transitioning .fixed.inset-0) {
-		transition:
-			background-color 700ms ease-in-out,
-			background-image 700ms ease-in-out !important;
+	:global(.text-theme-secondary) {
+		color: var(--text-secondary);
 	}
 
-	:global(.transitioning .bg-gradient-to-br),
-	:global(.transitioning .bg-gradient-to-tr),
-	:global(.transitioning [class*='radial-gradient']) {
-		transition:
-			opacity 700ms ease-in-out,
-			background-image 700ms ease-in-out !important;
+	:global(.text-theme-tertiary) {
+		color: var(--text-tertiary);
 	}
 </style>

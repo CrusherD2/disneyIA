@@ -38,7 +38,7 @@
 </script>
 
 <header
-	class="fixed top-0 z-50 w-full border-b border-gray-200/20 bg-white/75 shadow-sm backdrop-blur-lg transition-[backdrop-filter,background-color,border-color] duration-200 dark:border-gray-800/30 dark:bg-gray-950/75"
+	class="fixed top-0 z-50 w-full border-b border-gray-200/20 bg-white/75 shadow-sm backdrop-blur-lg transition-all duration-500 dark:border-gray-800/30 dark:bg-gray-950/75"
 >
 	<nav class="mx-auto px-4 py-3 sm:px-6 lg:px-8">
 		<!-- Main header row -->
@@ -71,14 +71,14 @@
 					<li>
 						<a
 							href="/about"
-							class="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+							class="text-sm font-medium text-gray-700 transition-all duration-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
 							>Acerca</a
 						>
 					</li>
 					<li>
 						<a
 							href="/contact"
-							class="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+							class="text-sm font-medium text-gray-700 transition-all duration-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
 							>Contacto</a
 						>
 					</li>
@@ -92,7 +92,7 @@
 
 				<!-- Mobile menu button -->
 				<button
-					class="rounded-lg p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 sm:hidden"
+					class="rounded-lg p-2 text-gray-700 transition-all duration-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 sm:hidden"
 					onclick={() => (isMobileMenuOpen = !isMobileMenuOpen)}
 					aria-label="Toggle menu"
 				>
@@ -134,7 +134,7 @@
 		<!-- Mobile menu -->
 		{#if isMobileMenuOpen}
 			<div
-				class="absolute left-0 right-0 mt-3 bg-white px-4 py-3 shadow-lg dark:bg-gray-900 sm:hidden"
+				class="absolute left-0 right-0 mt-3 bg-white px-4 py-3 shadow-lg transition-all duration-500 dark:bg-gray-900 sm:hidden"
 			>
 				<!-- Mobile Search -->
 				<div class="mb-4">
@@ -146,7 +146,7 @@
 					<li>
 						<a
 							href="/about"
-							class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+							class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
 							onclick={() => (isMobileMenuOpen = false)}
 						>
 							Acerca
@@ -155,7 +155,7 @@
 					<li>
 						<a
 							href="/contact"
-							class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+							class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
 							onclick={() => (isMobileMenuOpen = false)}
 						>
 							Contacto
@@ -179,10 +179,10 @@
 </main>
 
 <footer
-	class="fixed bottom-0 w-full border-t border-gray-100/10 bg-white/80 backdrop-blur-md dark:border-gray-800/50 dark:bg-gray-950/80"
+	class="fixed bottom-0 w-full border-t border-gray-100/10 bg-white/80 backdrop-blur-md transition-all duration-500 dark:border-gray-800/50 dark:bg-gray-950/80"
 >
 	<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<p class="text-center text-xs text-gray-500 dark:text-gray-400">
+		<p class="text-center text-xs text-gray-500 transition-all duration-500 dark:text-gray-400">
 			© 2024 Disney AI Usage Archive
 		</p>
 	</div>

@@ -103,35 +103,69 @@
 <!-- Sección principal con gradiente y mensaje de bienvenida -->
 <section class="relative mb-12 overflow-hidden sm:mb-24">
 	<div class="absolute inset-0">
-		<!-- Main gradient background - Enhanced light mode -->
-		<div
-			class="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-purple-500/25 to-pink-500/30
-			dark:from-blue-900/50 dark:via-purple-800/40 dark:to-pink-900/50"
-		></div>
+		<!-- Light mode gradients -->
+		<div class="absolute inset-0 transition-opacity duration-500 ease-in-out dark:opacity-0">
+			<!-- Main gradient background - Light mode -->
+			<div
+				class="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-purple-500/25 to-pink-500/30"
+			></div>
 
-		<!-- Accent gradients - Enhanced light mode -->
-		<div
-			class="absolute inset-0 bg-gradient-to-tr from-transparent via-yellow-300/20 to-orange-400/30
-			dark:via-yellow-700/10 dark:to-orange-800/20"
-		></div>
+			<!-- Accent gradients - Light mode -->
+			<div
+				class="absolute inset-0 bg-gradient-to-tr from-transparent via-yellow-300/20 to-orange-400/30"
+			></div>
 
-		<!-- Center spotlight - Enhanced light mode -->
-		<div
-			class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))]
-			from-white/30 via-transparent to-transparent dark:from-white/10"
-		></div>
+			<!-- Center spotlight - Light mode -->
+			<div
+				class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))]
+				from-white/30 via-transparent to-transparent"
+			></div>
 
-		<!-- Top-right corner accent - Enhanced light mode -->
-		<div
-			class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))]
-			from-teal-400/30 via-transparent to-transparent dark:from-teal-700/20"
-		></div>
+			<!-- Top-right corner accent - Light mode -->
+			<div
+				class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))]
+				from-teal-400/30 via-transparent to-transparent"
+			></div>
 
-		<!-- Bottom-left corner accent - Enhanced light mode -->
+			<!-- Bottom-left corner accent - Light mode -->
+			<div
+				class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))]
+				from-indigo-400/30 via-transparent to-transparent"
+			></div>
+		</div>
+
+		<!-- Dark mode gradients -->
 		<div
-			class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))]
-			from-indigo-400/30 via-transparent to-transparent dark:from-indigo-700/20"
-		></div>
+			class="absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out dark:opacity-100"
+		>
+			<!-- Main gradient background - Dark mode -->
+			<div
+				class="absolute inset-0 bg-gradient-to-br from-blue-900/50 via-purple-800/40 to-pink-900/50"
+			></div>
+
+			<!-- Accent gradients - Dark mode -->
+			<div
+				class="absolute inset-0 bg-gradient-to-tr from-transparent via-yellow-700/10 to-orange-800/20"
+			></div>
+
+			<!-- Center spotlight - Dark mode -->
+			<div
+				class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))]
+				from-white/10 via-transparent to-transparent"
+			></div>
+
+			<!-- Top-right corner accent - Dark mode -->
+			<div
+				class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))]
+				from-teal-700/20 via-transparent to-transparent"
+			></div>
+
+			<!-- Bottom-left corner accent - Dark mode -->
+			<div
+				class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))]
+				from-indigo-700/20 via-transparent to-transparent"
+			></div>
+		</div>
 	</div>
 
 	<div class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-24 lg:px-8">
@@ -139,10 +173,10 @@
 			<!-- Left column: Main heading and description -->
 			<div class="flex flex-col justify-center space-y-6 sm:space-y-8">
 				<div class="space-y-4 sm:space-y-6">
-					<h1 class="text-2xl font-bold tracking-tight sm:text-4xl lg:text-6xl">
+					<h1 class="text-theme-primary text-2xl font-bold tracking-tight sm:text-4xl lg:text-6xl">
 						Repositorio del uso de IA por Disney
 					</h1>
-					<p class="text-lg text-gray-600 dark:text-gray-300 sm:text-xl">
+					<p class="text-theme-secondary">
 						Explorando el impacto y las implicaciones éticas de la inteligencia artificial en la
 						industria del entretenimiento
 					</p>
@@ -171,7 +205,7 @@
 			<!-- Right column: About section -->
 			<div class="mt-8 flex flex-col justify-center sm:mt-0">
 				<div
-					class="rounded-xl bg-white/80 p-6 shadow-lg backdrop-blur-sm dark:bg-gray-800/80 sm:p-8"
+					class="rounded-xl bg-white/80 p-6 shadow-lg backdrop-blur-sm transition-all duration-500 dark:bg-gray-800/80 sm:p-8"
 				>
 					<h2 class="mb-4 text-2xl font-semibold">Sobre este proyecto</h2>
 					<div class="space-y-4 text-gray-600 dark:text-gray-300">
@@ -201,7 +235,7 @@
 										d="M5 13l4 4L19 7"
 									/>
 								</svg>
-								Análisis detallados de casos de uso
+								<span class="text-theme-secondary">Análisis detallados de casos de uso</span>
 							</li>
 							<li class="flex items-center gap-2">
 								<svg
@@ -217,7 +251,7 @@
 										d="M5 13l4 4L19 7"
 									/>
 								</svg>
-								Comparativas de modelos de IA
+								<span class="text-theme-secondary">Comparativas de modelos de IA</span>
 							</li>
 							<li class="flex items-center gap-2">
 								<svg
@@ -233,7 +267,7 @@
 										d="M5 13l4 4L19 7"
 									/>
 								</svg>
-								Demostraciones de IA
+								<span class="text-theme-secondary">Demostraciones de IA</span>
 							</li>
 						</ul>
 					</div>
@@ -248,10 +282,10 @@
 	<!-- Sección de artículos destacados con carrusel -->
 	<section id="featured" class="mb-12 sm:mb-24">
 		<div class="mb-4 text-center sm:mb-6">
-			<h2 class="text-2xl font-bold tracking-tight sm:text-3xl sm:text-4xl">
+			<h2 class="text-theme-primary text-2xl font-bold tracking-tight sm:text-3xl sm:text-4xl">
 				Artículos Destacados
 			</h2>
-			<p class="mt-2 text-base text-gray-600 dark:text-gray-400 sm:mt-3 sm:text-lg">
+			<p class="text-theme-secondary mt-2 sm:mt-3 sm:text-lg">
 				Descubre nuestras investigaciones más relevantes sobre IA en Disney
 			</p>
 		</div>
@@ -265,8 +299,10 @@
 	<!-- Sección de filtros por categoría -->
 	<section id="explore" class="mb-8 scroll-mt-24 sm:mb-12">
 		<div class="mb-6 sm:mb-8">
-			<h2 class="text-xl font-bold tracking-tight sm:text-2xl">Explorar por Categoría</h2>
-			<p class="mt-2 text-sm text-gray-600 dark:text-gray-400 sm:text-base">
+			<h2 class="text-theme-primary text-xl font-bold tracking-tight sm:text-2xl">
+				Explorar por Categoría
+			</h2>
+			<p class="text-theme-secondary mt-2 text-sm sm:text-base">
 				Filtra los artículos según tus intereses
 			</p>
 		</div>
@@ -319,9 +355,9 @@
 				<div
 					class="col-span-full rounded-xl border border-gray-200 bg-white p-6 sm:p-12 text-center dark:border-gray-700 dark:bg-gray-800"
 				>
-					<div class="mx-auto max-w-sm space-y-4">
-						<h3 class="text-xl font-semibold">No hay artículos</h3>
-						<p class="text-gray-600 dark:text-gray-400">
+					<div class="text-theme-secondary mx-auto max-w-sm space-y-4">
+						<h3 class="text-theme-primary text-xl font-semibold">No hay artículos</h3>
+						<p class="text-theme-secondary">
 							No se encontraron artículos para esta categoría. Intenta seleccionar otra categoría.
 						</p>
 						<button
