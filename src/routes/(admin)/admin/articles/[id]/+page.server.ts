@@ -23,6 +23,19 @@ export const load = (async ({ locals, params }) => {
 		return data ?? [];
 	}
 
+	async function removeUnavailableTags(articleId: number, tagsToRemove: number[], tags: number[]) {
+		const { data, error } = await locals.supabase
+			.from('articles')
+			.update({
+				tags: tags.filter((tag) => !tagsToRemove.includes(tag))
+			})
+			.eq('id', articleId);
+		if (error) {
+			console.error(error);
+			return;
+		}
+	}
+
 	const [article, tags] = await Promise.all([getArticle(), getTags()]);
 
 	if (!article) {
@@ -37,6 +50,12 @@ export const load = (async ({ locals, params }) => {
 					label: tags.find((t) => t.id === tag)?.name ?? ''
 				};
 			});
+
+	const tagsToRemove = articleTags.filter((tag) => tag.label === '').map((tag) => tag.value);
+
+	if (tagsToRemove.length > 0 && article.tags) {
+		await removeUnavailableTags(article.id, tagsToRemove, article.tags);
+	}
 
 	return {
 		article,
