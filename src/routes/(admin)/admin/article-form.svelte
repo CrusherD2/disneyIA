@@ -198,7 +198,6 @@
 								label: tag.name
 							}))}
 							placeholder="Selecciona los tags..."
-							class="rounded-lg border border-gray-700 bg-gray-800/80 text-gray-200"
 						/>
 					{/if}
 
