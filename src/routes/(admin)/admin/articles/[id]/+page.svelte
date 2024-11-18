@@ -17,7 +17,7 @@
 	<div class="h-full w-full px-4 py-12 sm:px-6 lg:px-8">
 		<div class="rounded-xl bg-white/80 p-8 shadow-lg backdrop-blur-sm dark:bg-gray-800/80">
 			<h1 class="mb-6 text-2xl font-bold tracking-tight sm:text-3xl">Edición de Artículo</h1>
-			<ArticleForm {article} tags={data.tags} />
+			<ArticleForm {article} tags={data.tags} articleTags={data.articleTags} />
 		</div>
 	</div>
 </div>

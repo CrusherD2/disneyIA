@@ -45,11 +45,11 @@ export const load = (async ({ locals, params }) => {
 	const articleTags = !article?.tags
 		? []
 		: article.tags.map((tag) => {
-				return {
-					value: tag,
-					label: tags.find((t) => t.id === tag)?.name ?? ''
-				};
-			});
+			return {
+				value: tag,
+				label: tags.find((t) => t.id === tag)?.name ?? ''
+			};
+		});
 
 	const tagsToRemove = articleTags.filter((tag) => tag.label === '').map((tag) => tag.value);
 

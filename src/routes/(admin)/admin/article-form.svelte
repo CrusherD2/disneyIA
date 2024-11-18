@@ -8,6 +8,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import MultiSelect from 'svelte-multiselect';
 	import CreateTagDialog from './create-tag-dialog.svelte';
+	import { onMount } from 'svelte';
 
 	type Props = {
 		article?: Article;
@@ -59,6 +60,9 @@
 		value: number;
 		label: string;
 	}[] = $state(articleTags);
+	onMount(() => {
+		console.log(articleTags);
+	});
 	// Manejo de tags como texto
 	let content = $state(article?.content ?? '<p>This is the initial content of the editor.</p>');
 
@@ -188,7 +192,7 @@
 
 			<!-- Tags -->
 			<div class="space-y-2">
-				<Label class="text-sm font-medium" for="tags">Tags</Label>
+				<Label class="text-sm font-medium" for="tags">Categorías</Label>
 				<div class="flex flex-col gap-2">
 					{#if tags && tags.length > 0}
 						<MultiSelect
@@ -197,7 +201,12 @@
 								value: tag.id,
 								label: tag.name
 							}))}
-							placeholder="Selecciona los tags..."
+							placeholder="Selecciona las categorías..."
+							outerDivClass="w-full rounded-lg border border-gray-200 bg-white/80 p-3 text-base backdrop-blur-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800/80"
+							liSelectedClass="bg-blue-500 text-white rounded-full px-2"
+							liOptionClass="hover:bg-gray-50 dark:hover:bg-gray-700"
+							liActiveOptionClass="bg-gray-50 dark:bg-gray-700"
+							ulOptionsClass="max-h-[200px] overflow-y-auto rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
 						/>
 					{/if}
 
@@ -246,99 +255,4 @@
 
 <style>
 	@import 'https://cdn.quilljs.com/1.3.6/quill.snow.css';
-
-	:global(.s-Afroq2nfY4bj) {
-		background-color: rgb(17 24 39) !important;
-		color: rgb(229 231 235) !important;
-	}
-
-	:global(.options.s-Afroq2nfY4bj) {
-		background-color: rgb(17 24 39) !important;
-		border: 1px solid rgb(55 65 81) !important;
-		border-radius: 0.5rem !important;
-		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3) !important;
-	}
-
-	:global(li.s-Afroq2nfY4bj) {
-		padding: 0.75rem !important;
-		color: rgb(229 231 235) !important;
-		background-color: transparent !important;
-	}
-
-	:global(li.s-Afroq2nfY4bj:hover) {
-		background-color: rgb(55 65 81) !important;
-	}
-
-	:global(li[aria-selected='true'].s-Afroq2nfY4bj) {
-		background-color: rgb(59 130 246) !important;
-		border-radius: 9999px !important;
-	}
-
-	:global(.multiselect-input.s-Afroq2nfY4bj) {
-		background-color: rgb(31 41 55 / 0.8) !important;
-		border: 1px solid rgb(55 65 81) !important;
-		border-radius: 0.5rem !important;
-		color: rgb(229 231 235) !important;
-	}
-
-	:global(.multiselect-input.s-Afroq2nfY4bj:focus) {
-		border-color: rgb(59 130 246) !important;
-		outline: none !important;
-		ring: 2px rgb(59 130 246 / 0.2) !important;
-	}
-
-	:global(.multiselect-wrapper.s-Afroq2nfY4bj) {
-		background-color: rgb(31 41 55 / 0.8) !important;
-	}
-
-	:global(div[role='searchbox'].multiselect.s-Afroq2nfY4bj) {
-		background-color: rgb(31 41 55 / 0.8) !important;
-		border: 1px solid rgb(55 65 81) !important;
-		border-radius: 0.5rem !important;
-		color: rgb(229 231 235) !important;
-		padding: 0.75rem !important;
-	}
-
-	:global(div[role='searchbox'].multiselect.s-Afroq2nfY4bj:focus-within) {
-		border-color: rgb(59 130 246) !important;
-		outline: none !important;
-		box-shadow: 0 0 0 2px rgb(59 130 246 / 0.2) !important;
-	}
-
-	:global(.multiselect-placeholder.s-Afroq2nfY4bj) {
-		background-color: transparent !important;
-		color: rgb(156 163 175) !important;
-	}
-
-	:global(input.s-Afroq2nfY4bj) {
-		background: none !important;
-		background-color: transparent !important;
-		-webkit-background-color: transparent !important;
-		color: rgb(229 231 235) !important;
-		border: none !important;
-		outline: none !important;
-	}
-
-	:global(input.s-Afroq2nfY4bj::placeholder) {
-		color: rgb(156 163 175) !important;
-	}
-
-	:global(.selected.s-Afroq2nfY4bj) {
-		background-color: rgb(31 41 55 / 0.8) !important;
-		border-radius: 9999px !important;
-		padding: 0.25rem 0.75rem !important;
-		margin: 0.125rem !important;
-	}
-
-	:global(li[aria-selected='true'].s-Afroq2nfY4bj) {
-		background-color: rgb(59 130 246) !important;
-		border-radius: 9999px !important;
-	}
-
-	:global(.multiselect-tag.s-Afroq2nfY4bj) {
-		border-radius: 9999px !important;
-		padding: 0.25rem 0.75rem !important;
-		background-color: rgb(59 130 246) !important;
-		margin: 0.125rem !important;
-	}
 </style>

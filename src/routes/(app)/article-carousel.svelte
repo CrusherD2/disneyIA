@@ -96,7 +96,7 @@
 				>
 					<!-- Tags -->
 					<div class="flex flex-wrap gap-2">
-						{#each article.tags as tagId}
+						{#each article.tags ?? [] as tagId}
 							{#if tags.find((t) => t.value === tagId)}
 								<span
 									class="rounded-full bg-blue-500/20 px-3 py-0.5 text-xs font-medium backdrop-blur-sm"

@@ -14,11 +14,10 @@
 <div class="flex-shrink-0">
 	<Button
 		variant="outline"
-		size="icon"
-		class="bg-white/80 backdrop-blur-sm hover:bg-white/90 dark:bg-gray-800/80 dark:hover:bg-gray-800/90"
+		class="w-full rounded-lg border border-gray-200 bg-white/80 p-3 text-base backdrop-blur-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800/80"
 		on:click={() => (isOpen = true)}
 	>
-		<Plus class="h-4 w-4" />
+		Crear categoría
 	</Button>
 </div>
 
