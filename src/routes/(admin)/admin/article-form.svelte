@@ -154,90 +154,150 @@
 	}
 </script>
 
-<form class="flex flex-col gap-3 lg:flex-row" onsubmit={handleSubmitArticle}>
-	<section class="flex flex-col gap-3 lg:min-w-[500px] lg:max-w-[500px]">
-		<Button
-			type="submit"
-			class="bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-sm"
-		>
-			{isPending ? 'Guardando...' : 'Guardar'}
-		</Button>
-
-		<div class="space-y-2">
-			<Label class="text-sm font-medium" for="title">Título</Label>
-			<Textarea
-				id="title"
-				bind:value={title}
-				required
-				class="border-input placeholder:text-muted-foreground focus-visible:ring-ring min-h-[80px] resize-none rounded-md border bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-				placeholder="Ingresa el título del artículo..."
-			/>
-		</div>
-
-		<div class="space-y-2">
-			<Label class="text-sm font-medium" for="summary">Resumen</Label>
-			<Textarea
-				id="summary"
-				bind:value={summary}
-				required
-				class="border-input placeholder:text-muted-foreground focus-visible:ring-ring min-h-[120px] resize-none rounded-md border bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-				placeholder="Escribe un breve resumen del artículo..."
-			/>
-		</div>
-
-		<div class="space-y-2">
-			<Label class="text-sm font-medium" for="author">Autor</Label>
-			<Input
-				type="text"
-				id="author"
-				bind:value={author}
-				required
-				class="border-input placeholder:text-muted-foreground focus-visible:ring-ring rounded-md border bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-				placeholder="Nombre del autor"
-			/>
-		</div>
-
-		<div class="w-full space-y-2">
-			<Label class="text-sm font-medium" for="tags">Tags</Label>
-			<div class="flex w-full gap-3">
-				{#if tags && tags.length > 0}
-					<MultiSelect
-						bind:selected={articleTags}
-						options={tags.map((tag) => ({
-							value: tag.id,
-							label: tag.name
-						}))}
-						class="border-input focus-visible:ring-ring w-full rounded-md border bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-						placeholder="Selecciona los tags..."
-					/>
-				{/if}
-				<CreateTagDialog {createTag} isOpen={isTagDialogOpen} isLoading={isTagDialogLoading} />
+<form class="flex flex-col gap-6" onsubmit={handleSubmitArticle}>
+	<div class="grid gap-8 lg:grid-cols-[400px,1fr]">
+		<!-- Left Column: Meta Information -->
+		<section class="space-y-6">
+			<!-- Title -->
+			<div class="space-y-2">
+				<Label class="text-sm font-medium" for="title">Título</Label>
+				<Textarea
+					id="title"
+					bind:value={title}
+					required
+					class="min-h-[80px] w-full resize-none rounded-lg border border-gray-200 bg-white/80 p-3 text-base backdrop-blur-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800/80"
+					placeholder="Ingresa el título del artículo..."
+				/>
 			</div>
-		</div>
 
-		<div class="space-y-2">
-			<Label class="text-sm font-medium" for="backgroundImage">Background Image URL</Label>
-			<Input
-				type="text"
-				id="backgroundImage"
-				bind:value={backgroundImage}
-				class="border-input placeholder:text-muted-foreground focus-visible:ring-ring rounded-md border bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-				placeholder="https://example.com/image.jpg"
-			/>
-		</div>
-	</section>
-	<section class="flex w-full flex-col gap-3">
-		<Label for="content">Contenido</Label>
-		<Editor
-			id="content"
-			apiKey="rp4b9m2rr94wwfj47pai9w3qsw116rgs12zhbgvbgl5l5vyc"
-			channel="7"
-			{conf}
-			bind:value={content}
-		/>
-	</section>
+			<!-- Summary -->
+			<div class="space-y-2">
+				<Label class="text-sm font-medium" for="summary">Resumen</Label>
+				<Textarea
+					id="summary"
+					bind:value={summary}
+					required
+					class="min-h-[120px] w-full resize-none rounded-lg border border-gray-200 bg-white/80 p-3 text-base backdrop-blur-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800/80"
+					placeholder="Escribe un breve resumen del artículo..."
+				/>
+			</div>
+
+			<!-- Author -->
+			<div class="space-y-2">
+				<Label class="text-sm font-medium" for="author">Autor</Label>
+				<Input
+					type="text"
+					id="author"
+					bind:value={author}
+					required
+					class="w-full rounded-lg border border-gray-200 bg-white/80 p-3 text-base backdrop-blur-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800/80"
+					placeholder="Nombre del autor"
+				/>
+			</div>
+
+			<!-- Tags -->
+			<div class="space-y-2">
+				<Label class="text-sm font-medium" for="tags">Tags</Label>
+				<div class="flex gap-3">
+					{#if tags && tags.length > 0}
+						<MultiSelect
+							bind:selected={articleTags}
+							options={tags.map((tag) => ({
+								value: tag.id,
+								label: tag.name
+							}))}
+							placeholder="Selecciona los tags..."
+							class="w-full"
+							--sms-bg-color="rgba(31, 41, 55, 0.8)"
+							--sms-border-color="rgb(55, 65, 81)"
+							--sms-border-radius="0.5rem"
+							--sms-padding="0.75rem"
+							--sms-font-size="1rem"
+							--sms-dropdown-bg="rgba(31, 41, 55, 0.8)"
+							--sms-dropdown-border="1px solid rgb(55, 65, 81)"
+							--sms-dropdown-border-radius="0.5rem"
+							--sms-dropdown-shadow="0 8px 32px rgba(0, 0, 0, 0.3)"
+							--sms-dropdown-backdrop-filter="blur(8px)"
+							--sms-dropdown-padding="0.5rem"
+							--sms-dropdown-margin-top="0.5rem"
+							--sms-option-padding="0.5rem 0.75rem"
+							--sms-option-bg-hover="rgba(59, 130, 246, 0.2)"
+							--sms-option-bg-selected="rgba(59, 130, 246, 0.3)"
+							--sms-option-bg-selected-hover="rgba(59, 130, 246, 0.4)"
+							--sms-option-text-color="rgb(229, 231, 235)"
+							--sms-option-selected-text-color="rgb(229, 231, 235)"
+							--sms-option-hover-text-color="rgb(229, 231, 235)"
+							--sms-option-border-radius="0.375rem"
+						/>
+					{/if}
+					<CreateTagDialog {createTag} isOpen={isTagDialogOpen} isLoading={isTagDialogLoading} />
+				</div>
+			</div>
+
+			<!-- Background Image URL -->
+			<div class="space-y-2">
+				<Label class="text-sm font-medium" for="backgroundImage">Background Image URL</Label>
+				<Input
+					type="text"
+					id="backgroundImage"
+					bind:value={backgroundImage}
+					class="w-full rounded-lg border border-gray-200 bg-white/80 p-3 text-base backdrop-blur-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800/80"
+					placeholder="https://example.com/image.jpg"
+				/>
+			</div>
+
+			<!-- Save Button -->
+			<button
+				type="submit"
+				class="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-600"
+			>
+				{isPending ? 'Guardando...' : 'Guardar'}
+			</button>
+		</section>
+
+		<!-- Right Column: Content Editor -->
+		<section class="space-y-2">
+			<Label class="text-sm font-medium" for="content">Contenido</Label>
+			<div
+				class="rounded-lg border border-gray-200 bg-white/80 backdrop-blur-sm dark:border-gray-700 dark:bg-gray-800/80"
+			>
+				<Editor
+					id="content"
+					apiKey="rp4b9m2rr94wwfj47pai9w3qsw116rgs12zhbgvbgl5l5vyc"
+					channel="7"
+					{conf}
+					bind:value={content}
+				/>
+			</div>
+		</section>
+	</div>
 </form>
 
 <style>
 	@import 'https://cdn.quilljs.com/1.3.6/quill.snow.css';
+
+	:global(.multiselect) {
+		backdrop-filter: blur(8px);
+		color: rgb(229, 231, 235);
+	}
+
+	:global(.multiselect-dropdown) {
+		backdrop-filter: blur(8px) !important;
+		border: 1px solid rgba(55, 65, 81, 0.5) !important;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+		background-color: rgba(31, 41, 55, 0.8) !important;
+		color: rgb(0, 2, 5) !important;
+	}
+
+	:global(.multiselect-option) {
+		color: rgb(229, 231, 235) !important;
+	}
+
+	:global(.multiselect-option:hover) {
+		background-color: rgba(59, 130, 246, 0.2) !important;
+	}
+
+	:global(.multiselect-option.selected) {
+		background-color: rgba(59, 130, 246, 0.3) !important;
+	}
 </style>

@@ -2,6 +2,7 @@
 	// Importaciones de componentes y tipos necesarios
 	import type { PageData } from './$types';
 	import { fly } from 'svelte/transition';
+	import { page } from '$app/stores';
 
 	// Importación de componentes UI básicos
 	import { Label } from '$lib/components/ui/label';
@@ -11,7 +12,7 @@
 	import DeleteCommentDialog from './delete-comment-dialog.svelte';
 	import EditCommentDialog from './edit-comment-dialog.svelte';
 	import { toast } from 'svelte-sonner';
-	import { Calendar, User, Quote } from 'lucide-svelte';
+	import { Calendar, User, Quote, Pencil } from 'lucide-svelte';
 
 	// Definición de tipos para las props
 	interface Props {
@@ -47,6 +48,10 @@
 
 		window.location.reload();
 	}
+
+	// Get the current path
+	const currentPath = $page.url.pathname;
+	const editPath = currentPath.replace('/articles/', '/admin/articles/');
 </script>
 
 <!-- Contenedor principal con mejor espaciado -->
@@ -240,6 +245,17 @@
 	</article>
 </div>
 
+{#if user}
+	<a
+		href={editPath}
+		class="bg-primary text-primary-foreground hover:bg-primary/90 fixed bottom-8 right-8 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-colors"
+		transition:fly={{ y: 50, duration: 300 }}
+	>
+		<Pencil class="h-6 w-6" />
+		<span class="sr-only">Edit article</span>
+	</a>
+{/if}
+
 <style lang="postcss">
 	:global(.video-container) {
 		position: relative;
@@ -283,5 +299,11 @@
 		--tw-prose-pre-code: hsl(var(--foreground));
 		--tw-prose-pre-bg: hsl(var(--secondary));
 		--tw-prose-hr: hsl(var(--border));
+	}
+
+	/* Add these styles if you want a hover effect */
+	a:hover {
+		transform: scale(1.05);
+		transition: transform 0.2s ease-in-out;
 	}
 </style>

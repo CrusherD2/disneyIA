@@ -103,9 +103,6 @@
 <!-- Sección principal con gradiente y mensaje de bienvenida -->
 <section class="relative mb-12 overflow-hidden sm:mb-24">
 	<div class="absolute inset-0">
-		<!-- Noise texture overlay -->
-		<div class="absolute inset-0 opacity-[0.15] [background-image:url('/noise.png')]"></div>
-
 		<!-- Main gradient background - Enhanced light mode -->
 		<div
 			class="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-purple-500/25 to-pink-500/30

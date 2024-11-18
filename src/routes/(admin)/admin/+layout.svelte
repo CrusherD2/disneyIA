@@ -1,82 +1,67 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/button/button.svelte';
-	import * as Menubar from '$lib/components/ui/menubar';
-	import { Home, FileText, UserCircle, LogOut, Plus } from 'lucide-svelte';
-
+	import { Home, FileText, Plus, LogOut } from 'lucide-svelte';
 	const { children } = $props();
 </script>
 
-<div class="min-h-screen bg-background">
-	<Menubar.Root class="border-b border-gray-800 bg-gray-900/80">
-		<div class="w-full border-x border-gray-800">
-			<nav class="flex h-14 items-center">
-				<div class="flex items-center gap-6 pl-2">
-					<Menubar.Menu>
-						<Menubar.Trigger
-							class="flex items-center gap-2 text-sm text-white/80 transition-colors hover:text-white"
-						>
-							<FileText class="h-4 w-4" />
-							<span>Artículos</span>
-						</Menubar.Trigger>
-						<Menubar.Content
-							class="mt-1 w-48 rounded-md border border-gray-800 bg-gray-900 py-1 shadow-lg"
-						>
-							<Menubar.Item>
-								<a
-									href="/admin"
-									class="flex w-full items-center gap-2 px-4 py-1.5 text-sm text-white/80 hover:text-white"
-								>
-									<FileText class="h-4 w-4" />
-									Ver Artículos
-								</a>
-							</Menubar.Item>
-							<Menubar.Item>
-								<a
-									href="/admin/articles/new"
-									class="flex w-full items-center gap-2 px-4 py-1.5 text-sm text-white/80 hover:text-white"
-								>
-									<Plus class="h-4 w-4" />
-									Nuevo Artículo
-								</a>
-							</Menubar.Item>
-						</Menubar.Content>
-					</Menubar.Menu>
+<header
+	class="relative w-full border-b border-white/10 bg-white/80 backdrop-blur-sm dark:bg-gray-800/80"
+>
+	<div class="w-full px-4 py-4 sm:px-6 lg:px-8">
+		<nav>
+			<a href="/admin" class="nav-link">
+				<FileText />
+				<span>Ver Artículos</span>
+			</a>
+			<a href="/admin/articles/new" class="nav-link">
+				<Plus />
+				<span>Nuevo Artículo</span>
+			</a>
+			<a href="/" class="nav-link">
+				<Home />
+				<span>Página de inicio</span>
+			</a>
+			<div class="flex-1"></div>
+			<a href="/auth/logout" class="nav-link">
+				<LogOut />
+				<span>Cerrar Sesión</span>
+			</a>
+		</nav>
+	</div>
+</header>
 
-					<a
-						href="/"
-						class="flex items-center gap-2 text-sm text-white/80 transition-colors hover:text-white"
-					>
-						<Home class="h-4 w-4" />
-						<span>Página de inicio</span>
-					</a>
+<main class="relative min-h-[calc(100vh-4rem)] w-full">
+	{@render children()}
+</main>
 
-					<Menubar.Menu>
-						<Menubar.Trigger
-							class="flex items-center gap-2 text-sm text-white/80 transition-colors hover:text-white"
-						>
-							<UserCircle class="h-4 w-4" />
-							<span>Perfil</span>
-						</Menubar.Trigger>
-						<Menubar.Content
-							class="mt-1 w-48 rounded-md border border-gray-800 bg-gray-900 py-1 shadow-lg"
-						>
-							<Menubar.Item>
-								<a
-									href="/auth/logout"
-									class="flex w-full items-center gap-2 px-4 py-1.5 text-sm text-red-400/80 hover:text-red-400"
-								>
-									<LogOut class="h-4 w-4" />
-									Cerrar Sesión
-								</a>
-							</Menubar.Item>
-						</Menubar.Content>
-					</Menubar.Menu>
-				</div>
-			</nav>
-		</div>
-	</Menubar.Root>
+<style>
+	nav {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		width: 100%;
+	}
 
-	<main class="w-full border-x border-gray-800 py-8">
-		{@render children()}
-	</main>
-</div>
+	.nav-link {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem;
+		color: var(--foreground);
+		text-decoration: none;
+		border-radius: 0.25rem;
+		transition: background-color 0.2s;
+	}
+
+	.nav-link:hover {
+		background-color: var(--accent);
+	}
+
+	:global(svg) {
+		width: 1.2rem;
+		height: 1.2rem;
+	}
+
+	:global(main) {
+		min-height: calc(100vh - var(--header-height));
+	}
+</style>
