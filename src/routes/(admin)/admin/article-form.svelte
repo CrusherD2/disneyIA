@@ -48,8 +48,6 @@
 
 	let isUpdating = !!article;
 
-	console.log(tags);
-
 	// Agregar el estado reactivo para los tags
 	let title = $state(article?.title ?? '');
 	let summary = $state(article?.summary ?? '');
@@ -59,7 +57,6 @@
 		label: string;
 	}[] = $state(
 		(() => {
-			console.log(article?.tags);
 			if (!article?.tags) return [];
 			return article.tags.map((tag) => {
 				return {
@@ -207,7 +204,6 @@
 								label: tag.name
 							}))}
 							placeholder="Selecciona los tags..."
-							class="w-full"
 							--sms-bg-color="rgba(31, 41, 55, 0.8)"
 							--sms-border-color="rgb(55, 65, 81)"
 							--sms-border-radius="0.5rem"

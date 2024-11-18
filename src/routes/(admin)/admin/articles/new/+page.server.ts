@@ -8,7 +8,6 @@ export const load = (async ({ locals }) => {
 			console.error('Error fetching tags:', error.message);
 			return [];
 		}
-		console.log('tags:', tags);
 		return tags ?? [];
 	}
 

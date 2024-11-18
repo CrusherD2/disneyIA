@@ -23,7 +23,6 @@
 		}
 
 		try {
-			console.log('Searching for:', searchQuery);
 			const { data, error } = await supabase
 				.from('articles')
 				.select('id, title, backgroundImage')
@@ -33,7 +32,6 @@
 
 			if (error) throw error;
 
-			console.log('Search results:', data);
 			searchResults = data || [];
 			showResults = searchResults.length > 0;
 		} catch (error) {

@@ -27,26 +27,10 @@
 		window.location.reload(); // Recarga la página después del cierre de sesin
 	}
 
-	// Add this to handle all navigation scenarios
-	afterNavigate(() => {
-		// This ensures the navigation state is properly reset
-		console.log('Navigation state:', $navigating);
-	});
-
 	let isNavigating = $state(false);
 
 	$effect(() => {
 		isNavigating = !!$navigating;
-		console.log('Navigation state:', isNavigating);
-	});
-
-	onMount(() => {
-		console.log('Layout mounted');
-	});
-
-	// Add this to debug
-	afterNavigate(() => {
-		console.log('After navigate:', $navigating);
 	});
 
 	// Add state for mobile menu
