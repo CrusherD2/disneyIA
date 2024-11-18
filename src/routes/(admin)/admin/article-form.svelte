@@ -189,7 +189,7 @@
 			<!-- Tags -->
 			<div class="space-y-2">
 				<Label class="text-sm font-medium" for="tags">Tags</Label>
-				<div class="flex gap-3">
+				<div class="flex flex-col gap-2">
 					{#if tags && tags.length > 0}
 						<MultiSelect
 							bind:selected={articleTagsState}
@@ -198,28 +198,10 @@
 								label: tag.name
 							}))}
 							placeholder="Selecciona los tags..."
-							--sms-bg-color="rgba(31, 41, 55, 0.8)"
-							--sms-border-color="rgb(55, 65, 81)"
-							--sms-border-radius="0.5rem"
-							--sms-padding="0.75rem"
-							--sms-font-size="1rem"
-							--sms-dropdown-bg="rgba(31, 41, 55, 0.8)"
-							--sms-dropdown-border="1px solid rgb(55, 65, 81)"
-							--sms-dropdown-border-radius="0.5rem"
-							--sms-dropdown-shadow="0 8px 32px rgba(0, 0, 0, 0.3)"
-							--sms-dropdown-backdrop-filter="blur(8px)"
-							--sms-dropdown-padding="0.5rem"
-							--sms-dropdown-margin-top="0.5rem"
-							--sms-option-padding="0.5rem 0.75rem"
-							--sms-option-bg-hover="rgba(59, 130, 246, 0.2)"
-							--sms-option-bg-selected="rgba(59, 130, 246, 0.3)"
-							--sms-option-bg-selected-hover="rgba(59, 130, 246, 0.4)"
-							--sms-option-text-color="rgb(229, 231, 235)"
-							--sms-option-selected-text-color="rgb(229, 231, 235)"
-							--sms-option-hover-text-color="rgb(229, 231, 235)"
-							--sms-option-border-radius="0.375rem"
+							class="rounded-lg border border-gray-700 bg-gray-800/80 text-gray-200"
 						/>
 					{/if}
+
 					<CreateTagDialog {createTag} isOpen={isTagDialogOpen} isLoading={isTagDialogLoading} />
 				</div>
 			</div>
@@ -266,28 +248,98 @@
 <style>
 	@import 'https://cdn.quilljs.com/1.3.6/quill.snow.css';
 
-	:global(.multiselect) {
-		backdrop-filter: blur(8px);
-		color: rgb(229, 231, 235);
+	:global(.s-Afroq2nfY4bj) {
+		background-color: rgb(17 24 39) !important;
+		color: rgb(229 231 235) !important;
 	}
 
-	:global(.multiselect-dropdown) {
-		backdrop-filter: blur(8px) !important;
-		border: 1px solid rgba(55, 65, 81, 0.5) !important;
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
-		background-color: rgba(31, 41, 55, 0.8) !important;
-		color: rgb(0, 2, 5) !important;
+	:global(.options.s-Afroq2nfY4bj) {
+		background-color: rgb(17 24 39) !important;
+		border: 1px solid rgb(55 65 81) !important;
+		border-radius: 0.5rem !important;
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3) !important;
 	}
 
-	:global(.multiselect-option) {
-		color: rgb(229, 231, 235) !important;
+	:global(li.s-Afroq2nfY4bj) {
+		padding: 0.75rem !important;
+		color: rgb(229 231 235) !important;
+		background-color: transparent !important;
 	}
 
-	:global(.multiselect-option:hover) {
-		background-color: rgba(59, 130, 246, 0.2) !important;
+	:global(li.s-Afroq2nfY4bj:hover) {
+		background-color: rgb(55 65 81) !important;
 	}
 
-	:global(.multiselect-option.selected) {
-		background-color: rgba(59, 130, 246, 0.3) !important;
+	:global(li[aria-selected='true'].s-Afroq2nfY4bj) {
+		background-color: rgb(59 130 246) !important;
+		border-radius: 9999px !important;
+	}
+
+	:global(.multiselect-input.s-Afroq2nfY4bj) {
+		background-color: rgb(31 41 55 / 0.8) !important;
+		border: 1px solid rgb(55 65 81) !important;
+		border-radius: 0.5rem !important;
+		color: rgb(229 231 235) !important;
+	}
+
+	:global(.multiselect-input.s-Afroq2nfY4bj:focus) {
+		border-color: rgb(59 130 246) !important;
+		outline: none !important;
+		ring: 2px rgb(59 130 246 / 0.2) !important;
+	}
+
+	:global(.multiselect-wrapper.s-Afroq2nfY4bj) {
+		background-color: rgb(31 41 55 / 0.8) !important;
+	}
+
+	:global(div[role='searchbox'].multiselect.s-Afroq2nfY4bj) {
+		background-color: rgb(31 41 55 / 0.8) !important;
+		border: 1px solid rgb(55 65 81) !important;
+		border-radius: 0.5rem !important;
+		color: rgb(229 231 235) !important;
+		padding: 0.75rem !important;
+	}
+
+	:global(div[role='searchbox'].multiselect.s-Afroq2nfY4bj:focus-within) {
+		border-color: rgb(59 130 246) !important;
+		outline: none !important;
+		box-shadow: 0 0 0 2px rgb(59 130 246 / 0.2) !important;
+	}
+
+	:global(.multiselect-placeholder.s-Afroq2nfY4bj) {
+		background-color: transparent !important;
+		color: rgb(156 163 175) !important;
+	}
+
+	:global(input.s-Afroq2nfY4bj) {
+		background: none !important;
+		background-color: transparent !important;
+		-webkit-background-color: transparent !important;
+		color: rgb(229 231 235) !important;
+		border: none !important;
+		outline: none !important;
+	}
+
+	:global(input.s-Afroq2nfY4bj::placeholder) {
+		color: rgb(156 163 175) !important;
+	}
+
+	:global(.selected.s-Afroq2nfY4bj) {
+		background-color: rgb(31 41 55 / 0.8) !important;
+		border-radius: 9999px !important;
+		padding: 0.25rem 0.75rem !important;
+		margin: 0.125rem !important;
+	}
+
+	:global(li[aria-selected='true'].s-Afroq2nfY4bj) {
+		background-color: rgb(59 130 246) !important;
+		border-radius: 9999px !important;
+	}
+
+	:global(.multiselect-tag.s-Afroq2nfY4bj) {
+		border-radius: 9999px !important;
+		padding: 0.25rem 0.75rem !important;
+		background-color: rgb(59 130 246) !important;
+		margin: 0.125rem !important;
 	}
 </style>
