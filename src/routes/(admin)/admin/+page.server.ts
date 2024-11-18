@@ -21,7 +21,6 @@ export const load = (async ({ locals }) => {
 			console.error('Error fetching tags:', error.message);
 			return [];
 		}
-
 		return tags ?? [];
 	}
 

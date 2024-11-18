@@ -29,8 +29,18 @@ export const load = (async ({ locals, params }) => {
 		throw Error('Article not found');
 	}
 
+	const articleTags = !article?.tags
+		? []
+		: article.tags.map((tag) => {
+				return {
+					value: tag,
+					label: tags.find((t) => t.id === tag)?.name ?? ''
+				};
+			});
+
 	return {
 		article,
+		articleTags,
 		tags
 	};
 }) satisfies PageServerLoad;

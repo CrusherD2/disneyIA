@@ -9,13 +9,16 @@
 	import MultiSelect from 'svelte-multiselect';
 	import CreateTagDialog from './create-tag-dialog.svelte';
 
-	const {
-		article,
-		tags
-	}: {
+	type Props = {
 		article?: Article;
+		articleTags: {
+			value: number;
+			label: string;
+		}[];
 		tags: Tag[];
-	} = $props();
+	};
+
+	const { article, articleTags, tags }: Props = $props();
 
 	let conf = {
 		height: '80svh',
@@ -52,20 +55,11 @@
 	let title = $state(article?.title ?? '');
 	let summary = $state(article?.summary ?? '');
 	let author = $state(article?.author ?? '');
-	let articleTags: {
+	let articleTagsState: {
 		value: number;
 		label: string;
-	}[] = $state(
-		(() => {
-			if (!article?.tags) return [];
-			return article.tags.map((tag) => {
-				return {
-					value: tag,
-					label: tags.find((t) => t.id === tag)?.name ?? ''
-				};
-			});
-		})()
-	); // Manejo de tags como texto
+	}[] = $state(articleTags);
+	// Manejo de tags como texto
 	let content = $state(article?.content ?? '<p>This is the initial content of the editor.</p>');
 
 	let isPending = $state(false);
@@ -128,7 +122,7 @@
 					summary: summary,
 					author: author,
 					content: content,
-					tags: articleTags.map((tag) => tag.value),
+					tags: articleTagsState.map((tag) => tag.value),
 					backgroundImage // Add this to the request body
 				})
 			});
@@ -198,7 +192,7 @@
 				<div class="flex gap-3">
 					{#if tags && tags.length > 0}
 						<MultiSelect
-							bind:selected={articleTags}
+							bind:selected={articleTagsState}
 							options={tags.map((tag) => ({
 								value: tag.id,
 								label: tag.name
