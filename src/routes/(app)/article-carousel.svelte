@@ -12,6 +12,10 @@
 	const CAROUSEL_INTERVAL = 3000; // 3 seconds between slides
 	const TRANSITION_DURATION = 300; // 300ms for the slide animation
 
+	let touchStartX = 0;
+	let touchEndX = 0;
+	const SWIPE_THRESHOLD = 50; // Minimum distance for a swipe
+
 	function updateIndex(direction: 'prev' | 'next') {
 		if (direction === 'next') {
 			currentIndex = (currentIndex + 1) % carouselArticles.length;
@@ -28,6 +32,35 @@
 		}, CAROUSEL_INTERVAL); // Changes slide every 3 seconds
 	}
 
+	function handleTouchStart(event: TouchEvent) {
+		touchStartX = event.touches[0].clientX;
+	}
+
+	function handleTouchEnd(event: TouchEvent) {
+		touchEndX = event.changedTouches[0].clientX;
+		handleSwipe();
+	}
+
+	function handleMouseDown(event: MouseEvent) {
+		touchStartX = event.clientX;
+	}
+
+	function handleMouseUp(event: MouseEvent) {
+		touchEndX = event.clientX;
+		handleSwipe();
+	}
+
+	function handleSwipe() {
+		const swipeDistance = touchEndX - touchStartX;
+		if (Math.abs(swipeDistance) >= SWIPE_THRESHOLD) {
+			if (swipeDistance > 0) {
+				updateIndex('prev');
+			} else {
+				updateIndex('next');
+			}
+		}
+	}
+
 	onMount(() => {
 		startAutoSlide();
 		return () => clearInterval(intervalId);
@@ -37,11 +70,16 @@
 </script>
 
 <div
-	class="relative h-[500px] w-full overflow-hidden rounded-2xl"
+	class="relative h-[500px] w-full cursor-default select-none overflow-hidden rounded-2xl"
 	on:mouseenter={() => (isPaused = true)}
 	on:mouseleave={() => (isPaused = false)}
-	role="region"
-	aria-label="Article carousel"
+	on:touchstart={handleTouchStart}
+	on:touchend={handleTouchEnd}
+	on:mousedown={handleMouseDown}
+	on:mouseup={handleMouseUp}
+	tabindex="0"
+	role="button"
+	aria-label="Carousel container"
 >
 	{#each carouselArticles as article, i}
 		<div
@@ -117,7 +155,7 @@
 		</div>
 	{/each}
 
-	<!-- Controls Container - Mobile version -->
+	<!-- Mobile controls -->
 	<div
 		class="absolute bottom-0 left-0 right-0 z-20 flex items-center justify-between bg-black/20 px-4 py-2 backdrop-blur-sm sm:hidden"
 	>
@@ -174,9 +212,8 @@
 		</div>
 	</div>
 
-	<!-- Desktop Controls - Original version -->
-	<div class="hidden sm:block">
-		<!-- Your original desktop controls here -->
+	<!-- Desktop controls -->
+	<div class="hidden bg-blue-500 sm:block">
 		<div class="absolute bottom-8 left-8 z-20 flex gap-2">
 			{#each carouselArticles as _, i}
 				<button
