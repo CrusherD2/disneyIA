@@ -60,9 +60,7 @@
 		value: number;
 		label: string;
 	}[] = $state(articleTags);
-	onMount(() => {
-		console.log(articleTags);
-	});
+	
 	// Manejo de tags como texto
 	let content = $state(article?.content ?? '<p>This is the initial content of the editor.</p>');
 
