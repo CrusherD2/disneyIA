@@ -308,10 +308,10 @@
 		</div>
 
 		<div class="relative flex flex-wrap gap-2 sm:gap-3">
-			<!-- Pill background -->
+			<!-- Pill background - Establecemos el ancho inicial y la posición -->
 			<div
 				class="pill-indicator absolute h-[40px] rounded-full bg-blue-600 dark:bg-blue-500"
-				style="transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);"
+				style="width: 70px; transform: translateX(0); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);"
 			></div>
 
 			<!-- Todas button -->
