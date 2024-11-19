@@ -15,9 +15,9 @@
 	const { articles, tags } = data;
 
 	// Prepara las etiquetas para uso interno
-	// Las ordena alfabéticamente de Z a A y las convierte al formato {label, value}
+	// Las ordena por ID de menor a mayor
 	const formattedTags = tags
-		.sort((a, b) => b.name.localeCompare(a.name))
+		.sort((a, b) => a.id - b.id)
 		.map((tag) => {
 			return {
 				label: tag.name,
@@ -26,8 +26,8 @@
 		});
 
 	// Prepara las etiquetas para mostrar en los botones de filtro
-	// También ordenadas de Z a A para consistencia
-	const sortedTags = tags.sort((a, b) => b.name.localeCompare(a.name));
+	// También ordenadas por ID para consistencia
+	const sortedTags = tags.sort((a, b) => a.id - b.id);
 
 	// Estado para el filtro de categorías y artículos
 	let selectedTag: number | null = $state(null);
@@ -69,10 +69,10 @@
 		const parent = button.parentElement!;
 		const parentRect = parent.getBoundingClientRect();
 
-		const pill = parent.querySelector('.absolute') as HTMLElement;
+		const pill = parent.querySelector('.pill-indicator') as HTMLElement;
 		if (pill) {
 			pill.style.width = `${rect.width}px`;
-			pill.style.transform = `translate(${rect.left - parentRect.left}px, ${rect.top - parentRect.top}px)`;
+			pill.style.transform = `translateX(${rect.left - parentRect.left}px)`;
 		}
 
 		selectedTag = tagId;
@@ -310,8 +310,8 @@
 		<div class="relative flex flex-wrap gap-2 sm:gap-3">
 			<!-- Pill background -->
 			<div
-				class="absolute h-[40px] rounded-full bg-blue-600 transition-all duration-300 ease-out dark:bg-blue-500"
-				style="transform: translate(0, 0); width: 80px;"
+				class="pill-indicator absolute h-[40px] rounded-full bg-blue-600 dark:bg-blue-500"
+				style="transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);"
 			></div>
 
 			<!-- Todas button -->
@@ -446,5 +446,12 @@
 
 	.animate-fade-in {
 		animation: fadeIn 0.3s ease-out forwards;
+	}
+
+	/* Añadimos estilos para la animación del pill */
+	.pill-indicator {
+		position: absolute;
+		will-change: transform, width;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 	}
 </style>
