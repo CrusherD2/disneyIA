@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Article } from '$lib/types';
+	import { fade, fly } from 'svelte/transition';
 
 	export let carouselArticles: Article[];
 	export let tags: Array<{ label: string; value: number }>;
@@ -16,8 +17,11 @@
 	let touchEndX = 0;
 	const SWIPE_THRESHOLD = 50; // Minimum distance for a swipe
 
-	function updateIndex(direction: 'prev' | 'next') {
-		if (direction === 'next') {
+	let direction = 1; // 1 for right, -1 for left
+
+	function updateIndex(dir: 'prev' | 'next') {
+		direction = dir === 'next' ? 1 : -1;
+		if (dir === 'next') {
 			currentIndex = (currentIndex + 1) % carouselArticles.length;
 		} else {
 			currentIndex = (currentIndex - 1 + carouselArticles.length) % carouselArticles.length;
@@ -82,77 +86,79 @@
 	aria-label="Carousel container"
 >
 	{#each carouselArticles as article, i}
-		<div
-			class="absolute inset-0 transition-opacity duration-500"
-			class:opacity-0={currentIndex !== i}
-			class:opacity-100={currentIndex === i}
-		>
-			<!-- Content Container -->
-			<div class="relative flex h-full flex-col">
-				<!-- Text Section - Mobile adjustments -->
-				<div
-					class="relative z-10 flex flex-1 flex-col justify-end space-y-3 p-4 pb-16 text-white
-					sm:justify-center sm:space-y-6 sm:p-12 sm:pb-12"
-				>
-					<!-- Tags -->
-					<div class="flex flex-wrap gap-2">
-						{#each article.tags ?? [] as tagId}
-							{#if tags.find((t) => t.value === tagId)}
-								<span
-									class="rounded-full bg-blue-500/20 px-3 py-0.5 text-xs font-medium backdrop-blur-sm"
-								>
-									{tags.find((t) => t.value === tagId)?.label}
-								</span>
-							{/if}
-						{/each}
-					</div>
-
-					<!-- Title and Summary -->
-					<div class="max-w-3xl space-y-2">
-						<h2 class="text-xl font-bold leading-tight tracking-tight sm:text-4xl">
-							{article.title}
-						</h2>
-						<p class="line-clamp-2 text-sm text-gray-100/90 sm:line-clamp-none sm:text-base">
-							{article.summary}
-						</p>
-					</div>
-
-					<!-- CTA Button -->
-					<a
-						href="/articles/{article.id}"
-						class="inline-flex w-fit items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-blue-700 hover:shadow-lg sm:gap-3 sm:px-6 sm:py-3 sm:text-base"
+		{#if i === currentIndex}
+			<div
+				class="absolute inset-0"
+				in:fly={{ x: 100 * direction, duration: 500 }}
+				out:fly={{ x: -100 * direction, duration: 500 }}
+			>
+				<!-- Content Container -->
+				<div class="relative flex h-full flex-col">
+					<!-- Text Section - Mobile adjustments -->
+					<div
+						class="relative z-10 flex flex-1 flex-col justify-end space-y-3 p-4 pb-16 text-white
+						sm:justify-center sm:space-y-6 sm:p-12 sm:pb-12"
 					>
-						Leer artículo
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="h-4 w-4 sm:h-5 sm:w-5"
-							viewBox="0 0 20 20"
-							fill="currentColor"
+						<!-- Tags -->
+						<div class="flex flex-wrap gap-2">
+							{#each article.tags ?? [] as tagId}
+								{#if tags.find((t) => t.value === tagId)}
+									<span
+										class="rounded-full bg-blue-500/20 px-3 py-0.5 text-xs font-medium backdrop-blur-sm"
+									>
+										{tags.find((t) => t.value === tagId)?.label}
+									</span>
+								{/if}
+							{/each}
+						</div>
+
+						<!-- Title and Summary -->
+						<div class="max-w-3xl space-y-2">
+							<h2 class="text-xl font-bold leading-tight tracking-tight sm:text-4xl">
+								{article.title}
+							</h2>
+							<p class="line-clamp-2 text-sm text-gray-100/90 sm:line-clamp-none sm:text-base">
+								{article.summary}
+							</p>
+						</div>
+
+						<!-- CTA Button -->
+						<a
+							href="/articles/{article.id}"
+							class="inline-flex w-fit items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-blue-700 hover:shadow-lg sm:gap-3 sm:px-6 sm:py-3 sm:text-base"
 						>
-							<path
-								fill-rule="evenodd"
-								d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-					</a>
-				</div>
+							Leer artículo
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-4 w-4 sm:h-5 sm:w-5"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+						</a>
+					</div>
 
-				<!-- Enhanced gradient overlay -->
-				<div
-					class="absolute inset-0 z-[1] bg-gradient-to-t from-black/90 via-black/50 to-transparent"
-				></div>
+					<!-- Enhanced gradient overlay -->
+					<div
+						class="absolute inset-0 z-[1] bg-gradient-to-t from-black/90 via-black/50 to-transparent"
+					></div>
 
-				<!-- Image -->
-				<div class="absolute inset-0 z-0">
-					<img
-						src={article.backgroundImage || '/default-article.jpg'}
-						alt={article.title}
-						class="h-full w-full object-cover"
-					/>
+					<!-- Image -->
+					<div class="absolute inset-0 z-0">
+						<img
+							src={article.backgroundImage || '/default-article.jpg'}
+							alt={article.title}
+							class="h-full w-full object-cover"
+						/>
+					</div>
 				</div>
 			</div>
-		</div>
+		{/if}
 	{/each}
 
 	<!-- Mobile controls -->
@@ -267,13 +273,8 @@
 </div>
 
 <style>
-	/* Optional: Add smooth transitions for the carousel */
-	.transition-opacity {
-		transition-property: opacity;
+	.transition-all {
+		transition-property: all;
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-	}
-
-	.carousel-slide {
-		transition: transform 300ms ease-in-out; /* Reduced from likely 500ms */
 	}
 </style>
