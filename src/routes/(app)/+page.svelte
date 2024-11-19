@@ -414,7 +414,12 @@
 	}
 
 	.article-card {
-		transition: all 0.5s ease-out;
+		transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+		transform: scale(1);
+	}
+
+	.article-card:hover {
+		transform: scale(1.03);
 	}
 
 	/* Remove or comment out the unused animation */
